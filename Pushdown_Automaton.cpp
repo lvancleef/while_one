@@ -1,10 +1,10 @@
-#include "input_alphabet.h"
-#include "stack_alphbet.h"
-#include "transition_function.h"
-#include "states.h"
-#include "final_states.h"
-#include "instantaneous_description.h"
-#include "configuration_file.h"
+#include "Input_Alphabet.h"
+#include "Stack_Alphbet.h"
+#include "Transition_Function.h"
+#include "States.h"
+#include "Final_States.h"
+#include "Instantaneous_Description.h"
+#include "Configuration_File.h"
 #include <string>
 using namespace std;
 ///test
@@ -13,16 +13,23 @@ using namespace std;
 
     }
     bool Pushdown_Automaton::is_accepted(Instantaneous_Description instantaneous_description, int number_in_current_path){
+        return true;
+    }
+    void Pushdown_Automaton::load(string definition_file_name){
 
     }
-    void Pushdown_Automaton::load(in definition_file_name:string){
+    bool Pushdown_Automaton::PDA_main(Configuration_Settings configuration_settings){
 
+
+        return true;
     }
-    bool Pushdown_Automaton::PDA_main(in Configuration_Settings configuration_settings){
+    string Pushdown_Automaton::perform_transition(Instantaneous_Description instantaneous_description, int &number_of_transition_performed){
 
-    }
-    string Pushdown_Automaton::perform_transition(in Instantaneous_description instantaneous_description, in number_of_transition_performed: int){
-
+        if(number_of_transitions_config_settings.max_transitions()){
+           return true; 
+        }
+        perform_transition(instantaneous_description, number_of_transition_performed++);
+        return false;
     }
     bool Pushdown_Automaton::is_accepted(in instantaneous_description Instantaneous_Description, in number_in_current_path:int){
         return true;
