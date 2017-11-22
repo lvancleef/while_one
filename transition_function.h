@@ -1,0 +1,38 @@
+/*
+ * transition_function.h
+ *
+ *  Created on: Nov 16, 2017
+ *      Author: kjdorow
+ */
+
+#ifndef TRANSITION_FUNCTION_H_
+#define TRANSITION_FUNCTION_H_
+
+#include "transition.h"
+#include "states.h"
+#include "final_states.h"
+#include <string>
+#include <vector>
+#include <fstream>
+using namespace std;
+
+class Transition_Function {
+	private:
+		vector<Transition> transitions;
+	public:
+		void load(ifstream& definition, Input_Alphabet input_alphabet,
+				States states, Stack_Alphabet stack_alphabet, bool& valid);
+		void validate(const Stack_Alphabet& stack_alphabet,
+				const Input_Alphabet& input_alphabet,
+				const States& states,
+				const Final_States& final_states,
+				bool& valid) const;
+		void view() const;
+		// pass by reference because they are output parameters
+		void find_transition(string source_state, char read_character,
+				char read_stack_character, vector<Destination> destinations, bool& found) const;
+};
+
+
+
+#endif /* TRANSITION_FUNCTION_H_ */
