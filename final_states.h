@@ -1,0 +1,23 @@
+#ifndef FINAL_STATES_H
+#define FINAL_STATES_H
+
+#include <string>
+#include <vector>
+#include <fstream>
+
+using namespace std;
+
+class Final_States
+{
+private:
+    vector <string> final_names;
+
+public:
+    Final_States();
+    void load(ifstream& definition, bool& valid);
+    void validate(vector<string> string_vector, bool& valid);
+    void view()const;
+    bool is_element(string value)const;
+
+};
+#endif // FINAL_STATES_H
