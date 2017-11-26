@@ -1,34 +1,37 @@
 all: main
+	
+configuration_settings: 
+	g++ -c configuration_settings.cpp
 
 pushdown_automaton: input_alphabet stack_alphabet transition_function states final_states
-	g++ -c Pushdown_Automaton.cpp 
+	g++ -c pushdown_automaton.cpp 
 
 input_alphabet:  
-	g++ -c Input_Alphabet.cpp
+	g++ -c input_alphabet.cpp
 
 stack_alphabet:  
-	g++ -c Stack_Alphabet.cpp
+	g++ -c stack_alphabet.cpp
+
+transition:  
+	g++ -c transition.cpp
 
 transition_function: transition
-	g++ -c Transition_Function.cpp
+	g++ -c transition_function.cpp
 
 states:  
-	g++ -c States.cpp
+	g++ -c states.cpp
 
 final_states:  
-	g++ -c Final_States.cpp
+	g++ -c final_states.cpp
 
 instantaneous_description:
-	g++ -c Instantaneous_Description.cpp
-	
-transition:  
-	g++ -c Transition.cpp
+	g++ -c instantaneous_description.cpp
 
 main.o:  
 	g++ -c main.cpp
 
-main: main.o pushdown_automaton transitions final_statess transition_function tape_alphabet stack_alphabet input_alphabet states
-	g++  .o Stack_Alphabet.o Input_Alphabet.o main.o Transition.o Transition_Function.o Tape.o States.o Final_States. Pushdown_Automaton.o -o pda
+main: main.o configuration_settings pushdown_automaton input_alphabet stack_alphabet transitions transition_function states final_states instantaneous_description
+	g++  main.o configuration_settings.o pushdown_automaton.o input_alphabet.o stack_alphabet.o transitions.o transition_function.o states.o final_states.o instantaneous_description.o -o pda
 
 clean:
-	rm  .o Instantaneous_Description.o Input_Alphabet.o Stack_Alphabet.o Transition_Function.o States.o Final_States.o Pushdown_Automaton.o Transition.o crash.o main.o tm
+	rm  main.o configuration_settings.o pushdown_automaton.o input_alphabet.o stack_alphabet.o transitions.o transition_function.o states.o final_states.o instantaneous_description.o pda
