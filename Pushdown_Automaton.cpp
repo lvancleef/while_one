@@ -32,12 +32,12 @@ string Pushdown_Automaton::perform_transition(Instantaneous_Description instanta
 {
     if(number_of_transitions_performed == config_settings.get_maximum_transitions())
     {
-        return true; 
+        return "true"; 
     }
 
     perform_transition(instantaneous_description, number_of_transitions_performed++);
     
-    return false;
+    return "false";
 }
 
 bool Pushdown_Automaton::is_accepted(Instantaneous_Description instantaneous_description, int number_in_current_path)
@@ -108,7 +108,7 @@ void Pushdown_Automaton::sort_command()
 void Pushdown_Automaton::set_command()
 {
     cout<<"set command\n";
-    }
+}
     
 void Pushdown_Automaton::close_command()
 {
