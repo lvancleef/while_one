@@ -47,8 +47,8 @@ vector<Destination> Transition::destination() const{
 
 
 void Transition::setDest(string destState, string writeStr, int index) {
-	this->destinations.at(index).destination = destState; //this doesnt work if destination is prvate
-	this->destinations.at(index).write = writeStr; //this doesnt work if destination is prvate
+	this->destinations.at(index).destination_state() = destState;
+	this->destinations.at(index).write_string() = writeStr;
 }
 
 

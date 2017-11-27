@@ -1,8 +1,8 @@
 #include "states.h"
 
 #include <string>
-#include <fstream>
 #include <vector>
+#include <fstream>
 #include <iostream>
 #include <cstring>
 #include <ctype.h>

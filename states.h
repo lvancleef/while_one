@@ -1,5 +1,5 @@
-#ifndef STATES_H
-#define STATES_H
+#ifndef STATES_H_
+#define STATES_H_
 
 #include <string>
 #include <vector>
@@ -19,4 +19,4 @@ public:
     bool is_element(string value)const;
 
 };
-#endif // STATES_H
+#endif // STATES_H_

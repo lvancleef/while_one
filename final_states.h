@@ -1,5 +1,5 @@
-#ifndef FINAL_STATES_H
-#define FINAL_STATES_H
+#ifndef FINAL_STATES_H_
+#define FINAL_STATES_H_
 
 #include <string>
 #include <vector>
@@ -20,4 +20,4 @@ public:
     bool is_element(string value)const;
 
 };
-#endif // FINAL_STATES_H
+#endif // FINAL_STATES_H_
