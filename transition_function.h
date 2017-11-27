@@ -11,6 +11,8 @@
 #include "transition.h"
 #include "states.h"
 #include "final_states.h"
+#include "input_alphabet.h"
+#include "stack_alphabet.h"
 #include <string>
 #include <vector>
 #include <fstream>

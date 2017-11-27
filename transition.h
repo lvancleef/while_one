@@ -14,7 +14,7 @@
 using namespace std;
 
 class Transition {
-	private:
+	public: // temp to get get it to compile we need to fix access private variables
 		string source;
 		char read;
 		char read_stack;

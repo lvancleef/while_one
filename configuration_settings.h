@@ -16,8 +16,8 @@ class Configuration_Settings
 {
 private:
 	string application_name;
-	int max_number_transitions;
-	int max_number_ccharacters;
+	int maximum_number_transitions;
+	int maximum_number_characters;
 	bool complete_paths;
 	bool changed;
 

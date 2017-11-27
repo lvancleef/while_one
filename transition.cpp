@@ -41,13 +41,14 @@ void Transition::setReadStack(char readCharStack) {
 	this->read_stack = readCharStack;
 }
 
-vector<Destination> Transition::destinations() const {
+vector<Destination> Transition::destination() const{
 	return destinations;
 }
 
+
 void Transition::setDest(string destState, string writeStr, int index) {
-	this->destinations.at(index).destination = destState;
-	this->destinations.at(index).write = writeStr;
+	this->destinations.at(index).destination = destState; //this doesnt work if destination is prvate
+	this->destinations.at(index).write = writeStr; //this doesnt work if destination is prvate
 }
 
 

@@ -13,7 +13,7 @@
 using namespace std;
 
 class Destination {
-	private:
+	public://made public to make get it to work
 		string destination;
 		string write;
 	public:

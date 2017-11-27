@@ -17,17 +17,17 @@
 
 #include <string>
 
-help_command()
+void help_command()
 {
 
 }
 
-show_command()
+void show_command()
 {
 
 }
 
-open_command()
+void open_command()
 {
 
 }

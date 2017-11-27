@@ -1,3 +1,4 @@
+#include "pushdown_automaton.h"
 #include "input_alphabet.h"
 #include "stack_alphabet.h"
 #include "transition_function.h"
@@ -7,6 +8,7 @@
 #include "configuration_settings.h"
 
 #include <string>
+#include <iostream>
 
 using namespace std;
 
@@ -23,27 +25,23 @@ void Pushdown_Automaton::load(string definition_file_name)
 {
 }
 
-bool Pushdown_Automaton::PDA_main(Configuration_Settings configuration_settings)
+bool Pushdown_Automaton::pda_main(Configuration_Settings configuration_settings)
 {
     return true;
 }
 
-string Pushdown_Automaton::perform_transition(Instantaneous_Description instantaneous_description, int &number_of_transitions_performed)
+string Pushdown_Automaton::perform_transition(Configuration_Settings config_settings ,Instantaneous_Description instantaneous_description, int &number_of_transitions_performed)
 {
     if(number_of_transitions_performed == config_settings.get_maximum_transitions())
     {
         return "true"; 
     }
 
-    perform_transition(instantaneous_description, number_of_transitions_performed++);
+    perform_transition(config_settings,instantaneous_description, ++number_of_transitions_performed);
     
     return "false";
 }
 
-bool Pushdown_Automaton::is_accepted(Instantaneous_Description instantaneous_description, int number_in_current_path)
-{
-    return true;
-}
 
 void Pushdown_Automaton::commands()
 {

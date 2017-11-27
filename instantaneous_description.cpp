@@ -7,10 +7,10 @@ using namespace std;
 
         }
         Instantaneous_Description::Instantaneous_Description(string initial_state, string input_string, char start_character, int level){
-            current_state(initial_state);
-            remaining_input_string(input_string);
-            stack(start_character)
-            current_level(level);
+            current_state=initial_state;
+            remaining_input_string=input_string;
+            stack=start_character;
+            current_level=level;
         }
         // void Instantaneous_Description::view() const{
         //     //where are we getting truncate from
@@ -20,11 +20,11 @@ using namespace std;
 
         // }
         
-        string state() const{
+        string Instantaneous_Description::state() const{
             return current_state;
         }
-        char Instantaneous_Description::input_string() const{
-            return remaining_input_string;
+        char Instantaneous_Description::input_character() const{
+            return remaining_input_string[0];
         }
         char Instantaneous_Description::top_of_stack() const{
             return stack[0];
