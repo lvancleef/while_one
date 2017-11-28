@@ -53,7 +53,7 @@ public:
     void view_command();
     void list_command();
     void insert_command();
-    void delete_command(int value);
+    void delete_command();
     void sort_command();
     void set_command();
     void close_command();

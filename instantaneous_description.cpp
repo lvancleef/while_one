@@ -6,10 +6,10 @@ using namespace std;
         Instantaneous_Description::Instantaneous_Description(){
 
         }
-        Instantaneous_Description::Instantaneous_Description(string initial_state, string input_string, char start_character, int level){
+        Instantaneous_Description::Instantaneous_Description(string initial_state, string input_string, string stack_characters, int level){
             current_state=initial_state;
             remaining_input_string=input_string;
-            stack=start_character;
+            stack=stack_characters;
             current_level=level;
         }
         // void Instantaneous_Description::view() const{
@@ -23,6 +23,9 @@ using namespace std;
         string Instantaneous_Description::state() const{
             return current_state;
         }
+        string Instantaneous_Description::whole_stack() const{
+            return stack;
+        }
         char Instantaneous_Description::input_character() const{
             return remaining_input_string[0];
         }
@@ -30,8 +33,8 @@ using namespace std;
             return stack[0];
         }
         bool Instantaneous_Description::is_empty_stack() const{
-            return true;
+            return stack.empty();
         }
         bool Instantaneous_Description::is_empty_remaining_input_string() const{
-            return true;
+            return remaining_input_string.empty();
         }

@@ -57,12 +57,12 @@ void Pushdown_Automaton::print_id(Instantaneous_Description instantaneous_descri
 {
     cout<<"ID\n";
 
-    return;
+
 }
 
 void Pushdown_Automaton::initialize_string_list()
 {
-    return;
+    
 }
     
 void Pushdown_Automaton::help_command()
@@ -90,10 +90,7 @@ void Pushdown_Automaton::insert_command()
     cout<<"insert command\n";
 }
 
-// note from lvancleef
-// does this really take in a value, or are we asking
-// within the command
-void Pushdown_Automaton::delete_command(int value)
+void Pushdown_Automaton::delete_command()
 {
     cout<<"del command\n";
 }

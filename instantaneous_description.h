@@ -10,9 +10,9 @@ class Instantaneous_Description{
         int current_level;
     public:
         Instantaneous_Description();
-        Instantaneous_Description(string initial_state, string input_string, char start_character, int level);
-        void view() const;
+        Instantaneous_Description(string initial_state, string input_string, string stack_characters, int level);
         string state() const;
+        string whole_stack() const;
         char input_character() const;
         char top_of_stack() const;
         bool is_empty_stack() const;
