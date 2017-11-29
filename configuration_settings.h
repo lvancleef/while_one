@@ -1,7 +1,7 @@
 /*
  * file: configuration_settings.h
  * author: lvancleef
- * version: 1.01
+ * version: 1.02
  * date: 11/29/2017
  */
 
@@ -36,6 +36,7 @@ public:
 	void set_command();
 	void truncate_command();
 	void display_command();
+	void exit_command();
 
 };
 
