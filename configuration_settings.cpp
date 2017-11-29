@@ -1,10 +1,10 @@
 /*
  * file: configuration_settings.cpp
  * author: lvancleef
- * version: 0.2
+ * version: 0.3
  * date: 11/29/2017
  *
- * notes: load function needs to be completed 
+ * notes: load and exit_command need to be finished
  * 
  */
 
@@ -136,4 +136,16 @@ void Configuration_Settings::display_command()
    	changed = true;
 
 	return;
+}
+
+void Configuration_Settings::exit_command()
+{
+	if(changed)
+	{
+		// open file, write config settings
+
+		// print success or failure
+	}
+
+	exit(0);
 }
