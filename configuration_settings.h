@@ -1,14 +1,16 @@
 /*
  * file: configuration_settings.h
  * author: lvancleef
- * version: 1.0
- * date: 11/26/2017
+ * version: 1.01
+ * date: 11/29/2017
  */
 
 #ifndef CONFIGURATION_SETTINGS_H_
 #define CONFIGURATION_SETTINGS_H_
 
 #include <string>
+#include <iostream>
+#include <sstream>
 
 using namespace std;
 
@@ -20,6 +22,9 @@ private:
 	int maximum_number_characters;
 	bool complete_paths;
 	bool changed;
+	
+	// load function called by constructor
+	bool load(string name);
 
 public:
 	Configuration_Settings(string name);
