@@ -8,7 +8,7 @@
 #include "final_states.h"
 #include "instantaneous_description.h"
 #include "configuration_settings.h"
-
+#include "uppercase.h"
 #include <string>
 
 using namespace std;
@@ -37,7 +37,7 @@ private:
 
     string name;
     string original_input_string;
-
+    string pda_description;
     //static Configuration_Setting_Pointer configuration_setting_pointer;
     
 public:
@@ -47,7 +47,7 @@ public:
     void load(string definition_file_name);
     bool pda_main(Configuration_Settings configuration_settings);
     string perform_transition(Instantaneous_Description instantaneous_description, int &number_of_transition_performed);
-    bool is_accepted(Instantaneous_Description instantaneous_description, int number_in_current_path);
+    bool is_accepted(Instantaneous_Description instantaneous_description);
     string commands();
     bool is_valid_input_string(string value);
     void print_id(Instantaneous_Description instantaneous_description);

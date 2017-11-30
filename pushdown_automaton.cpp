@@ -6,6 +6,7 @@
 #include "final_states.h"
 #include "instantaneous_description.h"
 #include "configuration_settings.h"
+#include "uppercase.h"
 
 #include <string>
 #include <iostream>
@@ -16,17 +17,75 @@ using namespace std;
 // {
 // }
 
-bool Pushdown_Automaton::is_accepted(Instantaneous_Description instantaneous_description, int number_in_current_path)
+bool Pushdown_Automaton::is_accepted(Instantaneous_Description instantaneous_description)
 {
     
 }
 
 void Pushdown_Automaton::load(string definition_file_name)
 {
+    string Def_File=name;
+    Def_File+=".def";
+    ifstream definition;
+    definition.open(Def_File.c_str());
+    
+    pda_description="";
+    valid=true;
+    used=false;
+    running=false;
+    accepted=false;
+    rejected=false;
+    string keyword;
+    while(1)
+    {
+        if(definition>>keyword)
+        {
+            if(To_Upper(keyword)=="STATES:")
+            {
+                break;
+            }
+            else
+            {
+                pda_description+=" ";
+                pda_description+=keyword;
+            }
+        }
+        else
+        {
+            Valid=false;
+        cout<<"States is missing\n";
+        Valid=false;
+        }
+    }
+    states.load(definition, valid);
+    input_alphabet.load(definition, valid);
+    stack_alphabet.load(definition, valid);
+    transition_function.load(definition, valid);
+    
+    definition>>keyword= initial_state;
+
+    if((To_Upper(definition>>keyword)!="START_CHARACTER:"))
+    {
+        cout<<"START_CHARACTER is missing\n";
+        valid=false;
+    }
+    else{
+        definition>>keyword;
+        if(keyword.length()==1){
+            keyword[0]=START_CHARACTER;
+        }
+    }
+
+    if((To_Upper(definition>>keyword)!="FINAL_STATES:"))
+    {
+        cout<<"FINAL_STATES is missing\n";
+        valid=false;
+    }
+    final_states.load(definition, valid);
 }
 
 bool Pushdown_Automaton::pda_main(Configuration_Settings configuration_settings)
-{
+{//check if valid is false print error
     return true;
 }
 
@@ -34,14 +93,13 @@ string Pushdown_Automaton::perform_transition(Instantaneous_Description instanta
 {
     
     
-    return "false";
+    return "rejected";
 }
 
 string Pushdown_Automaton::commands()
 {
     int exit;
     string Command ="";
-
 //command loop
     do{
         cout<<"Command: ";
@@ -120,53 +178,53 @@ void Pushdown_Automaton::initialize_string_list()
     String_File+=".str";
     strstream.open(String_File.c_str());///error checking for bad strings
             
-        if (strstream.is_open()) 
-        {           
-            while (getline(strstream, load))
-                {bool flag=true;
-                    if(load=="\\")
+    if (strstream.is_open()) 
+    {           
+        while (getline(strstream, load))
+            {bool flag=true;
+                if(load=="\\")
+                    {
+                        for(int index=0;index<string_list.size();index++)
                         {
-                            for(int index=0;index<string_list.size();index++)
+                            if(string_list[index]=="\\")
                             {
-                                if(string_list[index]=="\\")
+                                flag=false;
+                            }
+                        }
+                        if(flag!=false)
+                        {
+                            string_list.push_back("\\");
+                        }
+                    }
+                    else
+                    {
+                        for(int index=0;index<string_list.size();index++)
+                            {
+                                if(string_list[index]==load)
                                 {
+                                    cout<<"That string already exists\n";
                                     flag=false;
                                 }
                             }
-                            if(flag!=false)
-                            {
-                                string_list.push_back("\\");
-                            }
-                        }
-                        else
+                                                       
+                        for(int index;index<load.length();index++)
                         {
-                            for(int index=0;index<string_list.size();index++)
-                                {
-                                    if(string_list[index]==load)
-                                    {
-                                        cout<<"That string already exists\n";
-                                        flag=false;
-                                    }
-                                }
-                                                           
-                            for(int index;index<load.length();index++)
+                            if(is_valid_input_string(load)==false)
                             {
-                                if(is_valid_input_string(load)==false)
-                                {
-                                    cout<<"Invalid input string\n";
-                                    flag=false;
-                                    break;
-                                }
+                                cout<<"Invalid input string\n";
+                                flag=false;
+                                break;
                             }
-                            if(flag==true)
-                            string_list.push_back(load);
                         }
-                }
-        }
-        else 
-        {
-            cout<<"No '.str' file found\nPlease input string with the [I]nsert Command\n";
-        }
+                        if(flag==true)
+                        string_list.push_back(load);
+                    }
+            }
+    }
+    else 
+    {
+        cout<<"No '.str' file found\nPlease input string with the [I]nsert Command\n";
+    }
 }
     
 void Pushdown_Automaton::help_command()
