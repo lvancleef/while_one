@@ -114,69 +114,59 @@ void Pushdown_Automaton::print_id(Instantaneous_Description instantaneous_descri
 
 void Pushdown_Automaton::initialize_string_list()
 {
-    // fstream string;
-    // string load;
-    // string String_File=name;
-    // String_File+=".str";
-    // string.open(String_File.c_str());///error checking for bad strings
+    ifstream strstream;
+    string load;
+    string String_File=name;
+    String_File+=".str";
+    strstream.open(String_File.c_str());///error checking for bad strings
             
-    //     if (string.is_open()) 
-    //     {           
-    //         while (getline(string, load))
-    //             {bool flag=true;
-    //                 if(load=="\\")
-    //                     {
-    //                         for(int index=0;index<string_list.size();index++)
-    //                         {
-    //                             if(string_list[index]=="\\")
-    //                             {
-    //                                 flag=false;
-    //                             }
-    //                         }
-    //                         if(flag!=false)
-    //                         {
-    //                             string_list.push_back("\\");
-    //                         }
-    //                     }
-    //                     else
-    //                     {
-    //                         for(int index=0;index<string_list.size();index++)
-    //                             {
-    //                                 if(string_list[index]==load)
-    //                                 {
-    //                                     cout<<"That string already exists\n";
-    //                                     flag=false;
-    //                                 }
-    //                             }
-    //                         for(int index;index<load.length();index++)
-    //                         {
-    //                             if(turingmachine.test_input(load[index])==false)
-    //                             {
-
-    //                                 cout<<"Invalid input string\n";
-    //                                 flag=false;
-    //                                 break;
-    //                             }
-    //                         }
-                                
-    //                         for(int index;index<load.length();index++)
-    //                         {
-    //                             if(turingmachine.test_input(load[index])==false)
-    //                             {
-    //                                 cout<<"Invalid input string\n";
-    //                                 flag=false;
-    //                                 break;
-    //                             }
-    //                         }
-    //                         if(flag==true)
-    //                         string_list.push_back(load);
-    //                     }
-    //             }
-    //     }
-    //     else 
-    //     {
-    //         cout<<"No '.str' file found\nPlease input string with the [I]nsert Command\n";
-    //     }
+        if (strstream.is_open()) 
+        {           
+            while (getline(strstream, load))
+                {bool flag=true;
+                    if(load=="\\")
+                        {
+                            for(int index=0;index<string_list.size();index++)
+                            {
+                                if(string_list[index]=="\\")
+                                {
+                                    flag=false;
+                                }
+                            }
+                            if(flag!=false)
+                            {
+                                string_list.push_back("\\");
+                            }
+                        }
+                        else
+                        {
+                            for(int index=0;index<string_list.size();index++)
+                                {
+                                    if(string_list[index]==load)
+                                    {
+                                        cout<<"That string already exists\n";
+                                        flag=false;
+                                    }
+                                }
+                                                           
+                            for(int index;index<load.length();index++)
+                            {
+                                if(is_valid_input_string(load)==false)
+                                {
+                                    cout<<"Invalid input string\n";
+                                    flag=false;
+                                    break;
+                                }
+                            }
+                            if(flag==true)
+                            string_list.push_back(load);
+                        }
+                }
+        }
+        else 
+        {
+            cout<<"No '.str' file found\nPlease input string with the [I]nsert Command\n";
+        }
 }
     
 void Pushdown_Automaton::help_command()
