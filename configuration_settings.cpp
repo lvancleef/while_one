@@ -1,8 +1,8 @@
 /*
  * file: configuration_settings.cpp
  * author: lvancleef
- * version: 0.3
- * date: 11/29/2017
+ * version: 0.4
+ * date: 11/30/2017
  *
  * notes: load and exit_command need to be finished
  * 
@@ -12,6 +12,7 @@
 #include <string>
 #include <iostream>
 #include <sstream>
+#include <stdlib.h>
 
 using namespace std;
 
@@ -56,6 +57,14 @@ int Configuration_Settings::get_maximum_characters() const
 bool Configuration_Settings::get_complete_paths() const
 {
 	return complete_paths;
+}
+
+string Configuration_Settings::complete_paths_string() const
+{
+	if (complete_paths)
+		return "YES";
+	else
+		return "NO";
 }
 
 void Configuration_Settings::set_command()
