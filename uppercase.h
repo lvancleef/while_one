@@ -17,4 +17,6 @@ char upperCaseChar(char value);
 
 string upperCaseStr(string value);
 
+string To_Upper(string & value);
+
 #endif /* UPPERCASE_H_ */

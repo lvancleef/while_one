@@ -1,8 +1,8 @@
 /*
  * file: configuration_settings.h
  * author: lvancleef
- * version: 1.02
- * date: 11/29/2017
+ * version: 1.03
+ * date: 11/30/2017
  */
 
 #ifndef CONFIGURATION_SETTINGS_H_
@@ -11,6 +11,7 @@
 #include <string>
 #include <iostream>
 #include <sstream>
+#include <stdlib.h>
 
 using namespace std;
 
@@ -32,6 +33,7 @@ public:
 	int get_maximum_transitions() const;
 	int get_maximum_characters() const;
 	bool get_complete_paths() const;
+	string complete_paths_string() const;
 
 	void set_command();
 	void truncate_command();
