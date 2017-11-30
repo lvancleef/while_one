@@ -208,81 +208,81 @@ void Pushdown_Automaton::list_command()
 
 void Pushdown_Automaton::insert_command()
 {
-    // cout<<"Input String: ";
-    // string load="";
-    // cin.ignore();
-    // getline(cin,load);
-    // bool flag=true;
-    // if(load!="")
-    // {
-    //     if(load=="\\")
-    //     {
-    //         for(int index=0;index<string_list.size();index++)
-    //             {
-    //                 if(string_list[index]==load)
-    //                 {
-    //                     cout<<"That string already exists\n";
-    //                     flag=false;
-    //                 }
-    //             }
-    //             if(flag==true)
-    //                 string_list.push_back(load);
-    //     }
-    //     else
-    //     {
-    //         for(int index=0;index<string_list.size();index++)
-    //             {
-    //                 if(string_list[index]==load)
-    //                 {
-    //                     cout<<"That string already exists\n";
-    //                     flag=false;
-    //                 }
-    //             }
-    //         for(int index;index<load.length();index++)
-    //         {
+    cout<<"Input String: ";
+    string load="";
+    cin.ignore();
+    getline(cin,load);
+    bool flag=true;
+    if(load!="")
+    {
+        if(load=="\\")
+        {
+            for(int index=0;index<string_list.size();index++)
+                {
+                    if(string_list[index]==load)
+                    {
+                        cout<<"That string already exists\n";
+                        flag=false;
+                    }
+                }
+                if(flag==true)
+                    string_list.push_back(load);
+        }
+        else
+        {
+            for(int index=0;index<string_list.size();index++)
+                {
+                    if(string_list[index]==load)
+                    {
+                        cout<<"That string already exists\n";
+                        flag=false;
+                    }
+                }
+            for(int index;index<load.length();index++)
+            {
 
-    //             if(turingmachine.test_input(load[index])==false)
-    //             {
-    //                 cout<<"Invalid input string\n";
-    //                 flag=false;
-    //                 break;
-    //             }
-    //         }
-    //         if(flag==true)
-    //         {
-    //             cout<<"List updated\n";
-    //             string_list.push_back(load);
-    //         }
-    //     }
-    // }
+                if(is_valid_input_string(load)==false)
+                {
+                    cout<<"Invalid input string\n";
+                    flag=false;
+                    break;
+                }
+            }
+            if(flag==true)
+            {
+                cout<<"List updated\n";
+                string_list.push_back(load);
+            }
+        }
+    }
 }
 
 void Pushdown_Automaton::delete_command()
 {
-    // int input_num;
-    // cout<<"Input sting number: ";
-    // string load="";
-    // cin.ignore();
-    // getline(cin,load);
-    // if(istringstream ( load ) >> input_num)
-    // {
-    //     if(input_num<1 or input_num>string_list.size())
-    //         {
-    //             cout<<"Index out of range\n";
-    //         }
-    //         else
-    //         {
-    //             cout<<"Deleting index "<<input_num<<endl;
-    //             string_list.erase( string_list.begin() + input_num-1 );
-    //         }
-    // }
-    // else
-    // {
-    //     if(load!="")
-    //     {
-    //         cout<<"Invalid Input\n";
-    //     }
-    // }
+    int input_num;
+    cout<<"Input sting number: ";
+    string load="";
+    cin.ignore();
+    getline(cin,load);
+    if(istringstream ( load ) >> input_num)
+    {
+        if(input_num<1 or input_num>string_list.size())
+            {
+                cout<<"Index out of range\n";
+            }
+            else
+            {
+                cout<<"Deleting index "<<input_num<<endl;
+                string_list.erase( string_list.begin() + input_num-1 );
+            }
+    }
+    else
+    {
+        if(load!="")
+        {
+            cout<<"Invalid Input\n";
+        }
+    }
 }
 
 void Pushdown_Automaton::sort_command()
