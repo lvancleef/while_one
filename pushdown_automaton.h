@@ -20,7 +20,7 @@ private:
     Transition_Function transition_function;
     States states;
     Final_States final_states;
-    Configuration_Settings configration_settings
+    Configuration_Settings configuration_settings;
 
     vector<string> string_list;
     bool string_list_changed;
@@ -37,14 +37,15 @@ private:
 
     string name;
     string original_input_string;
+
     //static Configuration_Setting_Pointer configuration_setting_pointer;
     
 public:
     Pushdown_Automaton();
     
-    //static void Link(const Configuration_Settings configration_settings);
+    //static void Link(const Configuration_Settings configuration_settings);
     void load(string definition_file_name);
-    bool pda_main(Configuration_Settings configration_settings);
+    bool pda_main(Configuration_Settings configuration_settings);
     string perform_transition(Instantaneous_Description instantaneous_description, int &number_of_transition_performed);
     bool is_accepted(Instantaneous_Description instantaneous_description, int number_in_current_path);
     string commands();

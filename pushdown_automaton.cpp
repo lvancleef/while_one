@@ -12,9 +12,9 @@
 
 using namespace std;
 
-Pushdown_Automaton::Pushdown_Automaton()
-{
-}
+// Pushdown_Automaton::Pushdown_Automaton()
+// {
+// }
 
 bool Pushdown_Automaton::is_accepted(Instantaneous_Description instantaneous_description, int number_in_current_path)
 {
@@ -30,13 +30,9 @@ bool Pushdown_Automaton::pda_main(Configuration_Settings configuration_settings)
     return true;
 }
 
-string Pushdown_Automaton::perform_transition(Configuration_Settings config_settings ,Instantaneous_Description instantaneous_description, int &number_of_transitions_performed)
+string Pushdown_Automaton::perform_transition(Instantaneous_Description instantaneous_description, int &number_of_transitions_performed)
 {
-    if(number_of_transitions_performed == config_settings.get_maximum_transitions()){
-        return "true"; 
-    }
-
-    perform_transition(config_settings,instantaneous_description, ++number_of_transitions_performed);
+    
     
     return "false";
 }
@@ -45,6 +41,7 @@ string Pushdown_Automaton::commands()
 {
     int exit;
     string Command ="";
+
 //command loop
     do{
         cout<<"Command: ";
@@ -80,7 +77,7 @@ string Pushdown_Automaton::commands()
                 return "run";
             }               
             else if(Command == "e" || Command== "E"){
-                config_settings.set_command();
+                 configuration_settings.set_command();
             }               
             else if(Command == "W" || Command== "w"){
                 show_command();
@@ -89,7 +86,7 @@ string Pushdown_Automaton::commands()
                 sort_command();
             }   
             else if(Command == "T" || Command == "t"){               
-                config_settings.truncate_command();
+                 configuration_settings.truncate_command();
             }               
             else if(Command == "V" || Command == "v"){
                 view_command();
@@ -109,75 +106,77 @@ bool Pushdown_Automaton::is_valid_input_string(string value)
 
 void Pushdown_Automaton::print_id(Instantaneous_Description instantaneous_description)
 {
-    cout<<"["<<number_of_transitions<<"]. ["<<instantaneous_description.current_level()<<"] (";
-    cout<<instantaneous_description.current_state()<<",";
-    cout<<truncate(visible(instantaneous_description.remaing_input_string))<<", ";
-    cout<<truncate(visible(instantaneous_description.stack))<<")\n";
+    cout<<"["<<number_of_transitions<<"]. ["<<instantaneous_description.get_current_level()<<"] (";
+    cout<<instantaneous_description.get_current_state()<<",";
+    cout<<truncate(visible(instantaneous_description.get_remaining_input_string()))<<", ";
+    cout<<truncate(visible(instantaneous_description.get_stack()))<<")\n";
 }
 
 void Pushdown_Automaton::initialize_string_list()
 {
-    string String_File=name;
-    String_File+=".str";
-    string.open(String_File.c_str());///error checking for bad strings
+    // fstream string;
+    // string load;
+    // string String_File=name;
+    // String_File+=".str";
+    // string.open(String_File.c_str());///error checking for bad strings
             
-        if (string.is_open()) 
-        {           
-            while (getline(string, load))
-                {bool flag=true;
-                    if(load=="\\")
-                        {
-                            for(int index=0;index<string_list.size();index++)
-                            {
-                                if(string_list[index]=="\\")
-                                {
-                                    flag=false;
-                                }
-                            }
-                            if(flag!=false)
-                            {
-                                string_list.push_back("\\");
-                            }
-                        }
-                        else
-                        {
-                            for(int index=0;index<string_list.size();index++)
-                                {
-                                    if(string_list[index]==load)
-                                    {
-                                        cout<<"That string already exists\n";
-                                        flag=false;
-                                    }
-                                }
-                            for(int index;index<load.length();index++)
-                            {
-                                if(turingmachine.test_input(load[index])==false)
-                                {
+    //     if (string.is_open()) 
+    //     {           
+    //         while (getline(string, load))
+    //             {bool flag=true;
+    //                 if(load=="\\")
+    //                     {
+    //                         for(int index=0;index<string_list.size();index++)
+    //                         {
+    //                             if(string_list[index]=="\\")
+    //                             {
+    //                                 flag=false;
+    //                             }
+    //                         }
+    //                         if(flag!=false)
+    //                         {
+    //                             string_list.push_back("\\");
+    //                         }
+    //                     }
+    //                     else
+    //                     {
+    //                         for(int index=0;index<string_list.size();index++)
+    //                             {
+    //                                 if(string_list[index]==load)
+    //                                 {
+    //                                     cout<<"That string already exists\n";
+    //                                     flag=false;
+    //                                 }
+    //                             }
+    //                         for(int index;index<load.length();index++)
+    //                         {
+    //                             if(turingmachine.test_input(load[index])==false)
+    //                             {
 
-                                    cout<<"Invalid input string\n";
-                                    flag=false;
-                                    break;
-                                }
-                            }
+    //                                 cout<<"Invalid input string\n";
+    //                                 flag=false;
+    //                                 break;
+    //                             }
+    //                         }
                                 
-                            for(int index;index<load.length();index++)
-                            {
-                                if(turingmachine.test_input(load[index])==false)
-                                {
-                                    cout<<"Invalid input string\n";
-                                    flag=false;
-                                    break;
-                                }
-                            }
-                            if(flag==true)
-                            string_list.push_back(load);
-                        }
-                }
-        }
-        else 
-        {
-            cout<<"No '.str' file found\nPlease input string with the [I]nsert Command\n";
-        }
+    //                         for(int index;index<load.length();index++)
+    //                         {
+    //                             if(turingmachine.test_input(load[index])==false)
+    //                             {
+    //                                 cout<<"Invalid input string\n";
+    //                                 flag=false;
+    //                                 break;
+    //                             }
+    //                         }
+    //                         if(flag==true)
+    //                         string_list.push_back(load);
+    //                     }
+    //             }
+    //     }
+    //     else 
+    //     {
+    //         cout<<"No '.str' file found\nPlease input string with the [I]nsert Command\n";
+    //     }
 }
     
 void Pushdown_Automaton::help_command()
@@ -219,81 +218,81 @@ void Pushdown_Automaton::list_command()
 
 void Pushdown_Automaton::insert_command()
 {
-    cout<<"Input String: ";
-    load="";
-    cin.ignore();
-    getline(cin,load);
-    bool flag=true;
-    if(load!="")
-    {
-        if(load=="\\")
-        {
-            for(int index=0;index<string_list.size();index++)
-                {
-                    if(string_list[index]==load)
-                    {
-                        cout<<"That string already exists\n";
-                        flag=false;
-                    }
-                }
-                if(flag==true)
-                    string_list.push_back(load);
-        }
-        else
-        {
-            for(int index=0;index<string_list.size();index++)
-                {
-                    if(string_list[index]==load)
-                    {
-                        cout<<"That string already exists\n";
-                        flag=false;
-                    }
-                }
-            for(int index;index<load.length();index++)
-            {
+    // cout<<"Input String: ";
+    // string load="";
+    // cin.ignore();
+    // getline(cin,load);
+    // bool flag=true;
+    // if(load!="")
+    // {
+    //     if(load=="\\")
+    //     {
+    //         for(int index=0;index<string_list.size();index++)
+    //             {
+    //                 if(string_list[index]==load)
+    //                 {
+    //                     cout<<"That string already exists\n";
+    //                     flag=false;
+    //                 }
+    //             }
+    //             if(flag==true)
+    //                 string_list.push_back(load);
+    //     }
+    //     else
+    //     {
+    //         for(int index=0;index<string_list.size();index++)
+    //             {
+    //                 if(string_list[index]==load)
+    //                 {
+    //                     cout<<"That string already exists\n";
+    //                     flag=false;
+    //                 }
+    //             }
+    //         for(int index;index<load.length();index++)
+    //         {
 
-                if(turingmachine.test_input(load[index])==false)
-                {
-                    cout<<"Invalid input string\n";
-                    flag=false;
-                    break;
-                }
-            }
-            if(flag==true)
-            {
-                cout<<"List updated\n";
-                string_list.push_back(load);
-            }
-        }
-    }
+    //             if(turingmachine.test_input(load[index])==false)
+    //             {
+    //                 cout<<"Invalid input string\n";
+    //                 flag=false;
+    //                 break;
+    //             }
+    //         }
+    //         if(flag==true)
+    //         {
+    //             cout<<"List updated\n";
+    //             string_list.push_back(load);
+    //         }
+    //     }
+    // }
 }
 
 void Pushdown_Automaton::delete_command()
 {
-    int input_num;
-    cout<<"Input sting number: ";
-    load="";
-    cin.ignore();
-    getline(cin,load);
-    if(istringstream ( load ) >> input_num)
-    {
-        if(input_num<1 or input_num>string_list.size())
-            {
-                cout<<"Index out of range\n";
-            }
-            else
-            {
-                cout<<"Deleting index "<<input_num<<endl;
-                string_list.erase( string_list.begin() + input_num-1 );
-            }
-    }
-    else
-    {
-        if(load!="")
-        {
-            cout<<"Invalid Input\n";
-        }
-    }
+    // int input_num;
+    // cout<<"Input sting number: ";
+    // string load="";
+    // cin.ignore();
+    // getline(cin,load);
+    // if(istringstream ( load ) >> input_num)
+    // {
+    //     if(input_num<1 or input_num>string_list.size())
+    //         {
+    //             cout<<"Index out of range\n";
+    //         }
+    //         else
+    //         {
+    //             cout<<"Deleting index "<<input_num<<endl;
+    //             string_list.erase( string_list.begin() + input_num-1 );
+    //         }
+    // }
+    // else
+    // {
+    //     if(load!="")
+    //     {
+    //         cout<<"Invalid Input\n";
+    //     }
+    // }
 }
 
 void Pushdown_Automaton::sort_command()
@@ -307,8 +306,8 @@ string Pushdown_Automaton::visible(string value){
     return value;
 }
 string Pushdown_Automaton::truncate(string value){
-    if(value.length()>config_settings.get_maximum_characters)
-        value=value.substr(0,get_maximum_characters)+">";
+    if(value.length()> configuration_settings.get_maximum_characters())
+        value=value.substr(0,configuration_settings.get_maximum_characters())+">";
     return value;
 }
 

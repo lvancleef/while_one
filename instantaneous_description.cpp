@@ -20,10 +20,10 @@ using namespace std;
 
         // }
         
-        string Instantaneous_Description::current_state() const{
+        string Instantaneous_Description::get_current_state() const{
             return current_state;
         }
-        string Instantaneous_Description::stack() const{
+        string Instantaneous_Description::get_stack() const{
             return stack;
         }
         char Instantaneous_Description::input_character() const{
@@ -38,9 +38,9 @@ using namespace std;
         bool Instantaneous_Description::is_empty_remaining_input_string() const{
             return remaining_input_string.empty();
         }
-        int Instantaneous_Description::current_level() const{
+        int Instantaneous_Description::get_current_level() const{
             return current_level;
         }
-        string remaining_input_string() const{
+        string Instantaneous_Description::get_remaining_input_string() const{
             return remaining_input_string;
         }
