@@ -11,12 +11,14 @@ class Instantaneous_Description{
     public:
         Instantaneous_Description();
         Instantaneous_Description(string initial_state, string input_string, string stack_characters, int level);
-        string state() const;
-        string whole_stack() const;
+        string current_state() const;
+        string stack() const;
+        string remaining_input_string() const;
         char input_character() const;
         char top_of_stack() const;
         bool is_empty_stack() const;
         bool is_empty_remaining_input_string() const;
+        int current_level() const;
     };
     typedef Instantaneous_Description *instantaneous_description;
 

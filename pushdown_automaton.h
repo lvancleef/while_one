@@ -20,31 +20,34 @@ private:
     Transition_Function transition_function;
     States states;
     Final_States final_states;
+    Configuration_Settings configration_settings
 
-
-    string initial_state;
-    string name;
-    string original_input_string;
+    vector<string> string_list;
+    bool string_list_changed;
+    int number_of_transitions;
     bool valid;
     bool used;
     bool running;
     bool accepted;
     bool rejected;
+    string initial_state;
     char start_character;
-    int number_of_transitions;
     int number_of_crashes;
-    
+    vector<instantaneous_description>accepted_path;
+
+    string name;
+    string original_input_string;
     //static Configuration_Setting_Pointer configuration_setting_pointer;
     
 public:
     Pushdown_Automaton();
     
-    static void Link(const Configuration_Settings configration_settings);
+    //static void Link(const Configuration_Settings configration_settings);
     void load(string definition_file_name);
-    bool pda_main(Configuration_Settings configuration_settings);
-    string perform_transition(Configuration_Settings config_settings ,Instantaneous_Description instantaneous_description, int &number_of_transition_performed);
+    bool pda_main(Configuration_Settings configration_settings);
+    string perform_transition(Instantaneous_Description instantaneous_description, int &number_of_transition_performed);
     bool is_accepted(Instantaneous_Description instantaneous_description, int number_in_current_path);
-    void commands();
+    string commands();
     bool is_valid_input_string(string value);
     void print_id(Instantaneous_Description instantaneous_description);
     void initialize_string_list();
@@ -55,8 +58,8 @@ public:
     void insert_command();
     void delete_command();
     void sort_command();
-    void set_command();
-    void close_command();
+    string truncate(string value);
+    string visible(string value);
 };
 
 //typedef pushdown_automaton *pushdown_automaton;
