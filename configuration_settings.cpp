@@ -138,6 +138,7 @@ void Configuration_Settings::display_command()
    		complete_paths = false;
    	}
    	else
+	{
    		cout << "Complete Paths is now TRUE." << endl;
    		complete_paths = true;
    	}
