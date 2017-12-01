@@ -13,9 +13,10 @@
 
 using namespace std;
 
-// Pushdown_Automaton::Pushdown_Automaton()
-// {
-// }
+Pushdown_Automaton::Pushdown_Automaton(Configuration_Settings *config_settings)
+{
+    configuration_settings=config_settings;
+}
 
 bool Pushdown_Automaton::is_accepted(Instantaneous_Description instantaneous_description)
 {
@@ -52,19 +53,20 @@ void Pushdown_Automaton::load(string definition_file_name)
         }
         else
         {
-            Valid=false;
+            valid=false;
         cout<<"States is missing\n";
-        Valid=false;
+        valid=false;
         }
     }
-    states.load(definition, valid);
-    input_alphabet.load(definition, valid);
-    stack_alphabet.load(definition, valid);
-    transition_function.load(definition, valid);
-    
-    definition>>keyword= initial_state;
+    // states.load(definition, valid);
+    // input_alphabet.load(definition, valid);
+    // stack_alphabet.load(definition, valid);
+    // transition_function.load(definition, valid);
+    definition>>keyword;
 
-    if((To_Upper(definition>>keyword)!="START_CHARACTER:"))
+    initial_state=keyword;
+    definition>>keyword;
+    if((To_Upper(keyword)!="START_CHARACTER:"))
     {
         cout<<"START_CHARACTER is missing\n";
         valid=false;
@@ -72,11 +74,11 @@ void Pushdown_Automaton::load(string definition_file_name)
     else{
         definition>>keyword;
         if(keyword.length()==1){
-            keyword[0]=START_CHARACTER;
+            keyword[0]=start_character;
         }
     }
-
-    if((To_Upper(definition>>keyword)!="FINAL_STATES:"))
+    definition>>keyword;
+    if((To_Upper(keyword)!="FINAL_STATES:"))
     {
         cout<<"FINAL_STATES is missing\n";
         valid=false;
@@ -84,7 +86,7 @@ void Pushdown_Automaton::load(string definition_file_name)
     final_states.load(definition, valid);
 }
 
-bool Pushdown_Automaton::pda_main(Configuration_Settings configuration_settings)
+bool Pushdown_Automaton::pda_main()
 {//check if valid is false print error
     return true;
 }
@@ -135,7 +137,7 @@ string Pushdown_Automaton::commands()
                 return "run";
             }               
             else if(Command == "e" || Command== "E"){
-                 configuration_settings.set_command();
+                 configuration_settings->set_command();
             }               
             else if(Command == "W" || Command== "w"){
                 show_command();
@@ -144,7 +146,7 @@ string Pushdown_Automaton::commands()
                 sort_command();
             }   
             else if(Command == "T" || Command == "t"){               
-                 configuration_settings.truncate_command();
+                 configuration_settings->truncate_command();
             }               
             else if(Command == "V" || Command == "v"){
                 view_command();
@@ -354,8 +356,8 @@ string Pushdown_Automaton::visible(string value){
     return value;
 }
 string Pushdown_Automaton::truncate(string value){
-    if(value.length()> configuration_settings.get_maximum_characters())
-        value=value.substr(0,configuration_settings.get_maximum_characters())+">";
+    if(value.length()> configuration_settings->get_maximum_characters())
+        value=value.substr(0,configuration_settings->get_maximum_characters())+">";
     return value;
 }
 
