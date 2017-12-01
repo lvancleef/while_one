@@ -5,13 +5,13 @@
  * date: 11/30/2017
  *
  * notes: load and exit_command need to be finished
- * 
  */
 
 #include "configuration_settings.h"
 #include <string>
 #include <iostream>
 #include <sstream>
+#include <fstream>
 #include <stdlib.h>
 
 using namespace std;
@@ -24,16 +24,42 @@ Configuration_Settings::Configuration_Settings(string name)
 	maximum_number_characters = 32;
 	complete_paths = false;
 	changed = false;
-	
+
 	changed = load(name);
 }
 
 bool Configuration_Settings::load(string name)
 {
-	// attempt to load the file
-		// if fail, return false
+	application_name = name;
+	string pda_file = name + ".cfg";
+	
+	ifstream config_file;
 
+	config_file.open(pda_file.c_str());
+
+	if(!config_file.is_open())
+	{
+		return false;
+	}
+
+	string keyword;
 	// attempt to read in keywords
+
+	while (config_file >> keyword)
+	{
+		if (To_Upper(keyword) == "MAXIMUM_TRANSITIONS" ||
+			To_Upper(keyword) == "MAXIMUM_CHARACTERS" ||
+			To_Upper(keyword) == "COMPLETE_PATHS")
+		{
+			// check for "="
+			// check for value
+			// validate value
+			// check if value is different from default
+			// assign value to appropriate value
+			// changed = true
+		}
+	}
+
 		// if even one gets loaded in (and is different from default)
 			// changed = true
 			// return true
@@ -138,7 +164,7 @@ void Configuration_Settings::display_command()
    		complete_paths = false;
    	}
    	else
-	{
+   	{
    		cout << "Complete Paths is now TRUE." << endl;
    		complete_paths = true;
    	}
@@ -159,3 +185,4 @@ void Configuration_Settings::exit_command()
 
 	exit(0);
 }
+

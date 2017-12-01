@@ -3,7 +3,6 @@
  * author: lvancleef
  * version: 0.2
  * date: 11/30/2017
- * note: untested
  */
 
 #include "configuration_settings.h"
@@ -15,6 +14,7 @@
 #include "states.h"
 #include "final_states.h"
 #include "instantaneous_description.h"
+#include "uppercase.h"
 
 #include <iostream>
 #include <sstream>
@@ -24,7 +24,7 @@
 
 void help_command()
 {
-    cout<<"[C]lose\t\tClose pushdown automaton\n";
+	cout<<"[C]lose\t\tClose pushdown automaton\n";
     cout<<"[D]elete\tDelete input string from list\n";
     cout<<"Dis[p]lay\tComplete paths through pushdown automaton\n";
     cout<<"E[x]it\t\tExit application\n";
@@ -43,7 +43,7 @@ void help_command()
     return;
 }
 
-void show_command(Configuration_Settings & configuration_settings)
+void show_command(Configuration_Settings * configuration_settings)
 {
 	cout << "  Course:\tCPTS 422" << endl;
 	cout <<	"  Semester:\tFall" << endl;
@@ -54,9 +54,9 @@ void show_command(Configuration_Settings & configuration_settings)
 	cout <<	"  Version:\t1.0" << endl;
 
 	cout <<	"\n  Configuration Settings:" << endl;
-	cout <<	"\tCharacters Before Truncation: " << configuration_settings.get_maximum_characters() << endl;
-	cout <<	"\tMaximum Transitions: " << configuration_settings.get_maximum_transitions() << endl;
-	cout <<	"\tDisplay Complete Paths: " << configuration_settings.complete_paths_string() << endl;
+	cout <<	"\tCharacters Before Truncation: " << configuration_settings->get_maximum_characters() << endl;
+	cout <<	"\tMaximum Transitions: " << configuration_settings->get_maximum_transitions() << endl;
+	cout <<	"\tDisplay Complete Paths: " << configuration_settings->complete_paths_string() << endl;
 
 	cout << "\n  No PDA is currently open\n" << endl;
 
@@ -64,8 +64,8 @@ void show_command(Configuration_Settings & configuration_settings)
 }
 
 void open_command(Pushdown_Automaton & pushdown_automaton,
-		  Configuration_Settings & configuration_settings,
-		  bool init = false, string name = "")
+			 Configuration_Settings & configuration_settings,
+			 bool init = false, string name = "")
 {
 	string filename = name;
 	bool open = true;

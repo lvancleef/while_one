@@ -11,6 +11,7 @@
 #include <string>
 #include <iostream>
 #include <sstream>
+#include <fstream>
 #include <stdlib.h>
 
 using namespace std;
@@ -23,7 +24,7 @@ private:
 	int maximum_number_characters;
 	bool complete_paths;
 	bool changed;
-	
+
 	// load function called by constructor
 	bool load(string name);
 
