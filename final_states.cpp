@@ -97,7 +97,7 @@ void Final_States::validate(vector<string> string_vector, bool& valid)
         }
     }
 }
-void Final_States::view()const
+void Final_States::view() const
 {
     cout << "Final states: ";
     for(int i = 0; i < (int)final_names.size(); i++)
@@ -105,7 +105,7 @@ void Final_States::view()const
 
     cout << endl;
 }
-bool Final_States::is_element(string value)const
+bool Final_States::is_element(string value) const
 {
     for(int i = 0; i < (int)final_names.size(); i++)
     {

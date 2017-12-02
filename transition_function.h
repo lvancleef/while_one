@@ -32,7 +32,7 @@ class Transition_Function {
 		void view() const;
 		// pass by reference because they are output parameters
 		void find_transition(string source_state, char read_character,
-				char read_stack_character, vector<Destination> destinations, bool& found) const;
+			 	char read_stack_character, string dest_state, string write_stack, bool& found) const;
 };
 
 

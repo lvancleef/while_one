@@ -14,7 +14,8 @@ Transition::Transition() {
 	source = "";
 	read = ' ';
 	read_stack = ' ';
-	destinations = vector<Destination>();
+	write_string = "";
+	dest_state = "";
 }
 
 string Transition::source_state() const {
@@ -41,14 +42,24 @@ void Transition::setReadStack(char readCharStack) {
 	this->read_stack = readCharStack;
 }
 
-vector<Destination> Transition::destination() const{
-	return destinations;
+//vector<Destination> Transition::destination() const{
+//	return destinations;
+//}
+
+string Transition::destination_state() const {
+	return dest_state;
 }
 
+void Transition::setDestState(string destState) {
+	this->dest_state = destState;
+}
 
-void Transition::setDest(string destState, string writeStr, int index) {
-	this->destinations.at(index).destination_state() = destState;
-	this->destinations.at(index).write_string() = writeStr;
+string Transition::write_str() const {
+	return write_string;
+}
+
+void Transition::setWriteStr(string writeStr) {
+	this->write_string = writeStr;
 }
 
 

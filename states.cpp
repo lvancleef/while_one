@@ -1,5 +1,4 @@
 #include "states.h"
-
 #include <string>
 #include <vector>
 #include <fstream>
@@ -78,7 +77,7 @@ void States::load(ifstream& definition, bool& valid)
     }
 }
 /* Display state names */
-void States::view()const
+void States::view() const
 {
     cout << "States: ";
 
@@ -91,7 +90,7 @@ void States::view()const
 }
 /* is_element will determine if the state names are elements of states
     from definition file. */
-bool States::is_element(string value)const
+bool States::is_element(string value) const
 {
     for(int i = 0; i < (int)string_vector.size(); i++)
     {

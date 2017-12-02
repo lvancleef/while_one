@@ -15,8 +15,8 @@ private:
 public:
     States();
     void load(ifstream& definition, bool& valid);
-    void view()const;
-    bool is_element(string value)const;
+    void view() const;
+    bool is_element(string value) const;
 
 };
 #endif // STATES_H_

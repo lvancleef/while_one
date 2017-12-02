@@ -16,8 +16,8 @@ public:
     Final_States();
     void load(ifstream& definition, bool& valid);
     void validate(vector<string> string_vector, bool& valid);
-    void view()const;
-    bool is_element(string value)const;
+    void view() const;
+    bool is_element(string value) const;
 
 };
 #endif // FINAL_STATES_H_

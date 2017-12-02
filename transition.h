@@ -18,7 +18,9 @@ class Transition {
 		string source;
 		char read;
 		char read_stack;
-		vector<Destination> destinations;
+		//vector<Destination> destinations;
+		string write_string;
+		string dest_state;
 	public:
 		Transition();
 		string source_state() const;
@@ -27,8 +29,11 @@ class Transition {
 		void setRead(char readChar);
 		char read_character_stack() const;
 		void setReadStack(char readStackChar);
-		vector<Destination> destination() const;
-		void setDest(string destState, string writeStr, int index);
+		//vector<Destination> destination() const;
+		string destination_state() const;
+		void setDestState(string destState);
+		string write_str() const;
+		void setWriteStr(string writeStr);
 
 };
 
