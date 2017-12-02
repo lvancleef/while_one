@@ -1,8 +1,8 @@
 /*
  * file: configuration_settings.cpp
  * author: lvancleef
- * version: 0.4
- * date: 11/30/2017
+ * version: 0.5
+ * date: 12/2/2017
  *
  * notes: load and exit attempted. 
  */
@@ -132,7 +132,8 @@ bool Configuration_Settings::load(string name)
 								maximum_number_transitions = int_value;
 								transitions_set = true;
 							}	
-							else if (chars_set == false)
+							else if (found_keyword.compare("MAXIMUM_CHARACTERS") == 0 &&
+									 chars_set == false)
 							{
 								maximum_number_characters = int_value;
 								chars_set = true;
