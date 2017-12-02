@@ -4,7 +4,7 @@
  * version: 0.4
  * date: 11/30/2017
  *
- * notes: load and exit_command need to be finished
+ * notes: load and exit attempted. 
  */
 
 #include "configuration_settings.h"
@@ -42,32 +42,143 @@ bool Configuration_Settings::load(string name)
 		return false;
 	}
 
-	string keyword;
-	// attempt to read in keywords
+	// if settings successfully set from file, toggle
+	bool transitions_set = false;
+	bool chars_set = false;
+	bool paths_set = false;
 
-	while (config_file >> keyword)
-	{
-		if (To_Upper(keyword) == "MAXIMUM_TRANSITIONS" ||
-			To_Upper(keyword) == "MAXIMUM_CHARACTERS" ||
-			To_Upper(keyword) == "COMPLETE_PATHS")
+	string line;
+	string value;
+	int int_value = 0;
+
+	size_t found;
+	bool found_one = false;
+	string found_keyword = "";
+
+	bool error_converting = false;
+	
+	// attempt to read in lines
+	while (getline(config_file, line))
+	{	
+		// does any keyword exist in line
+
+		found = To_Upper(line).find("MAXIMUM_TRANSITIONS")
+		if (found!=string::npos))
 		{
-			// check for "="
-			// check for value
-			// validate value
-			// check if value is different from default
-			// assign value to appropriate value
-			// changed = true
+			found_keyword = "MAXIMUM_TRANSITIONS";
+			found_one = true;
 		}
+
+		found = To_Upper(line).find("MAXIMUM_CHARACTERS") 
+		if (found!=string::npos)
+		{
+			// if keyword has already been set, line is invalid
+			if (found_keyword.compare("") != 0)
+			{
+				found_one = false;
+			}
+			else
+			{
+				found_keyword = "MAXIMUM_CHARACTERS";
+				found_one = true;
+			}
+		}
+		
+		found = To_Upper(line).find("COMPLETE_PATHS") 
+		if (found!=string::npos)
+		{
+			// if keyword has already been set, line is invalid
+			if (found_keyword.compare("") != 0)
+			{
+				found_one = false;
+			}
+			else
+			{
+				found_keyword = "COMPLETE_PATHS";
+				found_one = true;
+			}
+		}
+
+		if (found_one)
+		{
+			// does = exist in line
+			found = line.find("=")
+			if (found != string::npos)
+			{
+				// get what should be the value after the "="
+				value = line.substr(found+1);
+
+				if (found_keyword.compare("MAXIMUM_TRANSITIONS") == 0 ||
+					found_keyword.compare("MAXIMUM_CHARACTERS") == 0)
+				{
+					try
+					{
+						int_value = stoi(value);
+					}
+					catch(...)
+					{
+						// error converting
+						error_converting = true;
+					}
+
+					if (!error_converting)
+					{
+						// value has to be greater than 0
+						if (int_value > 0)
+						{
+							if (found_keyword.compare("MAXIMUM_TRANSITIONS") == 0 &&
+								transitions_set == false)
+							{
+								maximum_number_transitions = int_value;
+								transitions_set = true;
+							}	
+							else if (chars_set == false)
+							{
+								maximum_number_characters = int_value;
+								chars_set = true;
+							}
+						}
+					}
+
+				}
+				else if (paths_set == false)
+				{ // MIGHT need to edit this for situations such as YES'M or NOPE. 
+					// since those situations would not be valid
+
+					found = value.find("YES")
+					if (found != str::npos)
+					{
+						complete_paths = true;
+						paths_set = true;
+					}
+
+					if (paths_set == false)
+					{
+						found = value.find("NO")
+						if (found != str::npos)
+							paths_set = true;
+					}
+				}
+			}
+		}
+
+		// reset variables
+		line = "";	
+		value = "";
+		int_value = 0;
+		found = 0;
+		found_one = false;
+		found_keyword == "";
+		error_converting = false;
 	}
 
-		// if even one gets loaded in (and is different from default)
-			// changed = true
-			// return true
 
-	// if none get loaded in
-		// return false
+	if (transitions_set &&
+		chars_set &&
+		paths_set)
+		return false;
 
-	return false;
+	return true;
 }
 
 int Configuration_Settings::get_maximum_transitions() const
@@ -176,11 +287,28 @@ void Configuration_Settings::display_command()
 
 void Configuration_Settings::exit_command()
 {
+
 	if(changed)
 	{
-		// open file, write config settings
+		ofstream config_file;
+		string pda_file = application_name + ".cfg";
 
-		// print success or failure
+		config_file.open(pda_file.c_str(), ios::out | ios::trunc);
+
+		if(!config_file.is_open())
+		{
+			cout << "Error writing to Configurations Settings file." << endl;
+		}
+		else
+		{
+			config_file << "MAXIMUM_TRANSITIONS=" << maximum_number_transitions << endl;
+			config_file << "MAXIMUM_CHARACTERS=" << maximum_number_characters << endl;
+			config_file << "COMPLETE_PATHS=" << complete_paths_string() << endl;
+
+			config_file.close();
+
+			cout << "Configurations Settings file successfuly updated." << endl;
+		}
 	}
 
 	exit(0);
