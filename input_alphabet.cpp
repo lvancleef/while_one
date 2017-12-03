@@ -63,7 +63,10 @@ void Input_Alphabet::load(ifstream& definition, bool& valid) {
 	do {
 		if ((definition >> value) and ( To_Upper(value) != "INPUT_ALPHABET:"))
 		{
-			for (int i = 0; i < value.size(); i++)
+			if (To_Upper(value) == "STACK_ALPHABET:") {
+				break;
+			}
+			for (int i = 0; i < (int)value.size(); i++)
 			{
 				if ((value[i] == '\\') or
 						(value[i] == '[') or
