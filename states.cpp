@@ -18,63 +18,41 @@ States::States()
 */
 void States::load(ifstream& definition, bool& valid)
 {
-    string get_states;
+    string value;
 
-    getline(definition, get_states); // Store contents of definition in get_states
+	do{
+        /* Read definition file and store everything in the file until it reaches the next keyword INPUT ALPHABET*/
+        if ((definition >> value) and (To_Upper(value) != "INPUT_ALPHABET:"))
+		{
+		    // Check for invalid characters
+			for (int i = 0; i < value.size(); i++)
+			{
+				if ((value[i] == '\\') or
+					(value[i] == '[') or
+					(value[i] == ']') or
+					(value[i] == '<') or
+					(value[i] == '>') or
+					(value[i] <= '!') or
+					(value[i] >= '~'))
+				{
+					valid = false;
+					cout << "character '" << value << "' within state is invalid" << endl;
+				}
+			}
+			string_vector.push_back(value);
+		}
+        // If we reach INPUT_ALPHABET, we exit the loop
+		else if (To_Upper(value) == "INPUT_ALPHABET:")
+			break;
 
-    /* We need to allocate a character pointer 'c' to hold contents of
-        States. */
-    char* c = new char[get_states.length() + 1];
-    strcpy(c, get_states.c_str()); // Now we 'transfer' States to c
+	} while (!definition.eof());
 
-    // Here is where we check if 'STATES:' keyword exists
-    if(get_states.substr(0, 7).compare("STATES:") != 0) // comparing length of get_states to "STATES:"
-    {
-        cout << "Error: Keyword 'STATES:' doesn't exist!" << endl;
-        valid = false;
-        return;
-    }
-
-    // Separate each state from 'STATES' by using strtok. strtok splits string into tokens strtok (string to truncate, delimeters)
-    char* separate_states = strtok(c, " "); // Created separate_states to store each separate state
-    separate_states = strtok(NULL, " ");
-
-    while(separate_states != NULL)
-    {
-        string s(separate_states); //creating string s to store each token
-        string_vector.push_back(s);
-        separate_states = strtok(NULL, " ");
-    }
-
-    delete[] c;
-    delete[] separate_states;
-
-    /* Check for duplicates by comparing the reference to the elements in the vector        */
-    for(int i = 0; i < (int)string_vector.size(); i++)
-    {
-        string name = string_vector.at(i);
-        int j = 0; // We now compare if each element in the vector is printable by using isprint
-
-        while(isprint(name[j]))
-            j++;
-
-        if(j != (int)name.length())
-        {
-            cout << "Error: States are not printable characters" << endl;
-            valid = false;
-            return;
-
-        }
-        for(int k = i + 1; k < (int)string_vector.size(); k++)
-        {
-            if(string_vector.at(i).compare(string_vector.at(k)) == 0)
-            {
-                cout << "Error: States are not unique!" << endl;
-                valid = false;
-                return;
-            }
-        }
-    }
+	/* Check that the next keyword INPUT_ALPHABET exists */
+	if (definition.eof())
+	{
+		cout << "Missing keyword 'INPUT_ALPHABET:' after states" << endl;
+		valid = false;
+	}
 }
 /* Display state names */
 void States::view() const
