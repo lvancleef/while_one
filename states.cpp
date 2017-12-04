@@ -5,6 +5,8 @@
 #include <iostream>
 #include <cstring>
 #include <ctype.h>
+#include "uppercase.h"
+
 
 using namespace std;
 

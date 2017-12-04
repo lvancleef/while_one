@@ -25,6 +25,7 @@ private:
     vector<string> string_list;
     bool string_list_changed;
     int number_of_transitions;
+    int number_of_transition_performed;
     bool valid;
     bool used;
     bool running;
@@ -59,6 +60,7 @@ public:
     void list_command();
     void insert_command();
     void delete_command();
+    void quit_command();
     void sort_command();
     string truncate(string value);
     string visible(string value);

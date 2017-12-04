@@ -13,6 +13,7 @@
 #include <sstream>
 #include <fstream>
 #include <stdlib.h>
+#include "uppercase.h"
 
 using namespace std;
 
@@ -62,14 +63,14 @@ bool Configuration_Settings::load(string name)
 	{	
 		// does any keyword exist in line
 
-		found = To_Upper(line).find("MAXIMUM_TRANSITIONS")
-		if (found!=string::npos))
+		found = To_Upper(line).find("MAXIMUM_TRANSITIONS");
+		if (found!=string::npos)
 		{
 			found_keyword = "MAXIMUM_TRANSITIONS";
 			found_one = true;
 		}
 
-		found = To_Upper(line).find("MAXIMUM_CHARACTERS") 
+		found = To_Upper(line).find("MAXIMUM_CHARACTERS") ;
 		if (found!=string::npos)
 		{
 			// if keyword has already been set, line is invalid
@@ -84,7 +85,7 @@ bool Configuration_Settings::load(string name)
 			}
 		}
 		
-		found = To_Upper(line).find("COMPLETE_PATHS") 
+		found = To_Upper(line).find("COMPLETE_PATHS");
 		if (found!=string::npos)
 		{
 			// if keyword has already been set, line is invalid
@@ -102,7 +103,7 @@ bool Configuration_Settings::load(string name)
 		if (found_one)
 		{
 			// does = exist in line
-			found = line.find("=")
+			found = line.find("=");
 			if (found != string::npos)
 			{
 				// get what should be the value after the "="
@@ -113,7 +114,7 @@ bool Configuration_Settings::load(string name)
 				{
 					try
 					{
-						int_value = stoi(value);
+						//int_value = stoi(value);
 					}
 					catch(...)
 					{
@@ -146,19 +147,19 @@ bool Configuration_Settings::load(string name)
 				{ // MIGHT need to edit this for situations such as YES'M or NOPE. 
 					// since those situations would not be valid
 
-					found = value.find("YES")
-					if (found != str::npos)
-					{
-						complete_paths = true;
-						paths_set = true;
-					}
+					found = value.find("YES");
+					// if (found != str::npos)
+					// {
+					// 	complete_paths = true;
+					// 	paths_set = true;
+					// }
 
-					if (paths_set == false)
-					{
-						found = value.find("NO")
-						if (found != str::npos)
-							paths_set = true;
-					}
+					// if (paths_set == false)
+					// {
+					// 	found = value.find("NO");
+					// 	if (found != str::npos)
+					// 		paths_set = true;
+					// }
 				}
 			}
 		}

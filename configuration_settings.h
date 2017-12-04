@@ -13,6 +13,7 @@
 #include <sstream>
 #include <fstream>
 #include <stdlib.h>
+#include "uppercase.h"
 
 using namespace std;
 

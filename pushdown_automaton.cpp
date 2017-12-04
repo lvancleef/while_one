@@ -10,6 +10,7 @@
 
 #include <string>
 #include <iostream>
+#include <sstream>
 
 using namespace std;
 
@@ -18,9 +19,15 @@ Pushdown_Automaton::Pushdown_Automaton(Configuration_Settings *config_settings)
     configuration_settings=config_settings;
 }
 
-bool Pushdown_Automaton::is_accepted(Instantaneous_Description instantaneous_description)
+bool Pushdown_Automaton::is_accepted(Instantaneous_Description id)
 {
-    
+    if(!final_states.is_element(id.get_current_state())||!id.is_empty_remaining_input_string()||!id.is_empty_stack()){
+        return false;
+    }   
+    else{
+        return true;
+    }
+
 }
 
 void Pushdown_Automaton::load(string definition_file_name)
@@ -51,23 +58,26 @@ void Pushdown_Automaton::load(string definition_file_name)
                 pda_description+=keyword;
             }
         }
-        else
-        {
+        else {
             valid=false;
-        cout<<"States is missing\n";
-        valid=false;
+            cout<<"ERROR: States is missing\n";
+            valid=false;
         }
     }
-    // states.load(definition, valid);
-    // input_alphabet.load(definition, valid);
-    // stack_alphabet.load(definition, valid);
-    // transition_function.load(definition, valid);
+    states.load(definition, valid);
+    input_alphabet.load(definition, valid);
+    stack_alphabet.load(definition, valid);
+    transition_function.load(definition, states, input_alphabet, stack_alphabet, valid);
     definition>>keyword;
 
     initial_state=keyword;
+    if(!states.is_element(initial_state)){
+        cout<<"ERROR: Invalid Initial State\n";
+        valid=false;
+    }
+    //validate initial_state here
     definition>>keyword;
-    if((To_Upper(keyword)!="START_CHARACTER:"))
-    {
+    if((To_Upper(keyword)!="START_CHARACTER:")){
         cout<<"START_CHARACTER is missing\n";
         valid=false;
     }
@@ -75,11 +85,15 @@ void Pushdown_Automaton::load(string definition_file_name)
         definition>>keyword;
         if(keyword.length()==1){
             keyword[0]=start_character;
+            if(!stack_alphabet.is_element(start_character)){
+        cout<<"ERROR: Invalid Start character\n";
+        valid=false;
+    }
+            //validate start_character here
         }
     }
     definition>>keyword;
-    if((To_Upper(keyword)!="FINAL_STATES:"))
-    {
+    if((To_Upper(keyword)!="FINAL_STATES:")){
         cout<<"FINAL_STATES is missing\n";
         valid=false;
     }
@@ -88,13 +102,93 @@ void Pushdown_Automaton::load(string definition_file_name)
 
 bool Pushdown_Automaton::pda_main()
 {//check if valid is false print error
-    return true;
+    string command;
+    string run;
+    if(!valid){
+        cout<<"ERROR: Invalid PDA\n";
+        return false;// return false?
+    }
+while(command!="close"||command!= "open"){        
+        command=commands();
+        if(command=="open"){
+            if(running){
+                quit_command();
+            }
+            return true;
+        }
+        else if(command=="quit"){
+            if(running){
+                quit_command();
+            }
+            else{
+                cout<<"ERROR: No PDA running\n";
+            }
+        }
+        else if(command=="close"){
+            if(running){
+                quit_command();
+            }
+            return false;
+        }
+        else if(command=="exit"){
+            configuration_settings->exit_command();
+        }
+        else if(command=="run"){
+            string start_character_string;
+            stringstream ss;
+            ss<< start_character;
+            ss>> start_character_string;
+            Instantaneous_Description id(initial_state, original_input_string, start_character_string, 0);
+            run=perform_transition(id, number_of_transition_performed);
+
+            if(run=="accepted"){
+                cout<<original_input_string<<" was accepted in "<<number_of_transitions<<" transitions\n";
+                cout<<"With "<<number_of_crashes<<"crashes\n";
+                if(configuration_settings->get_complete_paths()){
+                    for(int index=0;index<string_list.size();index++)
+                    {
+                        cout<<index<<". "<<accepted_path[index]<<endl;
+                    }
+                }
+                running=false;
+            } 
+            else if(run=="rejected"){
+                cout<<original_input_string<<" was rejected in "<<number_of_transitions<<" transitions\n";
+                cout<<"With "<<number_of_crashes<<"crashes\n";
+                running=false;
+            }
+            else if(run=="close"){
+                if(running){
+                    quit_command();
+                }
+
+            }
+            else if(run=="quit"){
+                if(running){
+                    quit_command();
+                }
+                else{
+                    cout<<"ERROR: No PDA running\n";
+                }
+            }
+            else if(run=="open"){
+                if(running){
+                    quit_command();
+                }
+                return true;
+            }
+            else if(run=="exit"){
+                if(running){
+                    quit_command();
+                }
+            return false;    
+            }
+        }
+    }
 }
 
 string Pushdown_Automaton::perform_transition(Instantaneous_Description instantaneous_description, int &number_of_transitions_performed)
-{
-    
-    
+{   
     return "rejected";
 }
 
@@ -161,7 +255,24 @@ string Pushdown_Automaton::commands()
     
 bool Pushdown_Automaton::is_valid_input_string(string value)
 {
-    return true;
+    bool flag=true;
+    for(int index=0;index<string_list.size();index++){
+        if(string_list[index]==value)
+        {
+            cout<<"That string already exists\n";
+            flag=false;
+        }
+    }
+    if(value!="\\"&&flag==true){
+        for(int index=0;index<value.length();index++){
+            if(!input_alphabet.is_element(value[index])){
+                cout<<"Invalid character: "<<value[index];
+                return false;
+            }
+        }
+    }
+                                
+    return flag;
 }
 
 void Pushdown_Automaton::print_id(Instantaneous_Description instantaneous_description)
@@ -248,14 +359,62 @@ void Pushdown_Automaton::help_command()
     cout<<"[V]iew\t\tView pushdown automaton\n";
 }
 
-void Pushdown_Automaton::show_command()
+void Pushdown_Automaton::show_command()//need to be cleaned up
 {
-    cout<<"show command\n";//show app data
+    //cout<<"show command\n";//show app data
+    cout<<"Status of PDA\n";
+    cout<<"================\n";    
+    cout<<"Name of PDA:   "<<name<<endl;
+
+    if(running){      
+        cout<<"Status:        PDA is currently running on an input string";     
+        cout<<"Input string: "<<original_input_string<<endl;
+        cout<<"Transitions:   "<<number_of_transitions<<endl;
+        cout<<"Crashes:       "<<number_of_crashes<<endl;
+    }
+    else if(used){
+        if(accepted){
+            cout<<"Status:        PDA has completed an operation on an input string\n";           
+            cout<<"last input string used:  "<<original_input_string<<endl;
+            cout<<"Input string was:        Accepted\n";
+            cout<<"Transitions:   "<<number_of_transitions<<endl;
+            cout<<"Crashes:       "<<number_of_crashes<<endl;
+            cout<<"Number of transitions in successful path: "<<accepted_path.size()<<endl;
+        }
+        else{
+            cout<<"Status:        PDA has completed an operation on an input string\n";           
+            cout<<"last input string used:  "<<original_input_string<<endl;
+            cout<<"Input string was:        Rejected\n";
+            cout<<"Transitions:   "<<number_of_transitions<<endl;
+            cout<<"Crashes:       "<<number_of_crashes<<endl;   
+        }
+    }
+    else{
+        cout<<"Status:      PDA has not been run on an input string\n";       
+    }
+
+    cout<<"================\n";
+    cout<<"Course:        CPTS_422\n";
+    cout<<"Semester:      Fall 2017\n";
+    cout<<"Year:          2017\n";
+    cout<<"Instructor:    Neil Corrigan\n";
+    cout<<"Team:          While(1)\n";
+    cout<<"Team members:  Leigh, Rob, KJ, Efren\n";
+    cout<<" Version:       1\n";
+
 }
 
 void Pushdown_Automaton::view_command()
 {
-    cout<<"view command\n";//the pda loaded
+    //cout<<"view command\n";//the pda loaded
+    cout<<pda_description<<endl;
+    states.view();
+    input_alphabet.view();
+    stack_alphabet.view();
+    transition_function.view();
+    cout<<"Initial State   = "<<initial_state<<endl;
+    cout<<"Start Character = "<<start_character<<endl;
+    final_states.view();
 }
     
 void Pushdown_Automaton::list_command()
@@ -343,6 +502,11 @@ void Pushdown_Automaton::delete_command()
             cout<<"Invalid Input\n";
         }
     }
+}
+void Pushdown_Automaton::quit_command(){
+    cout<<original_input_string<<" not accepted or rejected in "<<number_of_transitions<<" Transition(s).\n";
+    cout<<"There were "<<number_of_crashes<< "crashes\n";
+    running=false;
 }
 
 void Pushdown_Automaton::sort_command()

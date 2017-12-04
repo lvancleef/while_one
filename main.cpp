@@ -80,7 +80,7 @@ void open_command(Pushdown_Automaton & pushdown_automaton,
 
 		pushdown_automaton.load(filename);
 
-		open = pushdown_automaton.pda_main(configuration_settings);
+		open = pushdown_automaton.pda_main();
 	}
 
 	return;
@@ -95,7 +95,7 @@ int main(int argc, char const *argv[])
 	}
 
 	Configuration_Settings configuration_settings(argv[0]);
-	Pushdown_Automaton pushdown_automaton;
+	Pushdown_Automaton pushdown_automaton(&configuration_settings);
 
 	if (argc == 2)
 	{
@@ -119,7 +119,7 @@ int main(int argc, char const *argv[])
 		else if(To_Upper(choice) == "W")
 		{
 			count = 0;
-			show_command(configuration_settings);
+			show_command(&configuration_settings);
 		}
 		else if(To_Upper(choice) == "O")
 		{
