@@ -19,7 +19,7 @@
 
 using namespace std;
 
-void Transition_Function::load(ifstream& definition, Input_Alphabet input_alphabet, States states, Stack_Alphabet stack_alphabet, bool& valid) {
+void Transition_Function::load(ifstream& definition, States states, Input_Alphabet input_alphabet, Stack_Alphabet stack_alphabet, bool& valid) {
 
 //	 string transitionLine;
 //	 getline(definition, transitionLine);
@@ -121,14 +121,15 @@ void Transition_Function::load(ifstream& definition, Input_Alphabet input_alphab
 
 	string value;
 	int transIndex = 0;
+	int vecSize = 10;
+	transitions.resize(vecSize);
 
 	do {
 
-		if (count == 2 or count == 4) // read and write character
+		if (count == 2 or count == 3) // read character and read stack
 		{
 			if ((definition >> value) &&
 				(value.length() == 1) &&
-				(value[0] != '\\') &&
 				(value[0] != '[') &&
 				(value[0] != ']') &&
 				(value[0] != '<') &&
@@ -136,25 +137,34 @@ void Transition_Function::load(ifstream& definition, Input_Alphabet input_alphab
 				(value[0] >= '!') &&
 				(value[0] <= '~'))
 			{
-				if (count == 2)
+				if (count == 2) {
+					if (vecSize == transIndex) {
+						vecSize = vecSize + 10;
+						transitions.resize(vecSize);
+					}
 					transitions.at(transIndex).setRead(value[0]);
-				if (count == 4)
-					transitions.at(transIndex).setDestState(value);
+				}
+				if (count == 3) {
+					if (vecSize == transIndex) {
+						vecSize = vecSize + 10;
+						transitions.resize(vecSize);
+					}
+					transitions.at(transIndex).setReadStack(value[0]);
+				}
 			}
 			else
 			{
-				cout << "in transition: invalid read or write character: " << value << endl;
+				cout << "in transition: invalid read character or read stack character: " << value << endl;
 				valid = false;
 			}
 		}
-		else if (count == 1 or count == 3)
+		else if (count == 1 or count == 4)
 		{
 			if ((definition >> value) and ( To_Upper(value) != "INITIAL_STATE:"))
 			{
 				for (int i = 0; i < (int)value.size(); i++)
 				{
-					if ((value[i] == '\\') or
-						(value[i] == '[') or
+					if ((value[i] == '[') or
 						(value[i] == ']') or
 						(value[i] == '<') or
 						(value[i] == '>') or
@@ -162,15 +172,25 @@ void Transition_Function::load(ifstream& definition, Input_Alphabet input_alphab
 						(value[i] >= '~'))
 					{
 						valid = false;
-						cout << "in transition: invalid character '"<< value << "'' within state";
+						cout << "in transition: invalid character '"<< value << "'' within state" << endl;
 					}
 				}
 
-				if (count == 1)
+				if (count == 1) {
+					if (vecSize == transIndex) {
+						vecSize = vecSize + 10;
+						transitions.resize(vecSize);
+					}
 					transitions.at(transIndex).setSource(value);
+				}
 					//source_state = value;
-				if (count == 3)
-					transitions.at(transIndex).setReadStack(value.at(0));
+				if (count == 4) {
+					if (vecSize == transIndex) {
+						vecSize = vecSize + 10;
+						transitions.resize(vecSize);
+					}
+					transitions.at(transIndex).setDestState(value);
+				}
 					//destination_state = value;
 			}
 		}
@@ -180,8 +200,7 @@ void Transition_Function::load(ifstream& definition, Input_Alphabet input_alphab
 			{
 				for (int i = 0; i < (int)value.size(); i++)
 				{
-					if ((value[i] == '\\') or
-						(value[i] == '[') or
+					if ((value[i] == '[') or
 						(value[i] == ']') or
 						(value[i] == '<') or
 						(value[i] == '>') or
@@ -189,10 +208,14 @@ void Transition_Function::load(ifstream& definition, Input_Alphabet input_alphab
 						(value[i] >= '~'))
 					{
 						valid = false;
-						cout << "in transition: invalid character '"<< value << "'' within state";
+						cout << "in transition: invalid character '"<< value << "'' within state" << endl;
 					}
 				}
 
+				if ((int)transitions.size() == transIndex) {
+					vecSize = vecSize + 10;
+					transitions.resize(vecSize);
+				}
 				transitions.at(transIndex).setWriteStr(value);
 			}
 			else
@@ -250,7 +273,6 @@ void Transition_Function::load(ifstream& definition, Input_Alphabet input_alphab
 		cout << "missing keyword INITIAL_STATE: after transition function" << endl;
 		valid = false;
 	}
-
 }
 
 void Transition_Function::validate (const Stack_Alphabet& stack_alphabet,

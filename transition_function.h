@@ -22,8 +22,7 @@ class Transition_Function {
 	private:
 		vector<Transition> transitions;
 	public:
-		void load(ifstream& definition, Input_Alphabet input_alphabet,
-				States states, Stack_Alphabet stack_alphabet, bool& valid);
+		void load(ifstream& definition, States states, Input_Alphabet input_alphabet, Stack_Alphabet stack_alphabet, bool& valid);
 		void validate(const Stack_Alphabet& stack_alphabet,
 				const Input_Alphabet& input_alphabet,
 				const States& states,
