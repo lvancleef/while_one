@@ -16,54 +16,45 @@ Stack_Alphabet::Stack_Alphabet()
 /* Load reads the stack alphabet characters from PDA def file */
 void Stack_Alphabet::load(ifstream& definition, bool& valid)
 {
-    // Retrieve the contents of def file and load them in string stack_alpha
-    string stack_alpha;
-    getline(definition, stack_alpha);
+      string value;
 
-    /* Check if 'STACK_ALPHABET:" keyword exists by checking the exact size of keyword
-        plus the null character at the end, which is 15 characters, by the actual keyword */
-    if(stack_alpha.substr(0, 15).compare("STACK_ALPHABET:") != 0)
-    {
-        cout << "Error: 'STACK_ALPHABET:' keyword doesn't exist!" << endl;
-        valid = false;
-        return;
-    }
-    /* We need to start looping after the "STACK_ALPHABET:/" Keyword
-        which would be 16. Then we can start loading in each alphabet
-        character */
-        for(int i = 16; i <= (int)stack_alpha.length(); i++)
-        {
-            /* Check whether stack_alpha has non printable characters by using
-                isprint() at every reference i in stack_alpha*/
-            if(isprint(stack_alpha.at(i)) == 0)
-            {
-                cout << "Error: Stack alphabet has a non-printable character!" << endl;
-                valid = false;
-                return;
-            }
+	do{
+        /* Read definition file and store everything in the file until it reaches the next keyword TRANSITION_FUNCTION: */
+        if ((definition >> value) and (To_Upper(value) != "TRANSITION_FUNCTION:"))
+		{
 
-            // If we pass the printable test, we load characters into the character vector
-            else
-            {
-                i++; // We need to keep counting i, if it reaches continue in the next if loop, in order to keep iterating
-                alphabet.push_back(stack_alpha.at(i));
+		    // Check for invalid characters
+			for (int i = 0; i < value.size(); i++)
+			{
+				if ((value[i] == '\\') or
+					(value[i] == '[') or
+					(value[i] == ']') or
+					(value[i] == '<') or
+					(value[i] == '>') or
+					(value[i] <= '!') or
+					(value[i] >= '~'))
+				{
+					valid = false;
+					cout << "character '" << value << "' within state is invalid" << endl;
+				}
+			}
+            alphabet.push_back(value.at(0));
 
-                // Check if string has multiple characters, separated by a space
-                if(stack_alpha.at(i) == ' ')
-                    continue;
+		}
+        // If we reach INPUT_ALPHABET, we exit the loop
+		else if (To_Upper(value) == "TRANSITION_FUNCTION:")
+			break;
 
-                else
-                {
-                    cout << "Error: Stack alphabet contains invalid characters" << endl;
-                    valid = false;
-                    return;
-                }
+	} while (!definition.eof());
 
-            }
+	/* Check that the next keyword INPUT_ALPHABET exists */
+	if (definition.eof())
+	{
+		cout << "Missing keyword 'TRANSITION_FUNCTION:' after states" << endl;
+		valid = false;
+	}
 
-        }
 }
-/* Validate function for validate? REVIEW DESIGN */
 /*
 void Stack_Alphabet::validate(vector<char> input_alphabet, bool& valid)
 {
