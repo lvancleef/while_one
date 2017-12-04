@@ -37,7 +37,7 @@ void Final_States::load(ifstream& definition, bool& valid)
 					(value[i] >= '~'))
 				{
 					valid = false;
-					cout << "Error: Illegal character '" << value.at(i) << "' within keyword 'FINAL_STATE:' is invalid" << endl;
+					cout << "Error: Illegal character '" << value.at(i) << "' within keyword 'FINAL_STATES:' is invalid" << endl;
                     			break;
 				}
 			}
