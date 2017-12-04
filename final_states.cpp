@@ -19,9 +19,11 @@ void Final_States::load(ifstream& definition, bool& valid)
     string value;
 
 	do
-    {
+	{
         // Read definition file
-        if ((definition >> value))
+        if ((definition >> value)
+            and (To_Upper(value) == "FINAL_STATES:")
+            and (definition >> value))
 		{
 		    // Check for invalid characters
 			for (int i = 0; i < value.size(); i++)
@@ -35,7 +37,8 @@ void Final_States::load(ifstream& definition, bool& valid)
 					(value[i] >= '~'))
 				{
 					valid = false;
-					cout << "character '" << value << "' within state is invalid" << endl;
+					cout << "Error: Illegal character '" << value.at(i) << "' within keyword 'FINAL_STATES:' is invalid" << endl;
+                    			break;
 				}
 			}
 			final_names.push_back(value);
