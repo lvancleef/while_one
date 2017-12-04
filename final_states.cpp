@@ -17,34 +17,44 @@ Final_States::Final_States()
 void Final_States::load(ifstream& definition, bool& valid)
 {
     string value;
-
-	do
-	{
-        // Read definition file
-        if ((definition >> value)
-            and (To_Upper(value) == "FINAL_STATES:")
-            and (definition >> value))
-		{
-		    // Check for invalid characters
-			for (int i = 0; i < value.size(); i++)
-			{
-				if ((value[i] == '\\') or
-					(value[i] == '[') or
-					(value[i] == ']') or
-					(value[i] == '<') or
-					(value[i] == '>') or
-					(value[i] <= '!') or
-					(value[i] >= '~'))
-				{
-					valid = false;
-					cout << "Error: Illegal character '" << value.at(i) << "' within keyword 'FINAL_STATES:' is invalid" << endl;
-                    			break;
-				}
-			}
-			final_names.push_back(value);
-		}
-
-	} while (!definition.eof());
+    while(1)
+    {
+        if (definition >> value) 
+        {
+            for(int i=0;i<value.length();i++)
+            {
+                if((value[i] != '\\') &&(value[i] != '[') &&
+                (value[i] != ']') &&(value[i] != '<') &&
+                (value[i] != '>') &&(value[i] >= '!') &&
+                (value[i] <= '~'))
+                {}
+                else
+                {
+                    cout<<"Invalid character "<< value[i]<<" in State "<<value<<endl;
+                    valid=false;
+                }
+            }
+        }
+        else
+        {
+            break;
+        }   
+        if(To_Upper(value)=="INPUT_ALPHABET:")
+        {
+            break;
+        }
+        else if((To_Upper(value)=="TAPE_ALPHABET:")||(To_Upper(value)=="STATES:")||(To_Upper(value)=="TRANSITION_FUNCTION:")||
+            (To_Upper(value)=="INITIAL_STATE:")||(To_Upper(value)=="BLANK_CHARACTER:")||(To_Upper(value)=="FINAL_STATE:"))
+        {
+            cout<<"Invaild next Keyword\n";
+            break;
+        }
+        else
+        {
+            final_names.push_back(value);
+        }   
+    }
+    
 }
 /* Determine if the list of final states are states that exist in the states vector
     from the states class. */

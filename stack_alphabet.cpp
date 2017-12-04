@@ -88,6 +88,7 @@ void Stack_Alphabet::view()const
 }
 bool Stack_Alphabet::is_element(char value)const
 {
+
     for(int i = 0; i < (int)alphabet.size(); i++)
     {
         // If the value is part of the character vector, then we return true

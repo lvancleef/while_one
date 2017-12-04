@@ -32,7 +32,8 @@ bool Pushdown_Automaton::is_accepted(Instantaneous_Description id)
 
 void Pushdown_Automaton::load(string definition_file_name)
 {
-    string Def_File=name;
+    string Def_File=definition_file_name;
+    name=definition_file_name;
     Def_File+=".def";
     ifstream definition;
     definition.open(Def_File.c_str());
@@ -48,6 +49,7 @@ void Pushdown_Automaton::load(string definition_file_name)
     {
         if(definition>>keyword)
         {
+           
             if(To_Upper(keyword)=="STATES:")
             {
                 break;
@@ -71,12 +73,14 @@ void Pushdown_Automaton::load(string definition_file_name)
     definition>>keyword;
 
     initial_state=keyword;
+    
     if(!states.is_element(initial_state)){
         cout<<"ERROR: Invalid Initial State\n";
         valid=false;
     }
     //validate initial_state here
     definition>>keyword;
+    
     if((To_Upper(keyword)!="START_CHARACTER:")){
         cout<<"START_CHARACTER is missing\n";
         valid=false;
@@ -84,11 +88,12 @@ void Pushdown_Automaton::load(string definition_file_name)
     else{
         definition>>keyword;
         if(keyword.length()==1){
-            keyword[0]=start_character;
+            
+            start_character=keyword[0];
             if(!stack_alphabet.is_element(start_character)){
-        cout<<"ERROR: Invalid Start character\n";
-        valid=false;
-    }
+                cout<<"ERROR: Invalid Start character\n";
+                valid=false;
+            }
             //validate start_character here
         }
     }

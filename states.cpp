@@ -74,8 +74,9 @@ bool States::is_element(string value) const
 {
     for(int i = 0; i < (int)string_vector.size(); i++)
     {
-        if(value.compare(string_vector.at(i)) == 0)
+        if(value.compare(string_vector.at(i)) == 0){
             return true;
+        }
     }
     return false;
 }
