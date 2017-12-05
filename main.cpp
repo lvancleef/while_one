@@ -1,8 +1,8 @@
 /*
  * file: main.cpp
  * author: lvancleef
- * version: 0.2
- * date: 11/30/2017
+ * version: 1.0
+ * date: 12/4/2017
  */
 
 #include "configuration_settings.h"
@@ -22,6 +22,10 @@
 
 #include <string>
 
+
+/*
+ * Displays a list of command characters to stdout.
+ */
 void help_command()
 {
 	cout<<"[C]lose\t\tClose pushdown automaton\n";
@@ -43,26 +47,38 @@ void help_command()
     return;
 }
 
+/*
+ * Displays application info and configuration settings. No PDA is open.
+ */
 void show_command(Configuration_Settings * configuration_settings)
 {
+	cout << "\n  No PDA is currently open" << endl;
+
+	cout << "================" << endl;
+
 	cout << "  Course:\tCPTS 422" << endl;
 	cout <<	"  Semester:\tFall" << endl;
 	cout <<	"  Year:\t\t2017" << endl;
 	cout <<	"  Instructor:\tCorrigan" << endl;
-	cout <<	"  Team:\twhile(1)" << endl;
+	cout <<	"  Team:\t\twhile(1)" << endl;
 	cout <<	"  Team Members:\tLeigh VanCleef, Rob Pierini, KJ Dorow, Efren Alvarez" << endl;
 	cout <<	"  Version:\t1.0" << endl;
+
+	cout << "================" << endl;
 
 	cout <<	"\n  Configuration Settings:" << endl;
 	cout <<	"\tCharacters Before Truncation: " << configuration_settings->get_maximum_characters() << endl;
 	cout <<	"\tMaximum Transitions: " << configuration_settings->get_maximum_transitions() << endl;
 	cout <<	"\tDisplay Complete Paths: " << configuration_settings->complete_paths_string() << endl;
 
-	cout << "\n  No PDA is currently open\n" << endl;
-
 	return;
 }
 
+/*
+ * Either takes in a string containing a PDA filename, or requests from user
+ * Passes control to Pushdown_Automaton upon successful load.
+ * If user wants to open new PDA from within Pushdown_Automata, loops to reopen.
+ */
 void open_command(Pushdown_Automaton & pushdown_automaton,
 			 Configuration_Settings & configuration_settings,
 			 bool init = false, string name = "")
@@ -86,7 +102,6 @@ void open_command(Pushdown_Automaton & pushdown_automaton,
 		open = pushdown_automaton.pda_main();
 
 		initiailized = false;
-		filename = "";
 
 	} while(open);
 
