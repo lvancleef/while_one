@@ -92,9 +92,9 @@ void open_command(Pushdown_Automaton & pushdown_automaton,
 		if (!initiailized)
 		{
 			cout << "PDA name: ";
-			cin.ignore(256, '\n');
 
-			cin >> filename;
+			getline(cin, filename);
+
 			if (filename.empty())
 				return;
 		}
@@ -133,11 +133,13 @@ int main(int argc, char const *argv[])
 	do
 	{
 		cout << "Command: ";
-		cin.clear();
-		cin.ignore(256,"/n");
 		getline(cin, choice);
 
-		if (To_Upper(choice) == "H")
+		if (choice.length() == 0)
+		{
+			// skip
+		}
+		else if (To_Upper(choice) == "H")
 		{
 			count = 0;
 			help_command();

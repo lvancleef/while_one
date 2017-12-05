@@ -210,8 +210,6 @@ void Configuration_Settings::set_command()
 	int result;
 
 	cout << "Maximum Transitions[" << maximum_number_transitions << "]: ";
-	
-	cin.ignore(256, '\n');
 
 	if (getline(cin, value) and value.empty())
 		return;
@@ -242,8 +240,6 @@ void Configuration_Settings::truncate_command()
 	int result;
 
 	cout << "Maximum Characters Before Truncation[" << maximum_number_characters << "]: ";
-
-	cin.ignore(256, '\n');
 
 	if (getline(cin, value) and value.empty())
 		return;
