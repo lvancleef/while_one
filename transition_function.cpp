@@ -207,7 +207,8 @@ void Transition_Function::validate (const Stack_Alphabet& stack_alphabet,
 	 		cout << "Source State " << transitions[i].source_state() << " is not in states." << endl;
 	 		valid = false;
 	 	}
-	 	if (!stack_alphabet.Stack_Alphabet::is_element(transitions[i].read_character_stack())) {
+	 	if (!stack_alphabet.Stack_Alphabet::is_element(transitions[i].read_character_stack()) &&
+	 			transitions[i].read_character_stack() != '\\') {
 	 		cout << "Top of Stack Character " << transitions[i].read_character_stack() << "is not in stack alphabet." << endl;
 	 		valid = false;
 	 	}
@@ -215,11 +216,20 @@ void Transition_Function::validate (const Stack_Alphabet& stack_alphabet,
 	 		cout << "Destination State " << transitions[i].destination_state() << " is not in states." << endl;
 	 		valid = false;
 	 	}
-	 	if (!stack_alphabet.Stack_Alphabet::is_element(transitions[i].write_str().at(0))) {
-	 		cout << "Write String" << transitions[i].write_str() << " is not in stack alphabet." << endl;
-	 		valid = false;
-	 	}
-	 	if (!input_alphabet.Input_Alphabet::is_element(transitions[i].read_character())) {
+//	 	if (!stack_alphabet.Stack_Alphabet::is_element(transitions[i].write_str().at(0)) &&
+//	 			transitions[i].write_str().at(0) != '\\') {
+//	 		cout << "Write String" << transitions[i].write_str() << " is not in stack alphabet." << endl;
+//	 		valid = false;
+//	 	}
+		for (int j = 0; j < (int)transitions.at(i).write_str().length(); j++) {
+			if (!(stack_alphabet.is_element(transitions.at(i).write_str().at(j))) &&
+					transitions[i].write_str().at(j) != '\\') {
+				cout << "Write String" << transitions[i].write_str() << " is not in stack alphabet." << endl;
+				valid = false;
+			}
+		}
+	 	if (!input_alphabet.Input_Alphabet::is_element(transitions[i].read_character()) &&
+	 			transitions.at(i).read_character() != '\\') {
 	 		cout << "Read Character" << transitions[i].read_character() << " is not in input alphabet." << endl;
 	 		valid = false;
 	 	}
@@ -251,5 +261,7 @@ void Transition_Function::find_transition(string source_state, char read_charact
 	 }
 	 found = false;
 }
+
+
 
 
