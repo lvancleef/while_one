@@ -45,7 +45,8 @@ void Pushdown_Automaton::load(string definition_file_name)
     definition.open(def_file.c_str());   
     if(definition.fail()){
         cout<<"File does not exist\n";
-
+        valid=false;
+        return;
     }
     else{
         pda_description="";
@@ -117,6 +118,7 @@ void Pushdown_Automaton::load(string definition_file_name)
         final_states.load(definition, valid);
         definition.close();
     }
+
 }
 
 bool Pushdown_Automaton::pda_main()
@@ -126,6 +128,9 @@ bool Pushdown_Automaton::pda_main()
     if(!valid){
         cout<<"ERROR: Invalid PDA\n";
         return false;// return false?
+    }
+    else if (valid){
+        cout<<"PDA successfully loaded\n";
     }
 while(command!="close"||command!= "open"){        
         command=commands();
