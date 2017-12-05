@@ -10,6 +10,7 @@
 #include "configuration_settings.h"
 #include "uppercase.h"
 #include <string>
+#include <algorithm>
 
 using namespace std;
 
@@ -31,6 +32,8 @@ private:
     bool running;
     bool accepted;
     bool rejected;
+    bool changed;
+    bool sorted;
     string initial_state;
     char start_character;
     int number_of_crashes;
@@ -39,14 +42,17 @@ private:
     string name;
     string original_input_string;
     string pda_description;
+
     //static Configuration_Setting_Pointer configuration_setting_pointer;
     
 public:
     Pushdown_Automaton(Configuration_Settings *configuration_settings);
+    Pushdown_Automaton();
     
     //static void Link(const Configuration_Settings configuration_settings);
 
     void load(string definition_file_name);
+    void set_sort(bool value);
     bool pda_main();
     string perform_transition(Instantaneous_Description instantaneous_description, int &number_of_transitions_performed);
     bool is_accepted(Instantaneous_Description instantaneous_description);
@@ -60,6 +66,7 @@ public:
     void list_command();
     void insert_command();
     void delete_command();
+    void close_command();
     void quit_command();
     void sort_command();
     string truncate(string value);

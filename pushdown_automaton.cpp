@@ -32,11 +32,13 @@ bool Pushdown_Automaton::is_accepted(Instantaneous_Description id)
 
 void Pushdown_Automaton::load(string definition_file_name)
 {
+    changed=false;
     string_list.clear();
     number_of_crashes=0;
     number_of_transitions=0;
     number_of_transitions_performed=0;
     valid=true;
+    running=false;
     string def_file=definition_file_name;
     name=definition_file_name;
 
@@ -149,9 +151,7 @@ while(command!="close"||command!= "open"){
             }
         }
         else if(command=="close"){
-            if(running){
-                quit_command();
-            }
+            close_command();
             return false;
         }
         else if(command=="exit"){
@@ -182,10 +182,8 @@ while(command!="close"||command!= "open"){
                 running=false;
             }
             else if(run=="close"){
-                if(running){
-                    quit_command();
-                }
-
+                    cout<<"Closing PDA\n";
+                    close_command();
             }
             else if(run=="quit"){
                 if(running){
@@ -197,13 +195,13 @@ while(command!="close"||command!= "open"){
             }
             else if(run=="open"){
                 if(running){
-                    quit_command();
+                    close_command();
                 }
                 return true;
             }
             else if(run=="exit"){
                 if(running){
-                    quit_command();
+                    close_command();
                 }
             return false;    
             }
@@ -294,8 +292,7 @@ bool Pushdown_Automaton::is_valid_input_string(string value)
                 return false;
             }
         }
-    }
-                                
+    }                           
     return flag;
 }
 
@@ -386,46 +383,51 @@ void Pushdown_Automaton::help_command()
 void Pushdown_Automaton::show_command()//need to be cleaned up
 {
     //cout<<"show command\n";//show app data
-    cout<<"Status of PDA\n";
+    cout<<"  Status of PDA\n";
     cout<<"================\n";    
-    cout<<"Name of PDA:   "<<name<<endl;
+    cout<<"  Name of PDA:   "<<name<<endl;
 
     if(running){      
-        cout<<"Status:        PDA is currently running on an input string";     
-        cout<<"Input string: "<<original_input_string<<endl;
-        cout<<"Transitions:   "<<number_of_transitions<<endl;
-        cout<<"Crashes:       "<<number_of_crashes<<endl;
+        cout<<"  Status:        PDA is currently running on an input string";     
+        cout<<"  Input string: "<<original_input_string<<endl;
+        cout<<"  Transitions:   "<<number_of_transitions<<endl;
+        cout<<"  Crashes:       "<<number_of_crashes<<endl;
     }
     else if(used){
         if(accepted){
-            cout<<"Status:        PDA has completed an operation on an input string\n";           
-            cout<<"last input string used:  "<<original_input_string<<endl;
-            cout<<"Input string was:        Accepted\n";
-            cout<<"Transitions:   "<<number_of_transitions<<endl;
-            cout<<"Crashes:       "<<number_of_crashes<<endl;
-            cout<<"Number of transitions in successful path: "<<accepted_path.size()<<endl;
+            cout<<"  Status:        PDA has completed an operation on an input string\n";           
+            cout<<"  last input string used:  "<<original_input_string<<endl;
+            cout<<"  Input string was:        Accepted\n";
+            cout<<"  Transitions:   "<<number_of_transitions<<endl;
+            cout<<"  Crashes:       "<<number_of_crashes<<endl;
+            cout<<"  Number of transitions in successful path: "<<accepted_path.size()<<endl;
         }
         else{
-            cout<<"Status:        PDA has completed an operation on an input string\n";           
-            cout<<"last input string used:  "<<original_input_string<<endl;
-            cout<<"Input string was:        Rejected\n";
-            cout<<"Transitions:   "<<number_of_transitions<<endl;
-            cout<<"Crashes:       "<<number_of_crashes<<endl;   
+            cout<<"  Status:        PDA has completed an operation on an input string\n";           
+            cout<<"  last input string used:  "<<original_input_string<<endl;
+            cout<<"  Input string was:        Rejected\n";
+            cout<<"  Transitions:   "<<number_of_transitions<<endl;
+            cout<<"  Crashes:       "<<number_of_crashes<<endl;   
         }
     }
     else{
-        cout<<"Status:      PDA has not been run on an input string\n";       
+        cout<<"  Status:      PDA has not been run on an input string\n";       
     }
 
     cout<<"================\n";
-    cout<<"Course:        CPTS_422\n";
-    cout<<"Semester:      Fall 2017\n";
-    cout<<"Year:          2017\n";
-    cout<<"Instructor:    Neil Corrigan\n";
-    cout<<"Team:          While(1)\n";
-    cout<<"Team members:  Leigh, Rob, KJ, Efren\n";
-    cout<<" Version:       1\n";
+    cout << "  Course:\tCPTS 422" << endl;
+    cout << "  Semester:\tFall" << endl;
+    cout << "  Year:\t\t2017" << endl;
+    cout << "  Instructor:\tCorrigan" << endl;
+    cout << "  Team:\t\twhile(1)" << endl;
+    cout << "  Team Members:\tLeigh VanCleef, Rob Pierini, KJ Dorow, Efren Alvarez" << endl;
+    cout << "  Version:\t1.0" << endl;
+    cout<<"================\n";
 
+    cout << "  Configuration Settings:" << endl;
+    cout << "    Characters Before Truncation: " << configuration_settings->get_maximum_characters() << endl;
+    cout << "    Maximum Transitions: " << configuration_settings->get_maximum_transitions() << endl;
+    cout << "    Display Complete Paths: " << configuration_settings->complete_paths_string() << endl;
 }
 
 void Pushdown_Automaton::view_command()
@@ -445,7 +447,7 @@ void Pushdown_Automaton::list_command()
 {
     for(int index=0;index<string_list.size();index++)
         {
-            cout<<index+1<<". "<<string_list[index]<<endl;
+            cout<<index+1<<".\t"<<string_list[index]<<endl;
         }
 }
 
@@ -453,7 +455,7 @@ void Pushdown_Automaton::insert_command()
 {
     cout<<"Input String: ";
     string load="";
-    cin.ignore();
+    cin.ignore(256,'\n');
     getline(cin,load);
     bool flag=true;
     if(load!="")
@@ -493,6 +495,7 @@ void Pushdown_Automaton::insert_command()
             }
             if(flag==true)
             {
+                changed= true;
                 cout<<"List updated\n";
                 string_list.push_back(load);
             }
@@ -515,6 +518,7 @@ void Pushdown_Automaton::delete_command()
             }
             else
             {
+                changed =true;
                 cout<<"Deleting index "<<input_num<<endl;
                 string_list.erase( string_list.begin() + input_num-1 );
             }
@@ -528,15 +532,66 @@ void Pushdown_Automaton::delete_command()
     }
 }
 void Pushdown_Automaton::quit_command(){
-    cout<<original_input_string<<" not accepted or rejected in "<<number_of_transitions<<" Transition(s).\n";
-    cout<<"There were "<<number_of_crashes<< "crashes\n";
-    running=false;
+    if(running){
+        cout<<original_input_string<<" not accepted or rejected in "<<number_of_transitions<<" Transition(s).\n";
+        cout<<"There were "<<number_of_crashes<< "crashes\n";
+        running=false;
+    }
+}
+void Pushdown_Automaton::close_command(){
+    
+    if(changed)
+        {
+            ofstream str_file;
+            string pda_file = name + ".str";
+
+            str_file.open(pda_file.c_str(), ios::out | ios::trunc);
+
+            if(!str_file.is_open())
+            {
+                cout << "Error writing to Configurations Settings file." << endl;
+            }
+            else
+            {
+
+                for(int index=0;index<string_list.size();index++){
+                    str_file<<string_list[index]<<endl;
+                }
+                str_file.close();
+
+                cout << "String file successfuly updated." << endl;
+            }
+        }
+}        
+bool canonical(string one, string two){
+   //cout<<one<<"=="<<two<<endl;
+    if(one=="\\"){
+        return true;
+    }
+    else if(two=="\\"){
+        return false;
+    }
+    if(one.length()<two.length()){
+        return true;
+    }
+    else if(one.length()==two.length()){
+        return(one<two);
+    }
+    return false;
 }
 
 void Pushdown_Automaton::sort_command()
 {
-    cout<<"sort command\n";
+    vector<string> temp(string_list);
+    sort(string_list.begin(),string_list.end(),canonical);
+    if(string_list==temp)
+        cout<<"list is already sorted\n";
+    else{
+        changed=true;
+        cout<<"list has been sorted\n";
+    }
 }
+
 string Pushdown_Automaton::visible(string value){
     const string lambda("//");
     if(value.empty())
