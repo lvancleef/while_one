@@ -54,7 +54,7 @@ void show_command(Configuration_Settings * configuration_settings)
 {
 	cout << "\n  No PDA is currently open" << endl;
 
-	cout << "================" << endl;
+	cout << "  ================" << endl;
 
 	cout << "  Course:\tCPTS 422" << endl;
 	cout <<	"  Semester:\tFall" << endl;
@@ -64,12 +64,12 @@ void show_command(Configuration_Settings * configuration_settings)
 	cout <<	"  Team Members:\tLeigh VanCleef, Rob Pierini, KJ Dorow, Efren Alvarez" << endl;
 	cout <<	"  Version:\t1.0" << endl;
 
-	cout << "================" << endl;
+	cout << "  ================" << endl;
 
-	cout <<	"\n  Configuration Settings:" << endl;
-	cout <<	"\tCharacters Before Truncation: " << configuration_settings->get_maximum_characters() << endl;
-	cout <<	"\tMaximum Transitions: " << configuration_settings->get_maximum_transitions() << endl;
-	cout <<	"\tDisplay Complete Paths: " << configuration_settings->complete_paths_string() << endl;
+	cout <<	"  Configuration Settings:" << endl;
+	cout <<	"    Characters Before Truncation: " << configuration_settings->get_maximum_characters() << endl;
+	cout <<	"    Maximum Transitions: " << configuration_settings->get_maximum_transitions() << endl;
+	cout <<	"    Display Complete Paths: " << configuration_settings->complete_paths_string() << endl;
 
 	return;
 }
@@ -132,6 +132,7 @@ int main(int argc, char const *argv[])
 	{
 		cout << "Command: ";
 		cin >> choice;
+		cin.ignore();
 
 		if (To_Upper(choice) == "H")
 		{
