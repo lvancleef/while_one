@@ -235,6 +235,7 @@ void Transition_Function::view() const {
 				<< transitions.at(i).destination_state() << ", "
 				<< transitions.at(i).write_str() << ")";
 	}
+	cout<<endl;
 }
 
 void Transition_Function::find_transition(string source_state, char read_character,
