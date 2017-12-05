@@ -92,6 +92,7 @@ void open_command(Pushdown_Automaton & pushdown_automaton,
 		if (!initiailized)
 		{
 			cout << "PDA name: ";
+			cin.ignore(256, '\n');
 			cin >> filename;
 			if (filename.empty())
 				return;
@@ -131,8 +132,8 @@ int main(int argc, char const *argv[])
 	do
 	{
 		cout << "Command: ";
+		cin.ignore(256, '\n');
 		cin >> choice;
-		cin.ignore();
 
 		if (To_Upper(choice) == "H")
 		{

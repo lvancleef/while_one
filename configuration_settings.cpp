@@ -24,7 +24,7 @@ Configuration_Settings::Configuration_Settings(string name)
 	maximum_number_transitions = 1;
 	maximum_number_characters = 32;
 	complete_paths = false;
-	changed = false;
+	changed = true;
 
 	changed = load(name);
 }
@@ -210,7 +210,8 @@ void Configuration_Settings::set_command()
 	int result;
 
 	cout << "Maximum Transitions[" << maximum_number_transitions << "]: ";
-	cin.ignore();
+	
+	cin.ignore(256, '\n');
 
 	if (getline(cin, value) and value.empty())
 		return;
@@ -242,7 +243,7 @@ void Configuration_Settings::truncate_command()
 
 	cout << "Maximum Characters Before Truncation[" << maximum_number_characters << "]: ";
 
-	cin.ignore();
+	cin.ignore(256, '\n');
 
 	if (getline(cin, value) and value.empty())
 		return;
