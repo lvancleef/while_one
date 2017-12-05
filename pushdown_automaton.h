@@ -25,7 +25,7 @@ private:
     vector<string> string_list;
     bool string_list_changed;
     int number_of_transitions;
-    int number_of_transition_performed;
+    int number_of_transitions_performed;
     bool valid;
     bool used;
     bool running;
@@ -48,7 +48,7 @@ public:
 
     void load(string definition_file_name);
     bool pda_main();
-    string perform_transition(Instantaneous_Description instantaneous_description, int &number_of_transition_performed);
+    string perform_transition(Instantaneous_Description instantaneous_description, int &number_of_transitions_performed);
     bool is_accepted(Instantaneous_Description instantaneous_description);
     string commands();
     bool is_valid_input_string(string value);

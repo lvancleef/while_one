@@ -32,77 +32,91 @@ bool Pushdown_Automaton::is_accepted(Instantaneous_Description id)
 
 void Pushdown_Automaton::load(string definition_file_name)
 {
-    string Def_File=definition_file_name;
-    name=definition_file_name;
-    Def_File+=".def";
-    ifstream definition;
-    definition.open(Def_File.c_str());
-    
-    pda_description="";
+    string_list.clear();
+    number_of_crashes=0;
+    number_of_transitions=0;
+    number_of_transitions_performed=0;
     valid=true;
-    used=false;
-    running=false;
-    accepted=false;
-    rejected=false;
-    string keyword;
-    while(1)
-    {
-        if(definition>>keyword)
-        {
-           
-            if(To_Upper(keyword)=="STATES:")
-            {
-                break;
-            }
-            else
-            {
-                pda_description+=" ";
-                pda_description+=keyword;
-            }
-        }
-        else {
-            valid=false;
-            cout<<"ERROR: States is missing\n";
-            valid=false;
-        }
-    }
-    states.load(definition, valid);
-    input_alphabet.load(definition, valid);
-    stack_alphabet.load(definition, valid);
-    transition_function.load(definition, states, input_alphabet, stack_alphabet, valid);
-    definition>>keyword;
+    string def_file=definition_file_name;
+    name=definition_file_name;
 
-    initial_state=keyword;
-    
-    if(!states.is_element(initial_state)){
-        cout<<"ERROR: Invalid Initial State\n";
-        valid=false;
-    }
-    //validate initial_state here
-    definition>>keyword;
-    
-    if((To_Upper(keyword)!="START_CHARACTER:")){
-        cout<<"START_CHARACTER is missing\n";
-        valid=false;
+    def_file+=".def";
+    ifstream definition,string_file;
+    definition.open(def_file.c_str());   
+    if(definition.fail()){
+        cout<<"File does not exist\n";
+
     }
     else{
-        definition>>keyword;
-        if(keyword.length()==1){
-            
-            start_character=keyword[0];
-            if(!stack_alphabet.is_element(start_character)){
-                cout<<"ERROR: Invalid Start character\n";
+        pda_description="";
+        valid=true;
+        used=false;
+        running=false;
+        accepted=false;
+        rejected=false;
+        string keyword;
+
+        initialize_string_list();
+        while(1)
+        {
+            if(definition>>keyword)
+            {
+               
+                if(To_Upper(keyword)=="STATES:")
+                {
+                    break;
+                }
+                else
+                {
+                    pda_description+=" ";
+                    pda_description+=keyword;
+                }
+            }
+            else {
+                valid=false;
+                cout<<"ERROR: States is missing\n";
                 valid=false;
             }
-            //validate start_character here
         }
+        states.load(definition, valid);
+        input_alphabet.load(definition, valid);
+        stack_alphabet.load(definition, valid);
+        transition_function.load(definition, states, input_alphabet, stack_alphabet, valid);
+        definition>>keyword;
+
+        initial_state=keyword;
+        
+        if(!states.is_element(initial_state)){
+            cout<<"ERROR: Invalid Initial State\n";
+            valid=false;
+        }
+        //validate initial_state here
+        definition>>keyword;
+        
+        if((To_Upper(keyword)!="START_CHARACTER:")){
+            cout<<"START_CHARACTER is missing\n";
+            valid=false;
+        }
+        else{
+            definition>>keyword;
+            if(keyword.length()==1){
+                
+                start_character=keyword[0];
+                if(!stack_alphabet.is_element(start_character)){
+                    cout<<"ERROR: Invalid Start character\n";
+                    valid=false;
+                }
+                //validate start_character here
+            }
+        }
+        definition>>keyword;
+        if((To_Upper(keyword)!="FINAL_STATES:")){
+            cout<<"FINAL_STATES is missing\n";
+            valid=false;
+        }
+        final_states.load(definition, valid);
+        definition.close();
     }
-    definition>>keyword;
-    if((To_Upper(keyword)!="FINAL_STATES:")){
-        cout<<"FINAL_STATES is missing\n";
-        valid=false;
-    }
-    final_states.load(definition, valid);
 }
 
 bool Pushdown_Automaton::pda_main()
@@ -144,7 +158,7 @@ while(command!="close"||command!= "open"){
             ss<< start_character;
             ss>> start_character_string;
             Instantaneous_Description id(initial_state, original_input_string, start_character_string, 0);
-            run=perform_transition(id, number_of_transition_performed);
+            run=perform_transition(id, number_of_transitions_performed);
 
             if(run=="accepted"){
                 cout<<original_input_string<<" was accepted in "<<number_of_transitions<<" transitions\n";
