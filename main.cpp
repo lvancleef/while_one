@@ -68,10 +68,10 @@ void open_command(Pushdown_Automaton & pushdown_automaton,
 			 bool init = false, string name = "")
 {
 	string filename = name;
-	bool open = true;
+	bool open = false;
 	bool initiailized = init;
 
-	while(open)
+	do
 	{
 		if (!initiailized)
 		{
@@ -79,14 +79,15 @@ void open_command(Pushdown_Automaton & pushdown_automaton,
 			cin >> filename;
 			if (filename.empty())
 				return;
-
-			initiailized = false;
 		}
 
 		pushdown_automaton.load(filename);
 
 		open = pushdown_automaton.pda_main();
-	}
+
+		initiailized = false;
+
+	} while(open);
 
 	return;
 }
