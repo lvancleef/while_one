@@ -1,7 +1,7 @@
 /*
  * file: configuration_settings.cpp
  * author: lvancleef
- * version: 0.5
+ * version: 0.6
  * date: 12/2/2017
  *
  * notes: load and exit attempted. 
@@ -57,6 +57,8 @@ bool Configuration_Settings::load(string name)
 	string found_keyword = "";
 
 	bool error_converting = false;
+
+	size_t npos = -1;
 	
 	// attempt to read in lines
 	while (getline(config_file, line))
@@ -112,15 +114,12 @@ bool Configuration_Settings::load(string name)
 				if (found_keyword.compare("MAXIMUM_TRANSITIONS") == 0 ||
 					found_keyword.compare("MAXIMUM_CHARACTERS") == 0)
 				{
-					try
-					{
-						//int_value = stoi(value);
-					}
-					catch(...)
-					{
-						// error converting
-						error_converting = true;
-					}
+					
+					stringstream convert(value);
+
+					if ( !(convert >> int_value) )
+   						error_converting = true;
+				
 
 					if (!error_converting)
 					{
@@ -148,18 +147,18 @@ bool Configuration_Settings::load(string name)
 					// since those situations would not be valid
 
 					found = value.find("YES");
-					// if (found != str::npos)
-					// {
-					// 	complete_paths = true;
-					// 	paths_set = true;
-					// }
+					if (found != npos)
+					{
+						complete_paths = true;
+						paths_set = true;
+					}
 
-					// if (paths_set == false)
-					// {
-					// 	found = value.find("NO");
-					// 	if (found != str::npos)
-					// 		paths_set = true;
-					// }
+					if (paths_set == false)
+					{
+						found = value.find("NO");
+						if (found != npos)
+							paths_set = true;
+					}
 				}
 			}
 		}
@@ -271,17 +270,10 @@ void Configuration_Settings::truncate_command()
 
 void Configuration_Settings::display_command()
 {
-	if(complete_paths)
-	{
-   		cout << "Complete Paths is now FALSE." << endl;
-   		complete_paths = false;
-   	}
-   	else
-   	{
-   		cout << "Complete Paths is now TRUE." << endl;
-   		complete_paths = true;
-   	}
+	complete_paths = !complete_paths;
 
+	cout << "Complete Paths is now " << complete_paths_string() << "." << endl;
+   	
    	changed = true;
 
 	return;
