@@ -148,12 +148,14 @@ void Transition_Function::load(ifstream& definition, States states, Input_Alphab
 				valid = false;
 				return;
 			}
-			if (!(input_alphabet.is_element(transitions.at(transIndex).read_character()))) {
+			if (!(input_alphabet.is_element(transitions.at(transIndex).read_character())) &&
+					transitions.at(transIndex).read_character() != '\\') {
 				cout << "Error: Transition Function contains a character not from Input_Alphabet." << endl;
 				valid = false;
 				return;
 			}
-			if (!(stack_alphabet.is_element(transitions.at(transIndex).read_character_stack()))) {
+			if (!(stack_alphabet.is_element(transitions.at(transIndex).read_character_stack())) &&
+					transitions.at(transIndex).read_character_stack() != '\\') {
 				cout << "Error: Transition Function contains a character not from Stack_Alphabet." << endl;
 				valid = false;
 				return;
@@ -164,7 +166,8 @@ void Transition_Function::load(ifstream& definition, States states, Input_Alphab
 				return;
 			}
 			for (int j = 0; j < (int)transitions.at(transIndex).write_str().length(); j++) {
-				if (!(stack_alphabet.is_element(transitions.at(transIndex).write_str().at(j)))) {
+				if (!(stack_alphabet.is_element(transitions.at(transIndex).write_str().at(j))) &&
+						transitions.at(transIndex).write_str().at(j) != '\\') {
 					cout << "Error: Transition Function contains a character not from Stack_Alphabet." << endl;
 					valid = false;
 					return;
