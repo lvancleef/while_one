@@ -78,6 +78,8 @@ void open_command(Pushdown_Automaton & pushdown_automaton,
 			cin >> filename;
 			if (filename.empty())
 				return;
+
+			init = false;
 		}
 
 		pushdown_automaton.load(filename);
