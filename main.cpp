@@ -86,6 +86,7 @@ void open_command(Pushdown_Automaton & pushdown_automaton,
 		open = pushdown_automaton.pda_main();
 
 		initiailized = false;
+		filename = "";
 
 	} while(open);
 

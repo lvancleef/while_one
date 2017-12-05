@@ -119,7 +119,6 @@ bool Configuration_Settings::load(string name)
 
 					if ( !(convert >> int_value) )
    						error_converting = true;
-				
 
 					if (!error_converting)
 					{
