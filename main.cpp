@@ -76,6 +76,8 @@ void open_command(Pushdown_Automaton & pushdown_automaton,
 		{
 			cout << "PDA name: ";
 			cin >> filename;
+			if (filename.empty())
+				return;
 		}
 
 		pushdown_automaton.load(filename);
