@@ -69,17 +69,18 @@ void open_command(Pushdown_Automaton & pushdown_automaton,
 {
 	string filename = name;
 	bool open = true;
+	bool initiailized = init;
 
 	while(open)
 	{
-		if (!init)
+		if (!initiailized)
 		{
 			cout << "PDA name: ";
 			cin >> filename;
 			if (filename.empty())
 				return;
 
-			init = false;
+			initiailized = false;
 		}
 
 		pushdown_automaton.load(filename);
