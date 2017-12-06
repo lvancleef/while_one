@@ -249,7 +249,7 @@ void Transition_Function::view() const {
 }
 
 void Transition_Function::find_transition(string source_state, char read_character,
-	 	char read_stack_character, string dest_state, string write_stack, bool& found) const {
+	 	char read_stack_character, string& dest_state, string& write_stack, bool& found) const {
 	 for (int i = 0; i < (int)transitions.size(); i++) {
 	 	if ((transitions[i].source_state() == source_state) && (transitions[i].read_character() == read_character)
 	 			&& (transitions[i].read_character_stack() == read_stack_character)) {
@@ -261,6 +261,7 @@ void Transition_Function::find_transition(string source_state, char read_charact
 	 }
 	 found = false;
 }
+
 
 
 
