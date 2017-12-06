@@ -389,7 +389,7 @@ bool Pushdown_Automaton::is_valid_input_string(string value)
         {
             cout<<"That string already exists\n";
             flag=false;
-        }
+        } 
     }
     if(value!="\\"&&flag==true){
    
