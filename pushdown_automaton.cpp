@@ -382,6 +382,7 @@ string Pushdown_Automaton::commands()
     
 bool Pushdown_Automaton::is_valid_input_string(string value)
 {
+    
     bool flag=true;
     for(int index=0;index<string_list.size();index++){
         if(string_list[index]==value)
@@ -391,9 +392,10 @@ bool Pushdown_Automaton::is_valid_input_string(string value)
         }
     }
     if(value!="\\"&&flag==true){
+   
         for(int index=0;index<value.length();index++){
             if(!input_alphabet.is_element(value[index])){
-                cout<<"Invalid character: "<<value[index];
+                //cout<<"Invalid character: "<<value[index]<<;
                 return false;
             }
         }
@@ -432,7 +434,7 @@ void Pushdown_Automaton::initialize_string_list()
                         }
                         if(flag!=false)
                         {
-                            string_list.push_back("");
+                            string_list.push_back("\\");
                         }
                     }
                     else
@@ -576,7 +578,7 @@ void Pushdown_Automaton::insert_command()
                     }
                 }
                 if(flag==true)
-                    string_list.push_back("");
+                    string_list.push_back("\\");
         }
         else
         {
@@ -588,9 +590,9 @@ void Pushdown_Automaton::insert_command()
                         flag=false;
                     }
                 }
-            for(int index;index<load.length();index++)
+               
+            for(int index=0;index<load.length();index++)
             {
-
                 if(is_valid_input_string(load)==false)
                 {
                     cout<<"Invalid input string\n";
