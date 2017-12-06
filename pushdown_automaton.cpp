@@ -58,6 +58,8 @@ void Pushdown_Automaton::load(string definition_file_name)
         accepted=false;
         rejected=false;
         string keyword;
+        number_of_transitions=0;
+        number_of_transitions_performed=0;
 
         initialize_string_list();
         while(1)
@@ -158,21 +160,67 @@ while(command!="close"||command!= "open"){
             configuration_settings->exit_command();
         }
         else if(command=="run"){
+                int input_num;
+                
+                cout<<"Input sting number: ";
+                string load="";
+                cin.ignore();
+                getline(cin,load);
+                if(istringstream ( load ) >> input_num)
+                {
+                    if(input_num<1 or input_num>string_list.size())
+                        {
+                            cout<<"Index out of range\n";
+                            break;
+                        }
+                        else
+                        {
+                            original_input_string=string_list[input_num-1];
+                            used=true;
+                            running=true;
+                            number_of_transitions=0;
+                            number_of_crashes=0;
+                        }
+                }
+                else
+                {
+                    if(load!="")
+                    {
+                        cout<<"Invalid Input\n";
+                        break;
+                    }
+                }
+
             string start_character_string;
             stringstream ss;
             ss<< start_character;
             ss>> start_character_string;
+            string id_string;
             Instantaneous_Description id(initial_state, original_input_string, start_character_string, 0);
+            print_id(id);
             run=perform_transition(id, number_of_transitions_performed);
 
             if(run=="accepted"){
+                
+                
+                ostringstream oss;
+                oss<<"["<<id.get_current_level()<<"] (";
+                oss<<id.get_current_state()<<",";
+                oss<<truncate(visible(id.get_remaining_input_string()))<<",";
+                oss<<truncate(visible(id.get_stack()))<<")\n";
+                id_string=oss.str();
+                accepted_path.push_back(id_string);
+                
                 cout<<original_input_string<<" was accepted in "<<number_of_transitions<<" transitions\n";
-                cout<<"With "<<number_of_crashes<<"crashes\n";
+                cout<<"With "<<number_of_crashes<<" crashes\n";
+                accepted=true;
                 if(configuration_settings->get_complete_paths()){
-                    for(int index=0;index<string_list.size();index++)
-                    {
-                        cout<<index<<". "<<accepted_path[index]<<endl;
+                    cout<<"Accepted path:\n";
+                    for(int index=accepted_path.size()-1;index>-1;index--)
+                    {                     
+                        cout<<accepted_path[index];                   
                     }
+                    
                 }
                 running=false;
             } 
@@ -180,6 +228,7 @@ while(command!="close"||command!= "open"){
                 cout<<original_input_string<<" was rejected in "<<number_of_transitions<<" transitions\n";
                 cout<<"With "<<number_of_crashes<<"crashes\n";
                 running=false;
+                rejected=true;
             }
             else if(run=="close"){
                     cout<<"Closing PDA\n";
@@ -215,19 +264,35 @@ string Pushdown_Automaton::perform_transition(Instantaneous_Description instanta
     int tried=0;
     string command;
     string transition;
+    string id_string;
+    ostringstream oss;
     while(number_of_transitions_performed!=configuration_settings->get_maximum_transitions()){
         if(is_accepted(instantaneous_description)){
-            //accepted_path.push_back(instantaneous_description);
+            
+            oss<<"["<<instantaneous_description.get_current_level()<<"] (";
+            oss<<instantaneous_description.get_current_state()<<",";
+            oss<<truncate(visible(instantaneous_description.get_remaining_input_string()))<<",";
+            oss<<truncate(visible(instantaneous_description.get_stack()))<<")\n";
+            id_string=oss.str();
+            accepted_path.push_back(id_string);
+
             return "accepted";
         }
         
         next_id=instantaneous_description;
         number_of_transitions_performed++;
+        number_of_transitions++;
 
-        return "accepted";
+        return "accepted";//no good
         //find trandition
-        // if(!Transition_Function.find_transition(next_id))
-        //     return "rejected";
+        //if(!Transition_Function.find_transition(next_id)){
+        //if(configuration_settings->get_complete_paths()){
+        //cout<<"Crash\n";
+        //number_of_crashes++;
+        //}
+        //return "rejected";
+        //}
+        //     
             
         if(number_of_transitions_performed==configuration_settings->get_maximum_transitions()){
             
@@ -239,8 +304,16 @@ string Pushdown_Automaton::perform_transition(Instantaneous_Description instanta
         if(transition!="rejected"){
             if(transition=="accepted")
             //accepted_path.push_back(instantaneous_description);
+            oss<<"["<<instantaneous_description.get_current_level()<<"] (";
+            oss<<instantaneous_description.get_current_state()<<",";
+            oss<<truncate(visible(instantaneous_description.get_remaining_input_string()))<<",";
+            oss<<truncate(visible(instantaneous_description.get_stack()))<<")\n";
+            id_string=oss.str();
+            accepted_path.push_back(id_string);
+
             return transition;
         }
+
         tried++;
     }
 }
@@ -260,7 +333,8 @@ string Pushdown_Automaton::commands()
             else if(Command == "d"||Command== "D"){
                 delete_command();
             }
-            else if(Command == "p"||Command == "P"){               
+            else if(Command == "p"||Command == "P"){   
+                configuration_settings->display_command();            
             }   
             else if(Command == "x"||Command== "X"){
                 exit=1;
@@ -331,7 +405,7 @@ void Pushdown_Automaton::print_id(Instantaneous_Description instantaneous_descri
 {
     cout<<"["<<number_of_transitions<<"]. ["<<instantaneous_description.get_current_level()<<"] (";
     cout<<instantaneous_description.get_current_state()<<",";
-    cout<<truncate(visible(instantaneous_description.get_remaining_input_string()))<<", ";
+    cout<<truncate(visible(instantaneous_description.get_remaining_input_string()))<<",";
     cout<<truncate(visible(instantaneous_description.get_stack()))<<")\n";
 }
 
@@ -358,7 +432,7 @@ void Pushdown_Automaton::initialize_string_list()
                         }
                         if(flag!=false)
                         {
-                            string_list.push_back("\\");
+                            string_list.push_back("");
                         }
                     }
                     else
@@ -427,7 +501,7 @@ void Pushdown_Automaton::show_command()//need to be cleaned up
     else if(used){
         if(accepted){
             cout<<"  Status:        PDA has completed an operation on an input string\n";           
-            cout<<"  last input string used:  "<<original_input_string<<endl;
+            cout<<"  last input string used:  "<<visible(original_input_string)<<endl;
             cout<<"  Input string was:        Accepted\n";
             cout<<"  Transitions:   "<<number_of_transitions<<endl;
             cout<<"  Crashes:       "<<number_of_crashes<<endl;
@@ -435,7 +509,7 @@ void Pushdown_Automaton::show_command()//need to be cleaned up
         }
         else{
             cout<<"  Status:        PDA has completed an operation on an input string\n";           
-            cout<<"  last input string used:  "<<original_input_string<<endl;
+            cout<<"  last input string used:  "<<visible(original_input_string)<<endl;
             cout<<"  Input string was:        Rejected\n";
             cout<<"  Transitions:   "<<number_of_transitions<<endl;
             cout<<"  Crashes:       "<<number_of_crashes<<endl;   
@@ -478,7 +552,7 @@ void Pushdown_Automaton::list_command()
 {
     for(int index=0;index<string_list.size();index++)
         {
-            cout<<index+1<<".\t"<<string_list[index]<<endl;
+            cout<<index+1<<".\t"<<visible(string_list[index])<<endl;
         }
 }
 
@@ -502,7 +576,7 @@ void Pushdown_Automaton::insert_command()
                     }
                 }
                 if(flag==true)
-                    string_list.push_back(load);
+                    string_list.push_back("");
         }
         else
         {
@@ -624,7 +698,7 @@ void Pushdown_Automaton::sort_command()
 }
 
 string Pushdown_Automaton::visible(string value){
-    const string lambda("//");
+    const string lambda("/");
     if(value.empty())
         value=lambda;
     return value;

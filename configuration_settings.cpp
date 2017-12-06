@@ -20,12 +20,10 @@ using namespace std;
 Configuration_Settings::Configuration_Settings(string name)
 {	
 	application_name = name;
-
 	maximum_number_transitions = 1;
 	maximum_number_characters = 32;
 	complete_paths = false;
 	changed = true;
-
 	changed = load(name);
 }
 

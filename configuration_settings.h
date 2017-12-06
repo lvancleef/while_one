@@ -41,7 +41,6 @@ public:
 	void truncate_command();
 	void display_command();
 	void exit_command();
-
 };
 
 

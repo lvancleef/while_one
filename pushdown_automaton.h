@@ -37,7 +37,7 @@ private:
     string initial_state;
     char start_character;
     int number_of_crashes;
-    vector<instantaneous_description>accepted_path;
+    vector<string>accepted_path;
 
     string name;
     string original_input_string;

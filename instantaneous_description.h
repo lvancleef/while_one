@@ -12,6 +12,8 @@ class Instantaneous_Description{
         Instantaneous_Description();
         Instantaneous_Description(string initial_state, string input_string, string stack_characters, int level);
         string get_current_state() const;
+        void set_current_state(string value);
+        void set_current_stack(string value);
         string get_stack() const;
         char input_character() const;
         char top_of_stack() const;
