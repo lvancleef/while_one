@@ -55,6 +55,7 @@ bool Configuration_Settings::load(string name)
 	size_t found;
 	bool found_one = false;
 	string found_keyword = "";
+	bool duplicate = false;
 
 	bool error_converting = false;
 
@@ -66,19 +67,20 @@ bool Configuration_Settings::load(string name)
 		// does any keyword exist in line
 
 		found = To_Upper(line).find("MAXIMUM_TRANSITIONS");
-		if (found!=string::npos)
+		if (found!=npos)
 		{
 			found_keyword = "MAXIMUM_TRANSITIONS";
 			found_one = true;
 		}
 
 		found = To_Upper(line).find("MAXIMUM_CHARACTERS") ;
-		if (found!=string::npos)
+		if (found!=npos)
 		{
 			// if keyword has already been set, line is invalid
 			if (found_keyword.compare("") != 0)
 			{
 				found_one = false;
+				duplicate = true;
 			}
 			else
 			{
@@ -88,12 +90,13 @@ bool Configuration_Settings::load(string name)
 		}
 		
 		found = To_Upper(line).find("COMPLETE_PATHS");
-		if (found!=string::npos)
+		if (found!=npos)
 		{
 			// if keyword has already been set, line is invalid
 			if (found_keyword.compare("") != 0)
 			{
 				found_one = false;
+				duplicate = true;
 			}
 			else
 			{
@@ -106,7 +109,7 @@ bool Configuration_Settings::load(string name)
 		{
 			// does = exist in line
 			found = line.find("=");
-			if (found != string::npos)
+			if (found != npos)
 			{
 				// get what should be the value after the "="
 				value = line.substr(found+1);
@@ -131,15 +134,29 @@ bool Configuration_Settings::load(string name)
 								maximum_number_transitions = int_value;
 								transitions_set = true;
 							}	
+							else if (found_keyword.compare("MAXIMUM_TRANSITIONS") == 0 &&
+								transitions_set == true)
+							{
+								duplicate = true;
+							}
 							else if (found_keyword.compare("MAXIMUM_CHARACTERS") == 0 &&
 									 chars_set == false)
 							{
 								maximum_number_characters = int_value;
 								chars_set = true;
 							}
+							else if (found_keyword.compare("MAXIMUM_CHARACTERS") == 0 &&
+									 chars_set == true)
+							{
+								duplicate = true;
+							}
 						}
 					}
 
+				}
+				else if (paths_set == true)
+				{
+					duplicate = true;
 				}
 				else if (paths_set == false)
 				{ // MIGHT need to edit this for situations such as YES'M or NOPE. 
@@ -175,7 +192,8 @@ bool Configuration_Settings::load(string name)
 
 	if (transitions_set &&
 		chars_set &&
-		paths_set)
+		paths_set &&
+		!duplicate)
 		return false;
 
 	return true;
@@ -297,7 +315,7 @@ void Configuration_Settings::exit_command()
 
 			config_file.close();
 
-			cout << "Configurations Settings file successfuly updated." << endl;
+			cout << "Configurations Settings file successfully updated." << endl;
 		}
 	}
 
