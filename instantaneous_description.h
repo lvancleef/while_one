@@ -4,7 +4,7 @@
 using namespace std;
 class Instantaneous_Description{
     private:
-        string current_state;
+        string current_state; 
         string remaining_input_string;
         string stack;
         int current_level;
