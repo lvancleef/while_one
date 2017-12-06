@@ -9,6 +9,7 @@
 #include "states.h"
 #include "final_states.h"
 #include "uppercase.h"
+#include "instantaneous_description.h"
 #include <string>
 #include <vector>
 #include <fstream>
@@ -248,22 +249,20 @@ void Transition_Function::view() const {
 	cout<<endl;
 }
 
-void Transition_Function::find_transition(string source_state, char read_character,
-	 	char read_stack_character, string& dest_state, string& write_stack, bool& found, int tried) const {
+bool Transition_Function::find_transition(Instantaneous_Description id, int tried) const {
 	 for (int i = 0; i < (int)transitions.size(); i++) {
-	 	if ((transitions[i].source_state() == source_state) && (transitions[i].read_character() == read_character)
-	 			&& (transitions[i].read_character_stack() == read_stack_character)) {
-	 		if (tried == 1) {
-	 			tried = 0;
+	 	if ((transitions[i].source_state() == id.get_current_state()) && (transitions[i].read_character() == id.input_character())
+	 			&& (transitions[i].read_character_stack() == id.top_of_stack())) {
+	 		if (tried != 0) {
+	 			tried--;
 	 			continue;
 	 		}
-	 		write_stack = transitions[i].write_str();
-	 		dest_state = transitions[i].destination_state();
-	 		found = true;
-	 		return;
+	 		 id.set_current_stack(transitions[i].write_str());
+	 		 id.set_current_state(transitions[i].destination_state());
+	 		return true;
 	 	}
 	 }
-	 found = false;
+	 return false;
 }
 
 
