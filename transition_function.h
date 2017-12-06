@@ -13,6 +13,7 @@
 #include "final_states.h"
 #include "input_alphabet.h"
 #include "stack_alphabet.h"
+#include "instantaneous_description.h"
 #include <string>
 #include <vector>
 #include <fstream>
@@ -30,8 +31,7 @@ class Transition_Function {
 				bool& valid) const;
 		void view() const;
 		// pass by reference because they are output parameters
-		void find_transition(string source_state, char read_character,
-			 	char read_stack_character, string& dest_state, string& write_stack, bool& found, int tried) const;
+		bool find_transition(Instantaneous_Description id, int tried) const;
 };
 
 
