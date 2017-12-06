@@ -249,10 +249,14 @@ void Transition_Function::view() const {
 }
 
 void Transition_Function::find_transition(string source_state, char read_character,
-	 	char read_stack_character, string& dest_state, string& write_stack, bool& found) const {
+	 	char read_stack_character, string& dest_state, string& write_stack, bool& found, int tried) const {
 	 for (int i = 0; i < (int)transitions.size(); i++) {
 	 	if ((transitions[i].source_state() == source_state) && (transitions[i].read_character() == read_character)
 	 			&& (transitions[i].read_character_stack() == read_stack_character)) {
+	 		if (tried == 1) {
+	 			tried = 0;
+	 			continue;
+	 		}
 	 		write_stack = transitions[i].write_str();
 	 		dest_state = transitions[i].destination_state();
 	 		found = true;
