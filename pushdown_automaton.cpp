@@ -211,7 +211,38 @@ while(command!="close"||command!= "open"){
 
 string Pushdown_Automaton::perform_transition(Instantaneous_Description instantaneous_description, int &number_of_transitions_performed)
 {   
-    return "rejected";
+    Instantaneous_Description next_id;   
+    int tried=0;
+    string command;
+    string transition;
+    while(number_of_transitions_performed!=configuration_settings->get_maximum_transitions()){
+        if(is_accepted(instantaneous_description)){
+            //accepted_path.push_back(instantaneous_description);
+            return "accepted";
+        }
+        
+        next_id=instantaneous_description;
+        number_of_transitions_performed++;
+
+        return "accepted";
+        //find trandition
+        // if(!Transition_Function.find_transition(next_id))
+        //     return "rejected";
+            
+        if(number_of_transitions_performed==configuration_settings->get_maximum_transitions()){
+            
+            command= commands();
+            if(command!="run")
+                return command;
+            }
+        transition = perform_transition(next_id, number_of_transitions_performed);
+        if(transition!="rejected"){
+            if(transition=="accepted")
+            //accepted_path.push_back(instantaneous_description);
+            return transition;
+        }
+        tried++;
+    }
 }
 
 string Pushdown_Automaton::commands()
