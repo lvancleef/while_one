@@ -48,5 +48,9 @@ using namespace std;
             current_state=value;
         }
         void Instantaneous_Description::set_current_stack(string value){
-            remaining_input_string.replace(0,1,value);
+            stack.replace(0,1,value);
+        }
+        void Instantaneous_Description::next_transition(){
+            current_level++;
+            remaining_input_string.erase(0,1);
         }

@@ -249,7 +249,7 @@ void Transition_Function::view() const {
 	cout<<endl;
 }
 
-bool Transition_Function::find_transition(Instantaneous_Description id, int tried) const {
+bool Transition_Function::find_transition(Instantaneous_Description &id, int tried) const {
 	 for (int i = 0; i < (int)transitions.size(); i++) {
 	 	if ((transitions[i].source_state() == id.get_current_state()) && (transitions[i].read_character() == id.input_character())
 	 			&& (transitions[i].read_character_stack() == id.top_of_stack())) {
@@ -257,6 +257,8 @@ bool Transition_Function::find_transition(Instantaneous_Description id, int trie
 	 			tried--;
 	 			continue;
 	 		}
+	 		//cout<<transitions[i].write_str()<<"=="<<transitions[i].destination_state()<<endl;
+
 	 		 id.set_current_stack(transitions[i].write_str());
 	 		 id.set_current_state(transitions[i].destination_state());
 	 		return true;

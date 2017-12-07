@@ -31,7 +31,7 @@ class Transition_Function {
 				bool& valid) const;
 		void view() const;
 		// pass by reference because they are output parameters
-		bool find_transition(Instantaneous_Description id, int tried) const;
+		bool find_transition(Instantaneous_Description &id, int tried) const;
 };
 
 

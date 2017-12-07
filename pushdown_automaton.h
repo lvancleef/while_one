@@ -15,7 +15,7 @@
 using namespace std;
 
 class Pushdown_Automaton{
-private:  
+private:
     Input_Alphabet input_alphabet;
     Stack_Alphabet stack_alphabet;
     Transition_Function transition_function;
