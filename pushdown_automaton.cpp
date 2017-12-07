@@ -1,5 +1,5 @@
 #include "pushdown_automaton.h"
-#include "utility.h"
+//#include "utility.h"
 #include "input_alphabet.h"
 #include "stack_alphabet.h"
 #include "transition_function.h"
@@ -723,15 +723,15 @@ void Pushdown_Automaton::sort_command()
     }
 }
 
-// string Pushdown_Automaton::visible(string value){
-//     const string lambda("\\");
-//     if(value.empty())
-//         value=lambda;
-//     return value;
-// }
-// string Pushdown_Automaton::truncate(string value){
-//     if(value.length()> configuration_settings->get_maximum_characters())
-//         value=value.substr(0,configuration_settings->get_maximum_characters())+">";
-//     return value;
-// }
+string Pushdown_Automaton::visible(string value){
+    const string lambda("\\");
+    if(value.empty())
+        value=lambda;
+    return value;
+}
+string Pushdown_Automaton::truncate(string value){
+    if(value.length()> configuration_settings->get_maximum_characters())
+        value=value.substr(0,configuration_settings->get_maximum_characters())+">";
+    return value;
+}
 

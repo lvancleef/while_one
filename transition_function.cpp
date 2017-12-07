@@ -5,6 +5,7 @@
  *      Author: kjdorow
  */
 #include "transition_function.h"
+#include "utility.h"
 #include "stack_alphabet.h"
 #include "states.h"
 #include "final_states.h"
@@ -21,7 +22,7 @@
 using namespace std;
 
 void Transition_Function::load(ifstream& definition, States states, Input_Alphabet input_alphabet, Stack_Alphabet stack_alphabet, bool& valid) {
-
+	char empty_char='\0';
 	int count = 1;
 
 	string value;
@@ -51,7 +52,7 @@ void Transition_Function::load(ifstream& definition, States states, Input_Alphab
 						transitions.resize(vecSize);
 					}
 					if (value[0] == '\\') {
-						transitions.at(transIndex).setRead('');
+						transitions.at(transIndex).setRead(empty_char);
 					}
 					else {
 						transitions.at(transIndex).setRead(value[0]);
@@ -63,7 +64,7 @@ void Transition_Function::load(ifstream& definition, States states, Input_Alphab
 						transitions.resize(vecSize);
 					}
 					if (value[0] == '\\') {
-						transitions.at(transIndex).setReadStack('');
+						transitions.at(transIndex).setReadStack(empty_char);
 					}
 					else {
 						transitions.at(transIndex).setReadStack(value[0]);
@@ -165,13 +166,13 @@ void Transition_Function::load(ifstream& definition, States states, Input_Alphab
 				return;
 			}
 			if (!(input_alphabet.is_element(transitions.at(transIndex).read_character())) &&
-					transitions.at(transIndex).read_character() != '') {
+					transitions.at(transIndex).read_character() != empty_char) {
 				cout << "Error: Transition Function contains a character not from Input_Alphabet." << endl;
 				valid = false;
 				return;
 			}
 			if (!(stack_alphabet.is_element(transitions.at(transIndex).read_character_stack())) &&
-					transitions.at(transIndex).read_character_stack() != '') {
+					transitions.at(transIndex).read_character_stack() != empty_char) {
 				cout << "Error: Transition Function contains a character not from Stack_Alphabet." << endl;
 				valid = false;
 				return;
@@ -183,7 +184,7 @@ void Transition_Function::load(ifstream& definition, States states, Input_Alphab
 			}
 			for (int j = 0; j < (int)transitions.at(transIndex).write_str().length(); j++) {
 				if (!(stack_alphabet.is_element(transitions.at(transIndex).write_str().at(j))) &&
-						transitions.at(transIndex).write_str().at(j) != '') {
+						transitions.at(transIndex).write_str().at(j) != empty_char) {
 					cout << "Error: Transition Function contains a character not from Stack_Alphabet." << endl;
 					valid = false;
 					return;
@@ -214,6 +215,7 @@ void Transition_Function::validate (const Stack_Alphabet& stack_alphabet,
 		const States& states,
 		const Final_States& final_states,
 		bool& valid) const {
+	char empty_char='\0';
 	 for (int i = 0; i < (int)transitions.size(); i++) {
 	 	if (final_states.Final_States::is_element(transitions[i].destination_state())) {
 	 		cout << "Final State " << transitions[i].destination_state() << " is in final states." << endl;
@@ -224,7 +226,7 @@ void Transition_Function::validate (const Stack_Alphabet& stack_alphabet,
 	 		valid = false;
 	 	}
 	 	if (!stack_alphabet.Stack_Alphabet::is_element(transitions[i].read_character_stack()) &&
-	 			transitions[i].read_character_stack() != '') {
+	 			transitions[i].read_character_stack() != empty_char) {
 	 		cout << "Top of Stack Character " << transitions[i].read_character_stack() << "is not in stack alphabet." << endl;
 	 		valid = false;
 	 	}
@@ -239,13 +241,13 @@ void Transition_Function::validate (const Stack_Alphabet& stack_alphabet,
 //	 	}
 		for (int j = 0; j < (int)transitions.at(i).write_str().length(); j++) {
 			if (!(stack_alphabet.is_element(transitions.at(i).write_str().at(j))) &&
-					transitions[i].write_str().at(j) != '') {
+					transitions[i].write_str().at(j) != empty_char) {
 				cout << "Write String" << transitions[i].write_str() << " is not in stack alphabet." << endl;
 				valid = false;
 			}
 		}
 	 	if (!input_alphabet.Input_Alphabet::is_element(transitions[i].read_character()) &&
-	 			transitions.at(i).read_character() != '') {
+	 			transitions.at(i).read_character() != empty_char) {
 	 		cout << "Read Character" << transitions[i].read_character() << " is not in input alphabet." << endl;
 	 		valid = false;
 	 	}
@@ -264,7 +266,7 @@ void Transition_Function::view() const {
 	cout<<endl;
 }
 
-bool Transition_Function::find_transition(Instantaneous_Description id, int tried) const {
+bool Transition_Function::find_transition(Instantaneous_Description &id, int tried) const {
 	 for (int i = 0; i < (int)transitions.size(); i++) {
 	 	if ((transitions[i].source_state() == id.get_current_state()) && (transitions[i].read_character() == id.input_character())
 	 			&& (transitions[i].read_character_stack() == id.top_of_stack())) {

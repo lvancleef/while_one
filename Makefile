@@ -43,4 +43,4 @@ main: utility.o main.o uppercase destination configuration_settings pushdown_aut
 	g++  main.o uppercase.o destination.o configuration_settings.o pushdown_automaton.o input_alphabet.o stack_alphabet.o transition.o transition_function.o states.o final_states.o instantaneous_description.o -o pda
 
 clean:
-	rm  main.o uppercase.o destination.o configuration_settings.o pushdown_automaton.o input_alphabet.o stack_alphabet.o transition.o transition_function.o states.o final_states.o instantaneous_description.o pda
+	rm  utility.o main.o uppercase.o destination.o configuration_settings.o pushdown_automaton.o input_alphabet.o stack_alphabet.o transition.o transition_function.o states.o final_states.o instantaneous_description.o pda
