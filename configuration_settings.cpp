@@ -15,6 +15,8 @@
 #include <stdlib.h>
 #include "uppercase.h"
 
+#define DEBUG 1;
+
 using namespace std;
 
 Configuration_Settings::Configuration_Settings(string name)
@@ -23,6 +25,7 @@ Configuration_Settings::Configuration_Settings(string name)
 	maximum_number_transitions = 1;
 	maximum_number_characters = 32;
 	complete_paths = false;
+
 	changed = true;
 	changed = load(name);
 }
@@ -62,6 +65,12 @@ bool Configuration_Settings::load(string name)
 	// attempt to read in lines
 	while (getline(config_file, line))
 	{	
+		if (DEBUG)
+		{
+			cout << "Line is: " << endl;
+		}
+
+
 		// does any keyword exist in line
 
 		found = To_Upper(line).find("MAXIMUM_TRANSITIONS");
@@ -69,13 +78,18 @@ bool Configuration_Settings::load(string name)
 		{
 			found_keyword = "MAXIMUM_TRANSITIONS";
 			found_one = true;
+
+			if (DEBUG)
+			{
+				cout << "FOUND MAXIMUM_TRANSITIONS" << endl;
+			}
 		}
 
-		found = To_Upper(line).find("MAXIMUM_CHARACTERS") ;
+		found = To_Upper(line).find("MAXIMUM_CHARACTERS");
 		if (found!=npos)
 		{
 			// if keyword has already been set, line is invalid
-			if (found_keyword.compare("") != 0)
+			if (found_keyword.empty())
 			{
 				found_one = false;
 				duplicate = true;
@@ -84,6 +98,12 @@ bool Configuration_Settings::load(string name)
 			{
 				found_keyword = "MAXIMUM_CHARACTERS";
 				found_one = true;
+
+				if (DEBUG)
+				{
+					cout << "FOUND MAXIMUM_CHARACTERS" << endl;
+				}
+
 			}
 		}
 		
@@ -91,7 +111,7 @@ bool Configuration_Settings::load(string name)
 		if (found!=npos)
 		{
 			// if keyword has already been set, line is invalid
-			if (found_keyword.compare("") != 0)
+			if (found_keyword.empty())
 			{
 				found_one = false;
 				duplicate = true;
@@ -100,6 +120,11 @@ bool Configuration_Settings::load(string name)
 			{
 				found_keyword = "COMPLETE_PATHS";
 				found_one = true;
+
+				if (DEBUG)
+				{
+					cout << "FOUND COMPLETE_PATHS" << endl;
+				}
 			}
 		}
 
