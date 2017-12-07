@@ -1,4 +1,5 @@
 #include "pushdown_automaton.h"
+#include "utility.h"
 #include "input_alphabet.h"
 #include "stack_alphabet.h"
 #include "transition_function.h"
@@ -161,6 +162,7 @@ while(command!="close"||command!= "open"){
             return false;
         }
         else if(command=="exit"){
+            close_command();
             configuration_settings->exit_command();
         }
         else if(command=="run"){
@@ -284,21 +286,32 @@ string Pushdown_Automaton::perform_transition(Instantaneous_Description instanta
         }
         
         next_id=instantaneous_description;
+        if(tried>0){///test
+            cout<<"id:";
+            print_id(next_id);
+
+        }
         number_of_transitions_performed++;
         number_of_transitions++;
 
         //return "accepted";//no good
         //find trandition
+        
         if(!transition_function.find_transition(next_id,tried)){
+            
             if(configuration_settings->get_complete_paths()){
             cout<<"Crash\n";
+            number_of_transitions_performed--;//questions is a crash a transtion
+            number_of_transitions--;
             number_of_crashes++;
             }
+            cout<<"rejected\n";
             return "rejected";
         }
         next_id.next_transition();
-        print_id(next_id);
-            
+        if(configuration_settings->get_complete_paths()){
+            print_id(next_id);
+        }    
             
         if(number_of_transitions_performed==configuration_settings->get_maximum_transitions()){
             print_id(instantaneous_description);
@@ -319,7 +332,7 @@ string Pushdown_Automaton::perform_transition(Instantaneous_Description instanta
 
             return transition;
         }
-
+        cout<<"tried\n";
         tried++;
     }
 }
@@ -344,7 +357,8 @@ string Pushdown_Automaton::commands()
                 configuration_settings->display_command();            
             }   
             else if(Command == "x"||Command== "X"){
-               configuration_settings->exit_command();
+                close_command();
+                configuration_settings->exit_command();
             }      
             else if(Command == "H" || Command== "h"){   
                 help_command();
@@ -623,10 +637,11 @@ void Pushdown_Automaton::delete_command()
     int input_num;
     cout<<"Input sting number: ";
     string load="";
-    cin.ignore();
+   
     getline(cin,load);
     if(istringstream ( load ) >> input_num)
     {
+        cout<<string_list.size()<<endl;
         if(input_num<1 or input_num>string_list.size())
             {
                 cout<<"Index out of range\n";
@@ -668,7 +683,7 @@ void Pushdown_Automaton::close_command(){
             }
             else
             {
-
+                cout<<"string_file\n";
                 for(int index=0;index<string_list.size();index++){
                     str_file<<string_list[index]<<endl;
                 }
@@ -708,15 +723,15 @@ void Pushdown_Automaton::sort_command()
     }
 }
 
-string Pushdown_Automaton::visible(string value){
-    const string lambda("/");
-    if(value.empty())
-        value=lambda;
-    return value;
-}
-string Pushdown_Automaton::truncate(string value){
-    if(value.length()> configuration_settings->get_maximum_characters())
-        value=value.substr(0,configuration_settings->get_maximum_characters())+">";
-    return value;
-}
+// string Pushdown_Automaton::visible(string value){
+//     const string lambda("\\");
+//     if(value.empty())
+//         value=lambda;
+//     return value;
+// }
+// string Pushdown_Automaton::truncate(string value){
+//     if(value.length()> configuration_settings->get_maximum_characters())
+//         value=value.substr(0,configuration_settings->get_maximum_characters())+">";
+//     return value;
+// }
 

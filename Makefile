@@ -36,7 +36,10 @@ instantaneous_description:
 main.o:  
 	g++ -c main.cpp
 
-main: main.o uppercase destination configuration_settings pushdown_automaton input_alphabet stack_alphabet transition transition_function states final_states instantaneous_description
+utility.o:
+	g++ -c utility.cpp
+
+main: utility.o main.o uppercase destination configuration_settings pushdown_automaton input_alphabet stack_alphabet transition transition_function states final_states instantaneous_description
 	g++  main.o uppercase.o destination.o configuration_settings.o pushdown_automaton.o input_alphabet.o stack_alphabet.o transition.o transition_function.o states.o final_states.o instantaneous_description.o -o pda
 
 clean:

@@ -48,6 +48,8 @@ using namespace std;
             current_state=value;
         }
         void Instantaneous_Description::set_current_stack(string value){
+            if(value=="\\")
+                value="";
             stack.replace(0,1,value);
         }
         void Instantaneous_Description::next_transition(){

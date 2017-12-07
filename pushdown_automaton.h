@@ -1,6 +1,6 @@
 #ifndef Pushdown_Automaton_H
 #define Pushdown_Automaton_H
-
+#include "utility.h"
 #include "input_alphabet.h"
 #include "stack_alphabet.h"
 #include "transition_function.h"
