@@ -15,7 +15,7 @@
 #include <stdlib.h>
 #include "uppercase.h"
 
-#define DEBUG 1;
+#define DEBUG 0
 
 using namespace std;
 
@@ -67,7 +67,7 @@ bool Configuration_Settings::load(string name)
 	{	
 		if (DEBUG)
 		{
-			cout << "Line is: " << endl;
+			cout << "Line is: " << line << endl;
 		}
 
 
