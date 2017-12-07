@@ -716,13 +716,14 @@ void Pushdown_Automaton::sort_command()
     vector<string> temp(string_list);
     sort(string_list.begin(),string_list.end(),canonical);
     if(string_list==temp)
-        cout<<"list is already sorted\n";
+        cout<<"list is already sorted\n"; 
     else{
         changed=true;
         cout<<"list has been sorted\n";
     }
-}
 
+}
+///asd
 string Pushdown_Automaton::visible(string value){
     const string lambda("\\");
     if(value.empty())

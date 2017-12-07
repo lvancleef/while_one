@@ -19,6 +19,7 @@
 #include <cstring>
 #include <ctype.h>
 
+
 using namespace std;
 
 void Transition_Function::load(ifstream& definition, States states, Input_Alphabet input_alphabet, Stack_Alphabet stack_alphabet, bool& valid) {
