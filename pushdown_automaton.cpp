@@ -214,9 +214,7 @@ while(command!="close"||command!= "open"){
                         ss>> start_character_string;
                         string id_string;
                         Instantaneous_Description id(initial_state, original_input_string, start_character_string, 0);
-                        if(DEBUG)
-                            cout<<"run: ";
-
+                        
                         print_id(id);
                         run=perform_transition(id, number_of_transitions_performed);
             
@@ -294,9 +292,9 @@ string Pushdown_Automaton::perform_transition(Instantaneous_Description instanta
             oss<<truncate(visible(instantaneous_description.get_remaining_input_string()))<<",";
             oss<<truncate(visible(instantaneous_description.get_stack()))<<")\n";
             id_string=oss.str();
-            accepted_path.push_back(id_string);
-            if(DEBUG)
-                cout<<"2\n";
+            // accepted_path.push_back(id_string);
+            // if(DEBUG)
+            //     cout<<"2\n";
             return "accepted";
         }
         
@@ -341,9 +339,10 @@ string Pushdown_Automaton::perform_transition(Instantaneous_Description instanta
             ////////
         
         if(number_of_transitions_performed==configuration_settings->get_maximum_transitions()){
-            if(DEBUG)
-            cout<<"=";
-            print_id(instantaneous_description);
+           
+         if(!configuration_settings->get_complete_paths()){
+            print_id(next_id);
+        }    
             command= commands();
             if(command!="run")
                 return command;
