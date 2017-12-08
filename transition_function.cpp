@@ -6,7 +6,6 @@
  */
 #include "debug.h"
 #include "transition_function.h"
-#include "utility.h"
 #include "stack_alphabet.h"
 #include "states.h"
 #include "final_states.h"

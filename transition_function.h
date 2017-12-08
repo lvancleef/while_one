@@ -9,7 +9,7 @@
 #define TRANSITION_FUNCTION_H_
 
 #include "transition.h"
-#include "utility.h"
+
 #include "states.h"
 #include "final_states.h"
 #include "input_alphabet.h"
