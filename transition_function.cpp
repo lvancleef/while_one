@@ -4,6 +4,7 @@
  *  Created on: Nov 16, 2017
  *      Author: kjdorow
  */
+#include "debug.h"
 #include "transition_function.h"
 #include "utility.h"
 #include "stack_alphabet.h"
@@ -255,26 +256,44 @@ void Transition_Function::validate (const Stack_Alphabet& stack_alphabet,
 	 }
 }
 
-void Transition_Function::view() const {
+void Transition_Function::view() {
+ 	string read;
 	cout << "Transitions: ";
 	for (int i = 0; i < (int)transitions.size(); i++) {
+        read="";
+        if(transitions.at(i).read_character()!='\0')
+      		read.push_back(transitions.at(i).read_character());
+
 		cout << endl;
-		cout << "delta("<< transitions.at(i).source_state() << ", " << transitions.at(i).read_character() << ", "<<
+		cout << "delta("<< transitions.at(i).source_state() << ", " << visible(read) << ", "<<
 				transitions.at(i).read_character_stack() << ") = ("
 				<< transitions.at(i).destination_state() << ", "
-				<< transitions.at(i).write_str() << ")";
+				<< visible(transitions.at(i).write_str()) << ")";
 	}
 	cout<<endl;
 }
 
 bool Transition_Function::find_transition(Instantaneous_Description &id, int tried) const {
 	 for (int i = 0; i < (int)transitions.size(); i++) {
+
+	 	// if(DEBUG){
+	 	// 	if(id.get_current_state()=="s1"){
+	 	// 		cout<<id.get_current_state()<<"="<<transitions[i].source_state()<<endl;
+	 	// 		cout<<id.input_character()<<"="<<transitions[i].read_character()<<endl;
+	 	// 		cout<<id.top_of_stack()<<"="<<transitions[i].read_character_stack()<<endl;
+	 	// 	}
+
+	 		
+	 	//}
+
 	 	if ((transitions[i].source_state() == id.get_current_state()) && (transitions[i].read_character() == id.input_character())
 	 			&& (transitions[i].read_character_stack() == id.top_of_stack())) {
 	 		if (tried != 0) {
 	 			tried--;
+
 	 			continue;
 	 		}
+	 		
 	 		 id.set_current_stack(transitions[i].write_str());
 	 		 id.set_current_state(transitions[i].destination_state());
 	 		return true;
@@ -284,6 +303,11 @@ bool Transition_Function::find_transition(Instantaneous_Description &id, int tri
 }
 
 
-
+string Transition_Function::visible(string value){
+    const string lambda("\\");
+    if(value.empty())
+        value=lambda;
+    return value;
+}
 
 

@@ -27,6 +27,8 @@ using namespace std;
             return stack;
         }
         char Instantaneous_Description::input_character() const{
+            if(remaining_input_string.length()==0)
+                return '\0';
             return remaining_input_string[0];
         }
         char Instantaneous_Description::top_of_stack() const{

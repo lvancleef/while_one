@@ -30,9 +30,11 @@ class Transition_Function {
 				const States& states,
 				const Final_States& final_states,
 				bool& valid) const;
-		void view() const;
+		void view();
 		// pass by reference because they are output parameters
 		bool find_transition(Instantaneous_Description &id, int tried) const;
+
+    	string visible(string value);
 };
 
 

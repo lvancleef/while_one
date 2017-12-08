@@ -8,6 +8,7 @@
 #include "instantaneous_description.h"
 #include "configuration_settings.h"
 #include "uppercase.h"
+#include "debug.h"
 
 #include <string>
 #include <iostream>
@@ -23,9 +24,11 @@ Pushdown_Automaton::Pushdown_Automaton(Configuration_Settings *config_settings)
 bool Pushdown_Automaton::is_accepted(Instantaneous_Description id)
 {
     if(!final_states.is_element(id.get_current_state())||!id.is_empty_remaining_input_string()||!id.is_empty_stack()){
+        
         return false;
     }   
     else{
+
         return true;
     }
 
@@ -130,6 +133,7 @@ void Pushdown_Automaton::load(string definition_file_name)
 
 bool Pushdown_Automaton::pda_main()
 {//check if valid is false print error
+    ostringstream oss;
     string command;
     string run;
     if(!valid){
@@ -167,7 +171,12 @@ while(command!="close"||command!= "open"){
         }
         else if(command=="run"){
             int input_num;
-            
+            accepted_path.clear();
+            oss.str("");
+            if(accepted_path.size()>0){
+                accepted_path.pop_back();
+                cout<<"what\n";
+            }
             cout<<"Input sting number: ";
             string load="";
             
@@ -188,6 +197,8 @@ while(command!="close"||command!= "open"){
                                     running=true;
                                     number_of_transitions=0;
                                     number_of_crashes=0;
+                                    if(input_num==2)
+                                    cout<<accepted_path[0]<<"=="<<endl;
                                 }
                         }
                         else
@@ -201,6 +212,7 @@ while(command!="close"||command!= "open"){
             
                         string start_character_string;
                         stringstream ss;
+                        ss.str("");
                         ss<< start_character;
                         ss>> start_character_string;
                         string id_string;
@@ -209,15 +221,17 @@ while(command!="close"||command!= "open"){
                         run=perform_transition(id, number_of_transitions_performed);
             
                         if(run=="accepted"){             
-                            ostringstream oss;
+                             
                             oss<<"["<<id.get_current_level()<<"] (";
                             oss<<id.get_current_state()<<",";
                             oss<<truncate(visible(id.get_remaining_input_string()))<<",";
                             oss<<truncate(visible(id.get_stack()))<<")\n";
                             id_string=oss.str();
+                            if(DEBUG)
+                                cout<<"1\n";
                             accepted_path.push_back(id_string);
                             
-                            cout<<original_input_string<<"Was accepted in "<<number_of_transitions<<" transitions\n";
+                            cout<<original_input_string<<" was accepted in "<<number_of_transitions<<" transitions\n";
                             cout<<"With "<<number_of_crashes<<" crashes\n";
                             accepted=true;
                             if(configuration_settings->get_complete_paths()){
@@ -281,16 +295,13 @@ string Pushdown_Automaton::perform_transition(Instantaneous_Description instanta
             oss<<truncate(visible(instantaneous_description.get_stack()))<<")\n";
             id_string=oss.str();
             accepted_path.push_back(id_string);
-
+            if(DEBUG)
+                cout<<"2\n";
             return "accepted";
         }
         
         next_id=instantaneous_description;
-        if(tried>0){///test
-            cout<<"id:";
-            print_id(next_id);
-
-        }
+        
         number_of_transitions_performed++;
         number_of_transitions++;
 
@@ -305,10 +316,26 @@ string Pushdown_Automaton::perform_transition(Instantaneous_Description instanta
             number_of_transitions--;
             number_of_crashes++;
             }
-            cout<<"rejected\n";
+            if(DEBUG)
+                cout<<"rejected\n";
             return "rejected";
         }
         next_id.next_transition();
+      
+        if(is_accepted(next_id)){
+            if(configuration_settings->get_complete_paths()){
+                print_id(next_id);
+            }
+            oss<<"["<<next_id.get_current_level()<<"] (";
+            oss<<next_id.get_current_state()<<",";
+            oss<<truncate(visible(next_id.get_remaining_input_string()))<<",";
+            oss<<truncate(visible(next_id.get_stack()))<<")\n";
+            id_string=oss.str();
+            accepted_path.push_back(id_string);
+            if(DEBUG)
+                cout<<"2\n";
+            return "accepted";
+        }
         if(configuration_settings->get_complete_paths()){
             print_id(next_id);
         }    
@@ -322,17 +349,22 @@ string Pushdown_Automaton::perform_transition(Instantaneous_Description instanta
         transition = perform_transition(next_id, number_of_transitions_performed);
         if(transition!="rejected"){
             if(transition=="accepted")
-            //accepted_path.push_back(instantaneous_description);
-            oss<<"["<<instantaneous_description.get_current_level()<<"] (";
-            oss<<instantaneous_description.get_current_state()<<",";
-            oss<<truncate(visible(instantaneous_description.get_remaining_input_string()))<<",";
-            oss<<truncate(visible(instantaneous_description.get_stack()))<<")\n";
+            
+            oss<<"["<<next_id.get_current_level()<<"] (";
+            oss<<next_id.get_current_state()<<",";
+            oss<<truncate(visible(next_id.get_remaining_input_string()))<<",";
+            oss<<truncate(visible(next_id.get_stack()))<<")\n";
             id_string=oss.str();
+
+            if(DEBUG)
+                cout<<"4\n";
+
             accepted_path.push_back(id_string);
 
             return transition;
         }
-        cout<<"tried\n";
+        if(DEBUG)
+            cout<<"tried\n";
         tried++;
     }
 }
@@ -641,7 +673,7 @@ void Pushdown_Automaton::delete_command()
     getline(cin,load);
     if(istringstream ( load ) >> input_num)
     {
-        cout<<string_list.size()<<endl;
+    
         if(input_num<1 or input_num>string_list.size())
             {
                 cout<<"Index out of range\n";

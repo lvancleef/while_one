@@ -6,6 +6,7 @@
  *
  * notes: load and exit attempted. 
  */
+#include "debug.h"
 
 #include "configuration_settings.h"
 #include <string>
@@ -15,7 +16,6 @@
 #include <stdlib.h>
 #include "uppercase.h"
 
-#define DEBUG 0
 
 using namespace std;
 
