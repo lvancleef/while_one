@@ -145,7 +145,8 @@ bool Pushdown_Automaton::pda_main()
     }
 while(command!="close"||command!= "open"){        
         command=commands();
-        if(command=="open"){
+        if(command.empty()){}
+        else if(command=="open"){
             if(running){
                 quit_command();
             }
@@ -173,10 +174,7 @@ while(command!="close"||command!= "open"){
             int input_num;
             accepted_path.clear();
             oss.str("");
-            if(accepted_path.size()>0){
-                accepted_path.pop_back();
-                cout<<"what\n";
-            }
+            
             cout<<"Input sting number: ";
             string load="";
             
@@ -197,8 +195,7 @@ while(command!="close"||command!= "open"){
                                     running=true;
                                     number_of_transitions=0;
                                     number_of_crashes=0;
-                                    if(input_num==2)
-                                    cout<<accepted_path[0]<<"=="<<endl;
+                                    
                                 }
                         }
                         else
@@ -217,6 +214,9 @@ while(command!="close"||command!= "open"){
                         ss>> start_character_string;
                         string id_string;
                         Instantaneous_Description id(initial_state, original_input_string, start_character_string, 0);
+                        if(DEBUG)
+                            cout<<"run: ";
+
                         print_id(id);
                         run=perform_transition(id, number_of_transitions_performed);
             
@@ -286,7 +286,7 @@ string Pushdown_Automaton::perform_transition(Instantaneous_Description instanta
     string transition;
     string id_string;
     ostringstream oss;
-    while(number_of_transitions_performed!=configuration_settings->get_maximum_transitions()){
+    while(1){//number_of_transitions_performed!=configuration_settings->get_maximum_transitions()
         if(is_accepted(instantaneous_description)){
             
             oss<<"["<<instantaneous_description.get_current_level()<<"] (";
@@ -302,8 +302,7 @@ string Pushdown_Automaton::perform_transition(Instantaneous_Description instanta
         
         next_id=instantaneous_description;
         
-        number_of_transitions_performed++;
-        number_of_transitions++;
+        
 
         //return "accepted";//no good
         //find trandition
@@ -312,40 +311,45 @@ string Pushdown_Automaton::perform_transition(Instantaneous_Description instanta
             
             if(configuration_settings->get_complete_paths()){
             cout<<"Crash\n";
-            number_of_transitions_performed--;//questions is a crash a transtion
-            number_of_transitions--;
             number_of_crashes++;
             }
             if(DEBUG)
                 cout<<"rejected\n";
             return "rejected";
         }
+        number_of_transitions_performed++;
+        number_of_transitions++;
         next_id.next_transition();
       
-        if(is_accepted(next_id)){
-            if(configuration_settings->get_complete_paths()){
-                print_id(next_id);
-            }
-            oss<<"["<<next_id.get_current_level()<<"] (";
-            oss<<next_id.get_current_state()<<",";
-            oss<<truncate(visible(next_id.get_remaining_input_string()))<<",";
-            oss<<truncate(visible(next_id.get_stack()))<<")\n";
-            id_string=oss.str();
-            accepted_path.push_back(id_string);
-            if(DEBUG)
-                cout<<"2\n";
-            return "accepted";
-        }
+        // if(is_accepted(next_id)){
+        //     if(configuration_settings->get_complete_paths()){
+        //         print_id(next_id);
+        //     }
+        //     oss<<"["<<next_id.get_current_level()<<"] (";
+        //     oss<<next_id.get_current_state()<<",";
+        //     oss<<truncate(visible(next_id.get_remaining_input_string()))<<",";
+        //     oss<<truncate(visible(next_id.get_stack()))<<")\n";
+        //     id_string=oss.str();
+        //     accepted_path.push_back(id_string);
+        //     if(DEBUG)
+        //         cout<<"2\n";
+        //     return "accepted";
+        // }
         if(configuration_settings->get_complete_paths()){
             print_id(next_id);
         }    
-            
+            ////////
+        
         if(number_of_transitions_performed==configuration_settings->get_maximum_transitions()){
+            if(DEBUG)
+            cout<<"=";
             print_id(instantaneous_description);
             command= commands();
             if(command!="run")
                 return command;
+            number_of_transitions_performed=0;
             }
+      
         transition = perform_transition(next_id, number_of_transitions_performed);
         if(transition!="rejected"){
             if(transition=="accepted")
@@ -425,6 +429,7 @@ string Pushdown_Automaton::commands()
             else if(Command == "V" || Command == "v"){
                 view_command();
             }
+            else if(Command.empty()){}
             else{
                 cout<<"INVALID Commmand\n";
             }           
@@ -506,7 +511,7 @@ void Pushdown_Automaton::initialize_string_list()
                         {
                             if(is_valid_input_string(load)==false)
                             {
-                                cout<<"in=="<<load<<endl;
+                                
                                 cout<<"Invalid input string\n";
                                 flag=false;
                                 break;
@@ -544,7 +549,7 @@ void Pushdown_Automaton::help_command()
 
 void Pushdown_Automaton::show_command()//need to be cleaned up
 {
-    //cout<<"show command\n";//show app data
+ 
     cout<<"  Status of PDA\n";
     cout<<"================\n";    
     cout<<"  Name of PDA:   "<<name<<endl;
@@ -594,7 +599,7 @@ void Pushdown_Automaton::show_command()//need to be cleaned up
 
 void Pushdown_Automaton::view_command()
 {
-    //cout<<"view command\n";//the pda loaded
+
     cout<<pda_description<<endl;
     states.view();
     input_alphabet.view();
