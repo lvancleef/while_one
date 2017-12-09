@@ -43,6 +43,10 @@ using namespace std;
         int Instantaneous_Description::get_current_level() const{
             return current_level;
         }
+        void Instantaneous_Description::increment_level()
+        {
+            current_level++;
+        }
         string Instantaneous_Description::get_remaining_input_string() const{
             return remaining_input_string;
         }
@@ -55,6 +59,6 @@ using namespace std;
             stack.replace(0,1,value);
         }
         void Instantaneous_Description::next_transition(){
-            current_level++;
+            //current_level++;
             remaining_input_string.erase(0,1);
         }

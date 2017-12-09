@@ -20,6 +20,7 @@ class Instantaneous_Description{
         bool is_empty_stack() const;
         bool is_empty_remaining_input_string() const;
         int get_current_level() const;
+        void increment_level();
         void next_transition();
         string get_remaining_input_string() const;
     };
