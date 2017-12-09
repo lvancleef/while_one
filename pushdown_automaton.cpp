@@ -292,20 +292,13 @@ string Pushdown_Automaton::perform_transition(Instantaneous_Description instanta
     ostringstream oss;
 
     while(1)
-    {//number_of_transitions_performed!=configuration_settings->get_maximum_transitions()
+    {
         if( is_accepted(instantaneous_description) )
         {
-            // oss << "[" << instantaneous_description.get_current_level() << "] (";
-            // oss << instantaneous_description.get_current_state() << ",";
-            // oss << truncate(visible(instantaneous_description.get_remaining_input_string())) << ",";
-            // oss << truncate(visible(instantaneous_description.get_stack())) << ")\n";
-            // id_string = oss.str(); // what do you do with this string? QUESTION
            if(!configuration_settings->get_complete_paths())
             {
                 print_id(instantaneous_description);
             } 
-            //accepted_path.push_back(id_string);
-
             return "accepted";
         }
         

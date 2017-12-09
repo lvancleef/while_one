@@ -182,10 +182,8 @@ bool Configuration_Settings::load(string name)
 					duplicate = true;
 				}
 				else if (paths_set == false)
-				{ // MIGHT need to edit this for situations such as YES'M or NOPE. 
-					// since those situations would not be valid
-
-					found = value.find("YES");
+				{ 
+					found = To_Upper(value).find("YES");
 					if (found != npos)
 					{
 						complete_paths = true;
@@ -194,7 +192,7 @@ bool Configuration_Settings::load(string name)
 
 					if (paths_set == false)
 					{
-						found = value.find("NO");
+						found = To_Upper(value).find("NO");
 						if (found != npos)
 							paths_set = true;
 					}
