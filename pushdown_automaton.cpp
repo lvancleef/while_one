@@ -233,9 +233,10 @@ while(1){
                         accepted=true;
                         if(configuration_settings->get_complete_paths()){
                             cout<<"Accepted path:\n";
-                            for(int index=accepted_path.size()-1;index>-1;index--)
-                            {                     
-                                cout<<accepted_path[index];                   
+                            while(accepted_path.size() > 0)
+                            {    
+                                cout << accepted_path.back();     
+                                accepted_path.pop_back();              
                             }
                             
                         }
@@ -301,7 +302,7 @@ string Pushdown_Automaton::perform_transition(Instantaneous_Description instanta
             oss << truncate(visible(instantaneous_description.get_stack())) << ")\n";
             id_string = oss.str(); // what do you do with this string? QUESTION
 
-            accepted_path.push_back(id_string);
+            //accepted_path.push_back(id_string);
 
             return "accepted";
         }
@@ -374,7 +375,7 @@ string Pushdown_Automaton::perform_transition(Instantaneous_Description instanta
         tried++;
 
         if(DEBUG)
-            cout<<"Tried " << tried + 1 << "times" << endl;
+            cout<<"Tried " << tried << " times" << endl;
     }
 }
 
