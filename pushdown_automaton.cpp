@@ -151,7 +151,6 @@ while(1){
                 quit_command();
             }
             close_command();
-            cout<<"open true\n";
             return true;
         }
         else if(command=="quit"){
@@ -564,7 +563,7 @@ void Pushdown_Automaton::show_command()//need to be cleaned up
     cout<<"  Name of PDA:   "<<name<<endl;
 
     if(running){      
-        cout<<"  Status:        PDA is currently running on an input string";     
+        cout<<"  Status:        PDA is currently running on an input string\n";     
         cout<<"  Input string: "<<original_input_string<<endl;
         cout<<"  Transitions:   "<<number_of_transitions<<endl;
         cout<<"  Crashes:       "<<number_of_crashes<<endl;
@@ -578,12 +577,20 @@ void Pushdown_Automaton::show_command()//need to be cleaned up
             cout<<"  Crashes:       "<<number_of_crashes<<endl;
             cout<<"  Number of transitions in successful path: "<<accepted_path.size()<<endl;
         }
-        else{
+        else if(rejected){
             cout<<"  Status:        PDA has completed an operation on an input string\n";           
             cout<<"  last input string used:  "<<visible(original_input_string)<<endl;
             cout<<"  Input string was:        Rejected\n";
             cout<<"  Transitions:   "<<number_of_transitions<<endl;
             cout<<"  Crashes:       "<<number_of_crashes<<endl;   
+        }
+        else{
+            cout<<"  Status:        PDA was operation quit by users\n";           
+            cout<<"  last input string used:  "<<visible(original_input_string)<<endl;
+            cout<<"  Input string was:        not rejected or accepted\n";
+            cout<<"  Transitions:   "<<number_of_transitions<<endl;
+            cout<<"  Crashes:       "<<number_of_crashes<<endl;
+
         }
     }
     else{
