@@ -27,6 +27,8 @@ using namespace std;
             return stack;
         }
         char Instantaneous_Description::input_character() const{
+            if(remaining_input_string.length()==0)
+                return '\0';
             return remaining_input_string[0];
         }
         char Instantaneous_Description::top_of_stack() const{
@@ -41,6 +43,22 @@ using namespace std;
         int Instantaneous_Description::get_current_level() const{
             return current_level;
         }
+        void Instantaneous_Description::increment_level()
+        {
+            current_level++;
+        }
         string Instantaneous_Description::get_remaining_input_string() const{
             return remaining_input_string;
+        }
+        void Instantaneous_Description::set_current_state(string value){
+            current_state=value;
+        }
+        void Instantaneous_Description::set_current_stack(string value){
+            if(value=="\\")
+                value="";
+            stack.replace(0,1,value);
+        }
+        void Instantaneous_Description::next_transition(){
+            //current_level++;
+            remaining_input_string.erase(0,1);
         }
