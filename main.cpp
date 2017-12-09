@@ -1,8 +1,8 @@
 /*
  * file: main.cpp
  * author: lvancleef
- * version: 1.0
- * date: 12/4/2017
+ * version: 2.0
+ * date: 12/9/2017
  */
 
 #include "configuration_settings.h"
@@ -80,8 +80,7 @@ void show_command(Configuration_Settings * configuration_settings)
  * If user wants to open new PDA from within Pushdown_Automata, loops to reopen.
  */
 void open_command(Pushdown_Automaton & pushdown_automaton,
-			 Configuration_Settings & configuration_settings,
-			 bool init = false, string name = "")
+			 	  bool init = false, string name = "")
 {
 	string filename = name;
 	bool open = false;
@@ -118,18 +117,19 @@ int main(int argc, char const *argv[])
 		return 0;
 	}
 
+	// Initialize Configuration_Settings and Pushdown_Automaton
 	Configuration_Settings configuration_settings(argv[0]);
 	Pushdown_Automaton pushdown_automaton(&configuration_settings);
 
 	if (argc == 2)
 	{
-		open_command(pushdown_automaton, configuration_settings,
-					 true, argv[1]);
+		open_command(pushdown_automaton, true, argv[1]);
 	}
 
 	string choice;
 	int count = 0;
 
+	// The Command loop
 	do
 	{
 		cout << "Command: ";
@@ -152,7 +152,7 @@ int main(int argc, char const *argv[])
 		else if(To_Upper(choice) == "O")
 		{
 			count = 0;
-			open_command(pushdown_automaton, configuration_settings);
+			open_command(pushdown_automaton);
 		}
 		else if (To_Upper(choice) == "E")
 		{
