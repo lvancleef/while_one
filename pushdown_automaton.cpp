@@ -441,7 +441,6 @@ string Pushdown_Automaton::commands()
     
 bool Pushdown_Automaton::is_valid_input_string(string value)
 {
-    
     bool flag=true;
     for(int index=0;index<string_list.size();index++){
         if(string_list[index]==value)
@@ -508,13 +507,14 @@ void Pushdown_Automaton::initialize_string_list()
                                 }
                             }
                                                        
-                        for(int index;index<load.length();index++)
+                        for(int index=0;index<load.length();index++)
                         {
                             if(is_valid_input_string(load)==false)
                             {
                                 
                                 cout<<"Invalid input string\n";
                                 flag=false;
+                                changed=true;
                                 break;
                             }
                         }
@@ -621,10 +621,16 @@ void Pushdown_Automaton::view_command()
     
 void Pushdown_Automaton::list_command()
 {
-    for(int index=0;index<string_list.size();index++)
-        {
-            cout<<index+1<<".\t"<<visible(string_list[index])<<endl;
-        }
+    if(string_list.size()==0){
+        cout<<"List is empty!\n";
+    }
+    else{
+
+        for(int index=0;index<string_list.size();index++)
+            {
+                cout<<index+1<<".\t"<<visible(string_list[index])<<endl;
+            }
+    }        
 }
 
 void Pushdown_Automaton::insert_command()
@@ -762,6 +768,9 @@ void Pushdown_Automaton::sort_command()
     sort(string_list.begin(),string_list.end(),canonical);
     if(string_list==temp)
         cout<<"list is already sorted\n"; 
+    else if(string_list.size()==0){
+        cout<<"Input string list is empty\n";
+    }
     else{
         changed=true;
         cout<<"list has been sorted\n";
