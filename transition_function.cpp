@@ -162,7 +162,7 @@ void Transition_Function::load(ifstream& definition, States states, Input_Alphab
 		if (count == 5)
 		{
 			if (!(states.is_element(transitions.at(transIndex).source_state()))) {
-				cout << "Error: Transition Function contains a non-state." << transitions.at(transIndex).source_state() << endl;
+				cout << "Error: Transition Function contains a non-state:" << transitions.at(transIndex).source_state() << endl;
 				valid = false;
 				return;
 			}
