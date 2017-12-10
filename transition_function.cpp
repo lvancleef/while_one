@@ -1,9 +1,9 @@
 /*
- * transition_function.cpp
- *
- *  Created on: Nov 16, 2017
- *      Author: kjdorow
- */
+* transition_function.cpp
+*
+*  Created on: Nov 16, 2017
+*      Author: kjdorow
+*/
 #include "debug.h"
 #include "transition_function.h"
 #include "stack_alphabet.h"
@@ -23,7 +23,7 @@
 using namespace std;
 
 void Transition_Function::load(ifstream& definition, States states, Input_Alphabet input_alphabet, Stack_Alphabet stack_alphabet, bool& valid) {
-	char empty_char='\0';
+	char empty_char = '\0';
 	int count = 1;
 
 	string value;
@@ -80,7 +80,7 @@ void Transition_Function::load(ifstream& definition, States states, Input_Alphab
 		}
 		else if (count == 1 or count == 4)
 		{
-			if ((definition >> value) and ( To_Upper(value) != "INITIAL_STATE:"))
+			if ((definition >> value) and(To_Upper(value) != "INITIAL_STATE:"))
 			{
 				for (int i = 0; i < (int)value.size(); i++)
 				{
@@ -95,7 +95,7 @@ void Transition_Function::load(ifstream& definition, States states, Input_Alphab
 						(value[i] == ','))
 					{
 						valid = false;
-						cout << "in transition: invalid character '"<< value << "' within state" << endl;
+						cout << "in transition: invalid character '" << value << "' within state" << endl;
 					}
 				}
 
@@ -106,7 +106,7 @@ void Transition_Function::load(ifstream& definition, States states, Input_Alphab
 					}
 					transitions.at(transIndex).setSource(value);
 				}
-					//source_state = value;
+				//source_state = value;
 				if (count == 4) {
 					if (vecSize == transIndex) {
 						vecSize = vecSize + 10;
@@ -114,7 +114,7 @@ void Transition_Function::load(ifstream& definition, States states, Input_Alphab
 					}
 					transitions.at(transIndex).setDestState(value);
 				}
-					//destination_state = value;
+				//destination_state = value;
 			}
 		}
 		else if (count == 5)
@@ -134,7 +134,7 @@ void Transition_Function::load(ifstream& definition, States states, Input_Alphab
 						(value[i] == ','))
 					{
 						valid = false;
-						cout << "in transition: invalid character '"<< value << "' within state" << endl;
+						cout << "in transition: invalid character '" << value << "' within write string" << endl;
 					}
 				}
 
@@ -151,7 +151,7 @@ void Transition_Function::load(ifstream& definition, States states, Input_Alphab
 			}
 			else
 			{
-				cout << "in transition: " <<  endl;
+				cout << "in transition: " << endl;
 				valid = false;
 			}
 		}
@@ -162,31 +162,31 @@ void Transition_Function::load(ifstream& definition, States states, Input_Alphab
 		if (count == 5)
 		{
 			if (!(states.is_element(transitions.at(transIndex).source_state()))) {
-				cout << "Error: Transition Function contains a non-state." << endl;
+				cout << "Error: Transition Function contains a non-state." << transitions.at(transIndex).source_state() << endl;
 				valid = false;
 				return;
 			}
 			if (!(input_alphabet.is_element(transitions.at(transIndex).read_character())) &&
-					transitions.at(transIndex).read_character() != empty_char) {
-				cout << "Error: Transition Function contains a character not from Input_Alphabet." << endl;
+				transitions.at(transIndex).read_character() != empty_char) {
+				cout << "Error: Transition Function contains a character not from Input_Alphabet:" << transitions.at(transIndex).read_character() << endl;
 				valid = false;
 				return;
 			}
 			if (!(stack_alphabet.is_element(transitions.at(transIndex).read_character_stack())) &&
-					transitions.at(transIndex).read_character_stack() != empty_char) {
-				cout << "Error: Transition Function contains a character not from Stack_Alphabet." << endl;
+				transitions.at(transIndex).read_character_stack() != empty_char) {
+				cout << "Error: Transition Function contains a character not from Stack_Alphabet:" << transitions.at(transIndex).read_character_stack() << endl;
 				valid = false;
 				return;
 			}
 			if (!(states.is_element(transitions.at(transIndex).destination_state()))) {
-				cout << "Error: Transition Function contains a non-state." << endl;
+				cout << "Error: Transition Function contains a non-state:" << transitions.at(transIndex).destination_state() << endl;
 				valid = false;
 				return;
 			}
 			for (int j = 0; j < (int)transitions.at(transIndex).write_str().length(); j++) {
 				if (!(stack_alphabet.is_element(transitions.at(transIndex).write_str().at(j))) &&
-						transitions.at(transIndex).write_str().at(j) != empty_char) {
-					cout << "Error: Transition Function contains a character not from Stack_Alphabet." << endl;
+					transitions.at(transIndex).write_str().at(j) != empty_char) {
+					cout << "Error: Transition Function contains a character not from Stack_Alphabet:" << transitions.at(transIndex).write_str().at(j) << endl;
 					valid = false;
 					return;
 				}
@@ -200,7 +200,7 @@ void Transition_Function::load(ifstream& definition, States states, Input_Alphab
 			transIndex++;
 		}
 
-	} while ( !definition.eof() );
+	} while (!definition.eof());
 
 	if (definition.eof())
 	{
@@ -211,102 +211,100 @@ void Transition_Function::load(ifstream& definition, States states, Input_Alphab
 	transitions.resize(transIndex);
 }
 
-void Transition_Function::validate (const Stack_Alphabet& stack_alphabet,
-		const Input_Alphabet& input_alphabet,
-		const States& states,
-		const Final_States& final_states,
-		bool& valid) const {
-	char empty_char='\0';
-	 for (int i = 0; i < (int)transitions.size(); i++) {
-	 	if (final_states.Final_States::is_element(transitions[i].destination_state())) {
-	 		cout << "Final State " << transitions[i].destination_state() << " is in final states." << endl;
-	 		valid = false;
-	 	}
-	 	if (!states.States::is_element(transitions[i].source_state())) {
-	 		cout << "Source State " << transitions[i].source_state() << " is not in states." << endl;
-	 		valid = false;
-	 	}
-	 	if (!stack_alphabet.Stack_Alphabet::is_element(transitions[i].read_character_stack()) &&
-	 			transitions[i].read_character_stack() != empty_char) {
-	 		cout << "Top of Stack Character " << transitions[i].read_character_stack() << "is not in stack alphabet." << endl;
-	 		valid = false;
-	 	}
-	 	if (!states.States::is_element(transitions[i].destination_state())) {
-	 		cout << "Destination State " << transitions[i].destination_state() << " is not in states." << endl;
-	 		valid = false;
-	 	}
-//	 	if (!stack_alphabet.Stack_Alphabet::is_element(transitions[i].write_str().at(0)) &&
-//	 			transitions[i].write_str().at(0) != '\\') {
-//	 		cout << "Write String" << transitions[i].write_str() << " is not in stack alphabet." << endl;
-//	 		valid = false;
-//	 	}
+void Transition_Function::validate(const Stack_Alphabet& stack_alphabet,
+	const Input_Alphabet& input_alphabet,
+	const States& states,
+	const Final_States& final_states,
+	bool& valid) const {
+	char empty_char = '\0';
+	for (int i = 0; i < (int)transitions.size(); i++) {
+		if (final_states.Final_States::is_element(transitions[i].destination_state())) {
+			cout << "Final State " << transitions[i].destination_state() << " is not in final states." << endl;
+			valid = false;
+		}
+		if (!states.States::is_element(transitions[i].source_state())) {
+			cout << "Source State " << transitions[i].source_state() << " is not in states." << endl;
+			valid = false;
+		}
+		if (!stack_alphabet.Stack_Alphabet::is_element(transitions[i].read_character_stack()) &&
+			transitions[i].read_character_stack() != empty_char) {
+			cout << "Top of Stack Character " << transitions[i].read_character_stack() << "is not in stack alphabet." << endl;
+			valid = false;
+		}
+		if (!states.States::is_element(transitions[i].destination_state())) {
+			cout << "Destination State " << transitions[i].destination_state() << " is not in states." << endl;
+			valid = false;
+		}
+		//	 	if (!stack_alphabet.Stack_Alphabet::is_element(transitions[i].write_str().at(0)) &&
+		//	 			transitions[i].write_str().at(0) != '\\') {
+		//	 		cout << "Write String" << transitions[i].write_str() << " is not in stack alphabet." << endl;
+		//	 		valid = false;
+		//	 	}
 		for (int j = 0; j < (int)transitions.at(i).write_str().length(); j++) {
 			if (!(stack_alphabet.is_element(transitions.at(i).write_str().at(j))) &&
-					transitions[i].write_str().at(j) != empty_char) {
+				transitions[i].write_str().at(j) != empty_char) {
 				cout << "Write String" << transitions[i].write_str() << " is not in stack alphabet." << endl;
 				valid = false;
 			}
 		}
-	 	if (!input_alphabet.Input_Alphabet::is_element(transitions[i].read_character()) &&
-	 			transitions.at(i).read_character() != empty_char) {
-	 		cout << "Read Character" << transitions[i].read_character() << " is not in input alphabet." << endl;
-	 		valid = false;
-	 	}
-	 }
+		if (!input_alphabet.Input_Alphabet::is_element(transitions[i].read_character()) &&
+			transitions.at(i).read_character() != empty_char) {
+			cout << "Read Character" << transitions[i].read_character() << " is not in input alphabet." << endl;
+			valid = false;
+		}
+	}
 }
 
-void Transition_Function::view() {
- 	string read;
+void Transition_Function::view() const {
+	string read;
 	cout << "Transitions: ";
 	for (int i = 0; i < (int)transitions.size(); i++) {
-        read="";
-        if(transitions.at(i).read_character()!='\0')
-      		read.push_back(transitions.at(i).read_character());
+		read = "";
+		if (transitions.at(i).read_character() != '\0')
+			read.push_back(transitions.at(i).read_character());
 
 		cout << endl;
-		cout << "delta("<< transitions.at(i).source_state() << ", " << visible(read) << ", "<<
-				transitions.at(i).read_character_stack() << ") = ("
-				<< transitions.at(i).destination_state() << ", "
-				<< visible(transitions.at(i).write_str()) << ")";
+		cout << "delta(" << transitions.at(i).source_state() << ", " << visible(read) << ", " <<
+			transitions.at(i).read_character_stack() << ") = ("
+			<< transitions.at(i).destination_state() << ", "
+			<< visible(transitions.at(i).write_str()) << ")";
 	}
-	cout<<endl;
+	cout << endl;
 }
 
 bool Transition_Function::find_transition(Instantaneous_Description &id, int tried) const {
-	 for (int i = 0; i < (int)transitions.size(); i++) {
+	for (int i = 0; i < (int)transitions.size(); i++) {
 
-	 	// if(DEBUG){
-	 	// 	if(id.get_current_state()=="s1"){
-	 	// 		cout<<id.get_current_state()<<"="<<transitions[i].source_state()<<endl;
-	 	// 		cout<<id.input_character()<<"="<<transitions[i].read_character()<<endl;
-	 	// 		cout<<id.top_of_stack()<<"="<<transitions[i].read_character_stack()<<endl;
-	 	// 	}
+		// if(DEBUG){
+		// 	if(id.get_current_state()=="s1"){
+		// 		cout<<id.get_current_state()<<"="<<transitions[i].source_state()<<endl;
+		// 		cout<<id.input_character()<<"="<<transitions[i].read_character()<<endl;
+		// 		cout<<id.top_of_stack()<<"="<<transitions[i].read_character_stack()<<endl;
+		// 	}
 
-	 		
-	 	//}
 
-	 	if ((transitions[i].source_state() == id.get_current_state()) && (transitions[i].read_character() == id.input_character())
-	 			&& (transitions[i].read_character_stack() == id.top_of_stack())) {
-	 		if (tried != 0) {
-	 			tried--;
+		//}
 
-	 			continue;
-	 		}
-	 		
-	 		 id.set_current_stack(transitions[i].write_str());
-	 		 id.set_current_state(transitions[i].destination_state());
-	 		return true;
-	 	}
-	 }
-	 return false;
+		if ((transitions[i].source_state() == id.get_current_state()) && (transitions[i].read_character() == id.input_character())
+			&& (transitions[i].read_character_stack() == id.top_of_stack())) {
+			if (tried != 0) {
+				tried--;
+
+				continue;
+			}
+
+			id.set_current_stack(transitions[i].write_str());
+			id.set_current_state(transitions[i].destination_state());
+			return true;
+		}
+	}
+	return false;
 }
 
 
 string Transition_Function::visible(string value){
-    const string lambda("\\");
-    if(value.empty())
-        value=lambda;
-    return value;
+	const string lambda("\\");
+	if (value.empty())
+		value = lambda;
+	return value;
 }
-
-
