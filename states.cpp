@@ -21,6 +21,7 @@ States::States()
 void States::load(ifstream& definition, bool& valid)
 {
     string value;
+    string_vector.clear();
 
 	do{
         /* Read definition file and store everything in the file until it reaches the next keyword INPUT ALPHABET*/
@@ -41,7 +42,16 @@ void States::load(ifstream& definition, bool& valid)
 					cout << "character '" << value << "' within state is invalid" << endl;
 				}
 			}
-			string_vector.push_back(value);
+
+			for(int index=0;index<string_vector.size();index++)
+                {
+                    if(string_vector[index]==value)
+                    {
+                        cout<<"Error: Duplicate state\n";
+                        valid=false;
+                    }
+                }
+				string_vector.push_back(value);
 		}
         // If we reach INPUT_ALPHABET, we exit the loop
 		else if (To_Upper(value) == "INPUT_ALPHABET:")

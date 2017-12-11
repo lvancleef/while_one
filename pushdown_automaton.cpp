@@ -124,6 +124,7 @@ void Pushdown_Automaton::load(string definition_file_name)
             valid=false;
         }
         final_states.load(definition, valid);
+        final_states.validate(states, valid);
         definition.close();
     }
 

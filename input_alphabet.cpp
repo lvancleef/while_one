@@ -57,7 +57,7 @@ void Input_Alphabet::load(ifstream& definition, bool& valid) {
 //	}
 //	// Read in the blank line at the end of this section
 //	getline(definition, inAlphaLine);
-
+	alphabet.clear();
 	string value;
 
 	do {
@@ -81,6 +81,15 @@ void Input_Alphabet::load(ifstream& definition, bool& valid) {
 					cout << "Character '" << value << "' within Input_Alphabet is invalid" << endl;
 				}
 			}
+			for(int index=0;index<alphabet.size();index++)
+                {
+                    if(alphabet[index]==(value.at(0)))
+                    {
+                        cout<<"Error: Duplicate input alphabet character\n";
+                        valid=false;
+                    }
+                }
+
 			alphabet.push_back(value.at(0));
 		}
 		else if (To_Upper(value) == "STACK_ALPHABET:")

@@ -17,6 +17,7 @@ Stack_Alphabet::Stack_Alphabet()
 /* Load reads the stack alphabet characters from PDA def file */
 void Stack_Alphabet::load(ifstream& definition, bool& valid)
 {
+    alphabet.clear();
       string value;
 
 	do{
@@ -39,6 +40,14 @@ void Stack_Alphabet::load(ifstream& definition, bool& valid)
 					cout << "character '" << value << "' within state is invalid" << endl;
 				}
 			}
+            for(int index=0;index<alphabet.size();index++)
+                {
+                    if(alphabet[index]==(value.at(0)))
+                    {
+                        cout<<"Error: Duplicate stack alphabet character\n";
+                        valid=false;
+                    }
+                }
             alphabet.push_back(value.at(0));
 
 		}

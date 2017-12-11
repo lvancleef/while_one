@@ -11,11 +11,11 @@ using namespace std;
 
 Final_States::Final_States()
 {
-    States();
     final_names = vector<string>();
 }
 void Final_States::load(ifstream& definition, bool& valid)
 {
+    final_names.clear();
     string value;
     while(1)
     {
@@ -51,6 +51,14 @@ void Final_States::load(ifstream& definition, bool& valid)
         }
         else
         {
+            for(int index=0;index<final_names.size();index++)
+                {
+                    if(final_names[index]==(value))
+                    {
+                        cout<<"Error: Duplicate final state\n";
+                        valid=false;
+                    }
+                }
             final_names.push_back(value);
         }   
     }
@@ -58,26 +66,22 @@ void Final_States::load(ifstream& definition, bool& valid)
 }
 /* Determine if the list of final states are states that exist in the states vector
     from the states class. */
-void Final_States::validate(vector<string> string_vector, bool& valid)
+void Final_States::validate(States &states, bool& valid)
 {
-    valid = true;
-    for(int i = 0; i < (int)string_vector.size(); i++)
+    for(int j = 0; j<final_names.size(); j++)
     {
-        for(int j = 0; (int)final_names.size(); j++)
+        /* If the contents of final_names vector matches the
+            contents of states vector, then final states exist within
+            States vector */
+        if(!states.is_element(final_names[j]))
         {
-            /* If the contents of final_names vector matches the
-                contents of states vector, then final states exist within
-                States vector */
-            if(final_names[j].compare(string_vector[i]) == 0)
-                break;
-            else
-            {
-                cout << "Error: List of states don't contain a final state!" << endl;
-                valid = false;
-                break;
-            }
+            cout<< final_names[j]<<endl;
+            cout << "Error: Final state not part of the states list!" << endl;
+            valid = false;
+            break;
         }
     }
+    
 }
 void Final_States::view() const
 {

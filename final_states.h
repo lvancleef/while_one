@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include <fstream>
+#include "states.h"
 
 using namespace std;
 
@@ -15,7 +16,7 @@ private:
 public:
     Final_States();
     void load(ifstream& definition, bool& valid);
-    void validate(vector<string> string_vector, bool& valid);
+    void validate(States& states, bool& valid);
     void view() const;
     bool is_element(string value) const;
 
