@@ -481,8 +481,12 @@ void Pushdown_Automaton::initialize_string_list()
     {           
         while (getline(strstream, load))
             {bool flag=true;
-                
-                if(load=="\\")
+                if(load==""){
+                    cout<<"Blank line, for empty string use \\ \n";
+                    changed=true;
+                    flag=false;
+                }
+                else if(load=="\\")
                     {
                         for(int index=0;index<string_list.size();index++)
                         {
