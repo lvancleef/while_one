@@ -64,7 +64,7 @@ void Stack_Alphabet::load(ifstream& definition, bool& valid)
 	/* Check that the next keyword INPUT_ALPHABET exists */
 	if (definition.eof())
 	{
-		cout << "Missing keyword 'TRANSITION_FUNCTION:' after states" << endl;
+		cout << "Missing keyword 'TRANSITION_FUNCTION:' after Stack Alphabet" << endl;
 		valid = false;
 	}
 
