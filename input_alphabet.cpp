@@ -89,7 +89,10 @@ void Input_Alphabet::load(ifstream& definition, bool& valid) {
                         valid=false;
                     }
                 }
-
+            if(value.length()>1){
+            	cout<<"Error: Incorrect input character\n";
+            	valid=false;
+            }
 			alphabet.push_back(value.at(0));
 		}
 		else if (To_Upper(value) == "STACK_ALPHABET:")

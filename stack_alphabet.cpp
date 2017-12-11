@@ -48,6 +48,10 @@ void Stack_Alphabet::load(ifstream& definition, bool& valid)
                         valid=false;
                     }
                 }
+            if(value.length()>1){
+                cout<<"Error: Incorrect stack character\n";
+                valid=false;
+            }
             alphabet.push_back(value.at(0));
 
 		}
