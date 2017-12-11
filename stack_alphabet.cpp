@@ -40,18 +40,7 @@ void Stack_Alphabet::load(ifstream& definition, bool& valid)
 					cout << "character '" << value << "' within state is invalid" << endl;
 				}
 			}
-            for(int index=0;index<alphabet.size();index++)
-                {
-                    if(alphabet[index]==(value.at(0)))
-                    {
-                        cout<<"Error: Duplicate stack alphabet character\n";
-                        valid=false;
-                    }
-                }
-            if(value.length()>1){
-                cout<<"Error: Incorrect stack character\n";
-                valid=false;
-            }
+            
             alphabet.push_back(value.at(0));
 
 		}
@@ -67,6 +56,18 @@ void Stack_Alphabet::load(ifstream& definition, bool& valid)
 		cout << "Missing keyword 'TRANSITION_FUNCTION:' after Stack Alphabet" << endl;
 		valid = false;
 	}
+    if(valid){
+        for(int i=0;i<alphabet.size()-1 ;i++){
+            for(int index=i+1;index<alphabet.size();index++)
+            {
+                if(alphabet[index]==alphabet[i])
+                {
+                    cout<<"Error: Duplicate stack character\n";
+                    valid=false;
+                }
+            }
+        }   
+    }
 
 }
 /*

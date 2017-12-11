@@ -42,16 +42,7 @@ void States::load(ifstream& definition, bool& valid)
 					cout << "character '" << value << "' within state is invalid" << endl;
 				}
 			}
-
-			for(int index=0;index<string_vector.size();index++)
-                {
-                    if(string_vector[index]==value)
-                    {
-                        cout<<"Error: Duplicate state\n";
-                        valid=false;
-                    }
-                }
-				string_vector.push_back(value);
+			string_vector.push_back(value);
 		}
         // If we reach INPUT_ALPHABET, we exit the loop
 		else if (To_Upper(value) == "INPUT_ALPHABET:")
@@ -65,6 +56,19 @@ void States::load(ifstream& definition, bool& valid)
 		cout << "Missing keyword 'INPUT_ALPHABET:' after states" << endl;
 		valid = false;
 	}
+	if(valid){
+		for(int i=0;i<string_vector.size()-1 ;i++){
+			for(int index=i+1;index<string_vector.size();index++)
+			{
+			    if(string_vector[index]==string_vector[i])
+			    {
+			    	cout<<string_vector[index]<<"="<<string_vector[i]<<endl;
+			        cout<<"Error: Duplicate state\n";
+			        valid=false;
+			    }
+			}
+		}	
+	}	
 }
 /* Display state names */
 void States::view() const

@@ -81,14 +81,7 @@ void Input_Alphabet::load(ifstream& definition, bool& valid) {
 					cout << "Character '" << value << "' within Input_Alphabet is invalid" << endl;
 				}
 			}
-			for(int index=0;index<alphabet.size();index++)
-                {
-                    if(alphabet[index]==(value.at(0)))
-                    {
-                        cout<<"Error: Duplicate input alphabet character\n";
-                        valid=false;
-                    }
-                }
+			
             if(value.length()>1){
             	cout<<"Error: Incorrect input character\n";
             	valid=false;
@@ -105,6 +98,18 @@ void Input_Alphabet::load(ifstream& definition, bool& valid) {
 		cout << "missing keyword STACK_ALPHABET: after INPUT_ALPHABET" << endl;
 		valid = false;
 	}
+	if(valid){
+		for(int i=0;i<alphabet.size()-1 ;i++){
+			for(int index=i+1;index<alphabet.size();index++)
+			{
+			    if(alphabet[index]==alphabet[i])
+			    {
+			        cout<<"Error: Duplicate input character\n";
+			        valid=false;
+			    }
+			}
+		}	
+	}	
 }
 
 void Input_Alphabet::view() const {
