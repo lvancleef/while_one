@@ -255,7 +255,7 @@ void Transition_Function::validate(const Stack_Alphabet& stack_alphabet,
 	}
 }
 
-void Transition_Function::view() const {
+void Transition_Function::view() {
 	string read;
 	cout << "Transitions: ";
 	for (int i = 0; i < (int)transitions.size(); i++) {
