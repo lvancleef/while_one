@@ -69,8 +69,7 @@ void Pushdown_Automaton::load(string definition_file_name)
         while(1)
         {
             if(definition>>keyword)
-            {
-               
+            {             
                 if(To_Upper(keyword)=="STATES:")
                 {
                     break;
@@ -96,7 +95,7 @@ void Pushdown_Automaton::load(string definition_file_name)
         initial_state=keyword;
         
         if(!states.is_element(initial_state)){
-            cout<<"ERROR: Invalid Initial State\n";
+            cout<<"Initial State is not part of states\n";
             valid=false;
         }
         //validate initial_state here
@@ -112,7 +111,7 @@ void Pushdown_Automaton::load(string definition_file_name)
                 
                 start_character=keyword[0];
                 if(!stack_alphabet.is_element(start_character)){
-                    cout<<"ERROR: Invalid Start character\n";
+                    cout<<"Start character is not part of stack alphabet\n";
                     valid=false;
                 }
                 //validate start_character here
@@ -138,7 +137,7 @@ bool Pushdown_Automaton::pda_main()
     string command;
     string run;
     if(!valid){
-        cout<<"ERROR: Invalid PDA\n";
+        cout<<"Invalid PDA\n";
         return false;// return false?
     }
     else if (valid){
@@ -159,7 +158,7 @@ while(1){
                 quit_command();
             }
             else{
-                cout<<"ERROR: No PDA running\n";
+                cout<<"No PDA running\n";
             }
         }
         else if(command=="close"){
@@ -176,7 +175,7 @@ while(1){
             accepted_path.clear();
             oss.str("");
             
-            cout<<"Input sting number: ";
+            cout<<"Input string number: ";
             string load="";
             
             getline(cin,load);
@@ -214,7 +213,7 @@ while(1){
                     
                     print_id(id);
                     run=perform_transition(id, number_of_transitions_performed);
-//////////////////////////////////////////////////////////////////////////////////////////////////////            
+
                     if(run=="accepted"){             
                          
                         oss<<"["<<id.get_current_level()<<"] (";
@@ -222,9 +221,6 @@ while(1){
                         oss<<truncate(visible(id.get_remaining_input_string()))<<",";
                         oss<<truncate(visible(id.get_stack()))<<")\n";
                         id_string=oss.str();
-
-                        if(DEBUG)
-                            cout<<"1\n";
                         
                         accepted_path.push_back(id_string);
                         
@@ -262,7 +258,7 @@ while(1){
                             quit_command();
                         }
                         else{
-                            cout<<"ERROR: Not currently running on an input string" << endl;
+                            cout<<"Not currently running on an input string" << endl;
                         }
                     }
                     else if(run=="open"){
@@ -332,9 +328,6 @@ string Pushdown_Automaton::perform_transition(Instantaneous_Description instanta
 
             number_of_crashes++;
 
-            if(DEBUG)
-                cout << "Rejected" << endl;
-
             return "rejected";
         }
         
@@ -359,9 +352,6 @@ string Pushdown_Automaton::perform_transition(Instantaneous_Description instanta
                 oss << truncate(visible(next_id.get_stack())) << ")\n";
                 id_string = oss.str();
 
-                if(DEBUG)
-                    cout<<"4\n";
-
                 accepted_path.push_back(id_string);
             }
 
@@ -370,72 +360,95 @@ string Pushdown_Automaton::perform_transition(Instantaneous_Description instanta
 
         tried++;
 
-        if(DEBUG)
-            cout<<"Tried " << tried << " times" << endl;
     }
 }
 
 string Pushdown_Automaton::commands()
 {
+    int failed=0;
     int exit;
     string Command ="";
 //command loop
     do{
         cout<<"Command: ";
         getline(cin, Command);   
-        
-            if (Command == "c" || Command == "C"){
-
+            if(Command.length()>1){
+                cout<<"Please only enter one character\n";
+                failed++;
+            }
+            else if (Command == "c" || Command == "C"){
+                failed=0;
                 return "close";
             }   
             else if(Command == "d"||Command== "D"){
+                failed=0;
                 delete_command();
             }
             else if(Command == "p"||Command == "P"){   
+                failed=0;
                 configuration_settings->display_command();            
             }   
             else if(Command == "x"||Command== "X"){
+                failed=0;
                 close_command();
                 configuration_settings->exit_command();
             }      
             else if(Command == "H" || Command== "h"){   
+                failed=0;
                 help_command();
             }
             else if(Command == "I" || Command== "i"){
+                failed=0;
                 insert_command();
             }              
             else if(Command == "L" || Command== "l"){
+                failed=0;
                 list_command();
             }
             else if(Command=="Q"||Command=="q"){
+                failed=0;
                 return "quit";
             }
             else if(Command=="o"||Command=="O"){
+                failed=0;
                 return "open";
             }                
             else if(Command == "R" ||Command== "r"){
+                failed=0;
                 return "run";
             }               
             else if(Command == "e" || Command== "E"){
+                failed=0;
                  configuration_settings->set_command();
             }               
             else if(Command == "W" || Command== "w"){
+                failed=0;
                 show_command();
             }
             else if(Command == "S"|| Command == "s"){
+                failed=0;
                 sort_command();
             }   
-            else if(Command == "T" || Command == "t"){               
+            else if(Command == "T" || Command == "t"){         
+                failed=0;      
                  configuration_settings->truncate_command();
             }               
             else if(Command == "V" || Command == "v"){
+                failed=0;
                 view_command();
             }
-            else if(Command.empty()){}
-            else{
-                cout<<"INVALID Commmand\n";
-            }           
-    
+            else if(Command.empty())
+            {}          
+            else if (failed >= 5)
+			{	
+				cout << "Too many invalid selections. Exiting." << endl;
+				configuration_settings->exit_command();
+			}
+			else{
+                failed++;
+                cout << "Please enter a valid character. 'H' provides a list." << endl;
+            }
+		
     }while (exit!=1);
     return "exit";
 }
@@ -556,15 +569,13 @@ void Pushdown_Automaton::help_command()
 void Pushdown_Automaton::show_command()//need to be cleaned up
 {
  
-    cout<<"\n  Status of PDA\n";
-    cout<<"  ==============\n";    
     cout<<"  Name of PDA:\t"<<name<<endl;
 
     if(running){      
         cout<<"  Status:\tPDA is currently running on an input string\n";     
         cout<<"  Input string:\t"<<original_input_string<<endl;
         cout<<"  Transitions:\t"<<number_of_transitions<<endl;
-        cout<<"  Crashes:\t\t"<<number_of_crashes<<endl;
+        cout<<"  Crashes:\t"<<number_of_crashes<<endl;
     }
     else if(used){
         if(accepted){
@@ -782,7 +793,7 @@ void Pushdown_Automaton::sort_command()
     }
 
 }
-///asd
+
 string Pushdown_Automaton::visible(string value){
     const string lambda("\\");
     if(value.empty())

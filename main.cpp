@@ -139,6 +139,9 @@ int main(int argc, char const *argv[])
 		{
 			// skip
 		}
+		else if(choice.length()>1){
+			cout<<"Please only enter one character\n";
+		}
 		else if (To_Upper(choice) == "H")
 		{
 			count = 0;
