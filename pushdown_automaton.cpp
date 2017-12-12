@@ -789,7 +789,7 @@ void Pushdown_Automaton::sort_command()
     }
     else{
         changed=true;
-        cout<<"list has been sorted\n";
+        cout<<"List has been sorted\n";
     }
 
 }
