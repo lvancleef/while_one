@@ -16,12 +16,12 @@
 
 using namespace std;
 
-Pushdown_Automaton::Pushdown_Automaton(Configuration_Settings *config_settings)
+Pushdown_Automaton::Pushdown_Automaton(Configuration_Settings *config_settings)//sets the pointer to configuration_settings
 {
     configuration_settings=config_settings;
 }
 
-bool Pushdown_Automaton::is_accepted(Instantaneous_Description id)
+bool Pushdown_Automaton::is_accepted(Instantaneous_Description id)//takes a instantaneous_description and return true if it is accepted, false if it is negative
 {
     if(!final_states.is_element(id.get_current_state())||!id.is_empty_remaining_input_string()||!id.is_empty_stack()){
         
@@ -35,6 +35,7 @@ bool Pushdown_Automaton::is_accepted(Instantaneous_Description id)
 }
 
 void Pushdown_Automaton::load(string definition_file_name)
+//loads a new pda and calls the load methods a the other calls in order, by taking in the file name as a string, if a pda is invalid valid is set to false
 {
     name="";
     changed=false;
@@ -114,7 +115,6 @@ void Pushdown_Automaton::load(string definition_file_name)
                     cout<<"Start character is not part of stack alphabet\n";
                     valid=false;
                 }
-                //validate start_character here
             }
         }
         definition>>keyword;
@@ -131,14 +131,14 @@ void Pushdown_Automaton::load(string definition_file_name)
     string_file.close();
 }
 
-bool Pushdown_Automaton::pda_main()
-{//check if valid is false print error
+bool Pushdown_Automaton::pda_main()//verifies a pda is valid handles output from commands while pda is open 
+{
     ostringstream oss;
     string command;
     string run;
     if(!valid){
         cout<<"Invalid PDA\n";
-        return false;// return false?
+        return false;
     }
     else if (valid){
         cout<<"PDA successfully loaded\n";
@@ -280,7 +280,8 @@ while(1){
 }
 
 string Pushdown_Automaton::perform_transition(Instantaneous_Description instantaneous_description, int &number_of_transitions_performed)
-{   
+{//this function checks if a instanenous description is accepted and find and performs a new transition if avaible and calls perform transition again, if no transitions are aviable the function returns rejected to the function that called it
+    //the main recussion and operating on pda happens because of this function
     Instantaneous_Description next_id;   
     int tried = 0;
     string command;
@@ -363,7 +364,7 @@ string Pushdown_Automaton::perform_transition(Instantaneous_Description instanta
     }
 }
 
-string Pushdown_Automaton::commands()
+string Pushdown_Automaton::commands()//accepts user input while a pda is open
 {
     int failed=0;
     int exit;
@@ -453,7 +454,7 @@ string Pushdown_Automaton::commands()
     return "exit";
 }
     
-bool Pushdown_Automaton::is_valid_input_string(string value)
+bool Pushdown_Automaton::is_valid_input_string(string value)//validates a input string
 {
     bool flag=true;
     for(int index=0;index<string_list.size();index++){
@@ -475,7 +476,7 @@ bool Pushdown_Automaton::is_valid_input_string(string value)
     return flag;
 }
 
-void Pushdown_Automaton::print_id(Instantaneous_Description instantaneous_description)
+void Pushdown_Automaton::print_id(Instantaneous_Description instantaneous_description)//prints an instanenous description
 {
     cout << "[" << number_of_transitions << "]. [" << instantaneous_description.get_current_level() << "] (";
     cout << instantaneous_description.get_current_state() << ",";
@@ -483,7 +484,7 @@ void Pushdown_Automaton::print_id(Instantaneous_Description instantaneous_descri
     cout << truncate(visible(instantaneous_description.get_stack())) << ")\n";
 }
 
-void Pushdown_Automaton::initialize_string_list()
+void Pushdown_Automaton::initialize_string_list()//reads the .str file of the pda, validates and loads input string into the string list
 {
     ifstream strstream;
     string load;
@@ -547,7 +548,7 @@ void Pushdown_Automaton::initialize_string_list()
     }
 }
     
-void Pushdown_Automaton::help_command()
+void Pushdown_Automaton::help_command()//prints the help display
 {
     cout<<"[C]lose\t\tClose pushdown automaton\n";
     cout<<"[D]elete\tDelete input string from list\n";
@@ -566,8 +567,7 @@ void Pushdown_Automaton::help_command()
     cout<<"[V]iew\t\tView pushdown automaton\n";
 }
 
-void Pushdown_Automaton::show_command()//need to be cleaned up
-{
+void Pushdown_Automaton::show_command()//determines state of open pda print correct show details
  
     cout<<"  Name of PDA:\t"<<name<<endl;
 
@@ -580,7 +580,7 @@ void Pushdown_Automaton::show_command()//need to be cleaned up
     else if(used){
         if(accepted){
             cout<<"  Status:\t\tPDA has completed an operation on an input string\n";           
-            cout<<"  last input string used:\t"<<visible(original_input_string)<<endl;
+            cout<<"  Input string:\t"<<visible(original_input_string)<<endl;
             cout<<"  Input string was:\tAccepted\n";
             cout<<"  Transitions:\t"<<number_of_transitions<<endl;
             cout<<"  Crashes:\t"<<number_of_crashes<<endl;
@@ -588,14 +588,14 @@ void Pushdown_Automaton::show_command()//need to be cleaned up
         }
         else if(rejected){
             cout<<"  Status:\tPDA has completed an operation on an input string\n";           
-            cout<<"  last input string used:\t"<<visible(original_input_string)<<endl;
+            cout<<"  Input string:\t"<<visible(original_input_string)<<endl;
             cout<<"  Input string was:\tRejected\n";
             cout<<"  Transitions:\t"<<number_of_transitions<<endl;
             cout<<"  Crashes:\t"<<number_of_crashes<<endl;   
         }
         else{
             cout<<"  Status:\tPDA was operation quit by users\n";           
-            cout<<"  last input string used:\t"<<visible(original_input_string)<<endl;
+            cout<<"  Input string:\t"<<visible(original_input_string)<<endl;
             cout<<"  Input string was:\tnot rejected or accepted\n";
             cout<<"  Transitions:\t"<<number_of_transitions<<endl;
             cout<<"  Crashes:\t"<<number_of_crashes<<endl;
@@ -606,7 +606,7 @@ void Pushdown_Automaton::show_command()//need to be cleaned up
         cout << "  Status:\tPDA has not been run on an input string\n";       
     }
 
-    cout << "  ==============\n";
+    cout << "  ================\n";
     cout << "  Course:\tCPTS 422" << endl;
     cout << "  Semester:\tFall" << endl;
     cout << "  Year:\t\t2017" << endl;
@@ -614,7 +614,7 @@ void Pushdown_Automaton::show_command()//need to be cleaned up
     cout << "  Team:\t\twhile(1)" << endl;
     cout << "  Team Members:\tLeigh VanCleef, Rob Pierini, KJ Dorow, Efren Alvarez" << endl;
     cout << "  Version:\t1.0" << endl;
-    cout << "  ==============\n";
+    cout << "  ================\n";
 
     cout << "  Configuration Settings:" << endl;
     cout << "    Characters Before Truncation: " << configuration_settings->get_maximum_characters() << endl;
@@ -622,7 +622,7 @@ void Pushdown_Automaton::show_command()//need to be cleaned up
     cout << "    Display Complete Paths: " << configuration_settings->complete_paths_string() << endl;
 }
 
-void Pushdown_Automaton::view_command()
+void Pushdown_Automaton::view_command()//calls view commands from other calls and prints Intitilall state and start character
 {
 
     cout<<pda_description<<endl;
@@ -635,7 +635,7 @@ void Pushdown_Automaton::view_command()
     final_states.view();
 }
     
-void Pushdown_Automaton::list_command()
+void Pushdown_Automaton::list_command()//prints string list
 {
     if(string_list.size()==0){
         cout<<"List is empty!\n";
@@ -649,7 +649,7 @@ void Pushdown_Automaton::list_command()
     }        
 }
 
-void Pushdown_Automaton::insert_command()
+void Pushdown_Automaton::insert_command()//takes user input validates it and insert valid input strings into string list
 {
     cout<<"Input String: ";
     string load="";
@@ -700,7 +700,7 @@ void Pushdown_Automaton::insert_command()
     }
 }
 
-void Pushdown_Automaton::delete_command()
+void Pushdown_Automaton::delete_command()//takes user input validates it and deletes input strings into string list
 {
     int input_num;
     cout<<"Input sting number: ";
@@ -729,14 +729,14 @@ void Pushdown_Automaton::delete_command()
         }
     }
 }
-void Pushdown_Automaton::quit_command(){
+void Pushdown_Automaton::quit_command(){//performs actions of the quit command
     if(running){
         cout<<original_input_string<<" not accepted or rejected in "<<number_of_transitions<<" Transition(s).\n";
         cout<<"There were "<<number_of_crashes<< " crashes\n";
         running=false;
     }
 }
-void Pushdown_Automaton::close_command(){
+void Pushdown_Automaton::close_command(){//writes string list file if changed, print success or failure
     
     if(changed)
         {
@@ -761,8 +761,7 @@ void Pushdown_Automaton::close_command(){
         }
         cout<<"Closing PDA\n";
 }        
-bool canonical(string one, string two){
-   //cout<<one<<"=="<<two<<endl;
+bool canonical(string one, string two){//helper function for sorting, determines which string is larger
     if(one=="\\"){
         return true;
     }
@@ -778,7 +777,7 @@ bool canonical(string one, string two){
     return false;
 }
 
-void Pushdown_Automaton::sort_command()
+void Pushdown_Automaton::sort_command()//sort input strings if needed
 {
     vector<string> temp(string_list);
     sort(string_list.begin(),string_list.end(),canonical);
@@ -794,13 +793,13 @@ void Pushdown_Automaton::sort_command()
 
 }
 
-string Pushdown_Automaton::visible(string value){
+string Pushdown_Automaton::visible(string value){//helper function provided by prfessor, handles empty character
     const string lambda("\\");
     if(value.empty())
         value=lambda;
     return value;
 }
-string Pushdown_Automaton::truncate(string value){
+string Pushdown_Automaton::truncate(string value){//helper function provided by prfessor, handles truncating
     if(value.length()> configuration_settings->get_maximum_characters())
         value=value.substr(0,configuration_settings->get_maximum_characters())+">";
     return value;
