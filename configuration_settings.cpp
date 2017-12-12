@@ -1,10 +1,9 @@
 /*
  * file: configuration_settings.cpp
  * author: lvancleef
- * version: 0.6
- * date: 12/2/2017
+ * version: 1.0
+ * date: 12/11/2017
  *
- * notes: load and exit attempted. 
  */
 #include "debug.h"
 
@@ -19,6 +18,10 @@
 
 using namespace std;
 
+/* Constructor takes the name of PDA application, and both 
+ * saves it and sends it to load to load the .cfg file.
+ * Sets default settings unless load pulls in others.
+ */
 Configuration_Settings::Configuration_Settings(string name)
 {	
 	application_name = name;
@@ -30,6 +33,13 @@ Configuration_Settings::Configuration_Settings(string name)
 	changed = load(name);
 }
 
+/* Used by constructor to attempt opening of
+ * .cfg file. If none exists, no defaults are 
+ * changed, returns false for changed. 
+ * Attempts to load in settings from file.
+ * If all settings are successfully loaded without 
+ * any errors, returns false, else returns true.
+ */
 bool Configuration_Settings::load(string name)
 {
 	application_name = name;
@@ -235,6 +245,7 @@ bool Configuration_Settings::get_complete_paths() const
 	return complete_paths;
 }
 
+/* turns complete_paths setting to readable string */
 string Configuration_Settings::complete_paths_string() const
 {
 	if (complete_paths)
@@ -243,6 +254,7 @@ string Configuration_Settings::complete_paths_string() const
 		return "NO";
 }
 
+/* Takes input from user to change maximum_number_transitions */
 void Configuration_Settings::set_command()
 {
 	string value;
@@ -273,6 +285,7 @@ void Configuration_Settings::set_command()
    	return;
 }
 
+/* Takes input from user to change maximum_number_characters */
 void Configuration_Settings::truncate_command()
 {
 	string value;
@@ -303,6 +316,7 @@ void Configuration_Settings::truncate_command()
    	return;
 }
 
+/* toggles complete_paths */
 void Configuration_Settings::display_command()
 {
 	complete_paths = !complete_paths;
@@ -314,6 +328,9 @@ void Configuration_Settings::display_command()
 	return;
 }
 
+/* If settings have been changed during application runtime (changed)
+ * attempts to open .cfg file to write the settings to file 
+ */
 void Configuration_Settings::exit_command()
 {
 
