@@ -1,6 +1,5 @@
 #ifndef Pushdown_Automaton_H
 #define Pushdown_Automaton_H
-//#include "utility.h"
 #include "input_alphabet.h"
 #include "stack_alphabet.h"
 #include "transition_function.h"
@@ -12,7 +11,6 @@
 #include <string>
 #include <algorithm>
 #include <sstream>
-
 
 using namespace std;
 
@@ -45,14 +43,9 @@ private:
     string original_input_string;
     string pda_description;
 
-    //static Configuration_Setting_Pointer configuration_setting_pointer;
-    
 public:
     Pushdown_Automaton(Configuration_Settings *configuration_settings);
     Pushdown_Automaton();
-    
-    //static void Link(const Configuration_Settings configuration_settings);
-
     void load(string definition_file_name);
     void set_sort(bool value);
     bool pda_main();
@@ -74,6 +67,4 @@ public:
     string truncate(string value);
     string visible(string value);
 };
-
-//typedef pushdown_automaton *pushdown_automaton;
 #endif

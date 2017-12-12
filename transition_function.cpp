@@ -275,16 +275,6 @@ void Transition_Function::view() {
 bool Transition_Function::find_transition(Instantaneous_Description &id, int tried) const {
 	for (int i = 0; i < (int)transitions.size(); i++) {
 
-		// if(DEBUG){
-		// 	if(id.get_current_state()=="s1"){
-		// 		cout<<id.get_current_state()<<"="<<transitions[i].source_state()<<endl;
-		// 		cout<<id.input_character()<<"="<<transitions[i].read_character()<<endl;
-		// 		cout<<id.top_of_stack()<<"="<<transitions[i].read_character_stack()<<endl;
-		// 	}
-
-
-		//}
-
 		if ((transitions[i].source_state() == id.get_current_state()) && (transitions[i].read_character() == id.input_character())
 			&& (transitions[i].read_character_stack() == id.top_of_stack())) {
 			if (tried != 0) {

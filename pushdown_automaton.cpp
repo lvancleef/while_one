@@ -556,46 +556,46 @@ void Pushdown_Automaton::help_command()
 void Pushdown_Automaton::show_command()//need to be cleaned up
 {
  
-    cout<<"  Status of PDA\n";
-    cout<<"================\n";    
-    cout<<"  Name of PDA:   "<<name<<endl;
+    cout<<"\n  Status of PDA\n";
+    cout<<"  ==============\n";    
+    cout<<"  Name of PDA:\t"<<name<<endl;
 
     if(running){      
-        cout<<"  Status:        PDA is currently running on an input string\n";     
-        cout<<"  Input string: "<<original_input_string<<endl;
-        cout<<"  Transitions:   "<<number_of_transitions<<endl;
-        cout<<"  Crashes:       "<<number_of_crashes<<endl;
+        cout<<"  Status:\tPDA is currently running on an input string\n";     
+        cout<<"  Input string:\t"<<original_input_string<<endl;
+        cout<<"  Transitions:\t"<<number_of_transitions<<endl;
+        cout<<"  Crashes:\t\t"<<number_of_crashes<<endl;
     }
     else if(used){
         if(accepted){
-            cout<<"  Status:        PDA has completed an operation on an input string\n";           
-            cout<<"  last input string used:  "<<visible(original_input_string)<<endl;
-            cout<<"  Input string was:        Accepted\n";
-            cout<<"  Transitions:   "<<number_of_transitions<<endl;
-            cout<<"  Crashes:       "<<number_of_crashes<<endl;
-            cout<<"  Number of transitions in successful path: "<<accepted_path.size()<<endl;
+            cout<<"  Status:\t\tPDA has completed an operation on an input string\n";           
+            cout<<"  last input string used:\t"<<visible(original_input_string)<<endl;
+            cout<<"  Input string was:\tAccepted\n";
+            cout<<"  Transitions:\t"<<number_of_transitions<<endl;
+            cout<<"  Crashes:\t"<<number_of_crashes<<endl;
+            cout<<"  Number of transitions in accepted path: "<<accepted_path.size()<<endl;
         }
         else if(rejected){
-            cout<<"  Status:        PDA has completed an operation on an input string\n";           
-            cout<<"  last input string used:  "<<visible(original_input_string)<<endl;
-            cout<<"  Input string was:        Rejected\n";
-            cout<<"  Transitions:   "<<number_of_transitions<<endl;
-            cout<<"  Crashes:       "<<number_of_crashes<<endl;   
+            cout<<"  Status:\tPDA has completed an operation on an input string\n";           
+            cout<<"  last input string used:\t"<<visible(original_input_string)<<endl;
+            cout<<"  Input string was:\tRejected\n";
+            cout<<"  Transitions:\t"<<number_of_transitions<<endl;
+            cout<<"  Crashes:\t"<<number_of_crashes<<endl;   
         }
         else{
-            cout<<"  Status:        PDA was operation quit by users\n";           
-            cout<<"  last input string used:  "<<visible(original_input_string)<<endl;
-            cout<<"  Input string was:        not rejected or accepted\n";
-            cout<<"  Transitions:   "<<number_of_transitions<<endl;
-            cout<<"  Crashes:       "<<number_of_crashes<<endl;
+            cout<<"  Status:\tPDA was operation quit by users\n";           
+            cout<<"  last input string used:\t"<<visible(original_input_string)<<endl;
+            cout<<"  Input string was:\tnot rejected or accepted\n";
+            cout<<"  Transitions:\t"<<number_of_transitions<<endl;
+            cout<<"  Crashes:\t"<<number_of_crashes<<endl;
 
         }
     }
     else{
-        cout<<"  Status:      PDA has not been run on an input string\n";       
+        cout << "  Status:\tPDA has not been run on an input string\n";       
     }
 
-    cout<<"================\n";
+    cout << "  ==============\n";
     cout << "  Course:\tCPTS 422" << endl;
     cout << "  Semester:\tFall" << endl;
     cout << "  Year:\t\t2017" << endl;
@@ -603,7 +603,7 @@ void Pushdown_Automaton::show_command()//need to be cleaned up
     cout << "  Team:\t\twhile(1)" << endl;
     cout << "  Team Members:\tLeigh VanCleef, Rob Pierini, KJ Dorow, Efren Alvarez" << endl;
     cout << "  Version:\t1.0" << endl;
-    cout<<"================\n";
+    cout << "  ==============\n";
 
     cout << "  Configuration Settings:" << endl;
     cout << "    Characters Before Truncation: " << configuration_settings->get_maximum_characters() << endl;
@@ -706,7 +706,7 @@ void Pushdown_Automaton::delete_command()
             else
             {
                 changed =true;
-                cout<<"Deleting index "<<input_num<<endl;
+                cout<<"Deleting input string: "<<string_list[input_num-1]<<endl;
                 string_list.erase( string_list.begin() + input_num-1 );
             }
     }

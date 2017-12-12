@@ -42,10 +42,6 @@ void Transition::setReadStack(char readCharStack) {
 	this->read_stack = readCharStack;
 }
 
-//vector<Destination> Transition::destination() const{
-//	return destinations;
-//}
-
 string Transition::destination_state() const {
 	return dest_state;
 }

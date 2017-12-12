@@ -70,26 +70,7 @@ void Stack_Alphabet::load(ifstream& definition, bool& valid)
     }
 
 }
-/*
-void Stack_Alphabet::validate(vector<char> input_alphabet, bool& valid)
-{
-    valid = true;
-    for(int i = 0; i < (int)alphabet.size(); i++)
-    {
-        for(int j = 0; (int)input_alphabet.size(); j++)
-        {
-            if(input_alphabet[j].compare(alphabet[i]) == 0)
-                break;
-            else
-            {
-                cout << "Error: Stack alphabet contains characters not defined in input alphabet!" << endl;
-                valid = false;
-                break;
-            }
-        }
-    }
-}
-*/
+
 void Stack_Alphabet::view()const
 {
     cout << "Stack Alphabet: ";

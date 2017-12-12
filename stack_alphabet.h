@@ -16,7 +16,6 @@ private:
 public:
     Stack_Alphabet();
     void load(ifstream& definition, bool& valid);
-//    void validate(vector<char> input_alphabet, bool& valid);
     void view()const;
     bool is_element(char value)const;
 

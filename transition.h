@@ -18,7 +18,6 @@ class Transition {
 		string source;
 		char read;
 		char read_stack;
-		//vector<Destination> destinations;
 		string write_string;
 		string dest_state;
 	public:
@@ -29,7 +28,6 @@ class Transition {
 		void setRead(char readChar);
 		char read_character_stack() const;
 		void setReadStack(char readStackChar);
-		//vector<Destination> destination() const;
 		string destination_state() const;
 		void setDestState(string destState);
 		string write_str() const;
