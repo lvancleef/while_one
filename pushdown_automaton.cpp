@@ -777,7 +777,7 @@ bool canonical(string one, string two){//helper function for sorting, determines
     return false;
 }
 
-void Pushdown_Automaton::sort_command()//sort input strings if needed
+void Pushdown_Automaton::sort_command()//Sorts input strings if needed
 {
     vector<string> temp(string_list);
     sort(string_list.begin(),string_list.end(),canonical);
